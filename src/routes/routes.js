@@ -4,6 +4,9 @@ export const ROUTES = {
   USERS: '/users',
   USER_DETAIL: '/users/user/:id',
   USER_NEW: '/users/user/new',
+  TODOS: '/todos',
+  TODO_DETAIL: '/todos/todo/:id',
+  TODO_NEW: '/todos/todo/new',
   COUNTER: '/counter',
 }
 

@@ -1,0 +1,272 @@
+/* Todos 목록 스타일링 */
+
+/* 스크롤바 숨김 처리 */
+.todoslist-scroll-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.todoslist-scroll-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 리스트 아이템 스타일링 */
+.todo-item {
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.todo-item:hover {
+  background-color: #f8f9fa !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.todo-item.checked {
+  background-color: #f0f9ff !important;
+  border-color: #1890ff !important;
+}
+
+.todo-item.checked:hover {
+  background-color: #e6f7ff !important;
+}
+
+.todo-item.completed {
+  background-color: #f6ffed !important;
+  border-color: #b7eb8f !important;
+}
+
+.todo-item.completed:hover {
+  background-color: #f0f9ff !important;
+}
+
+.todo-item.completed.checked {
+  background-color: #e6f7ff !important;
+  border-color: #1890ff !important;
+}
+
+/* 리스트 아이템 내부 요소들 */
+.todo-item .ant-list-item-meta-title {
+  margin-bottom: 4px;
+}
+
+.todo-item .ant-list-item-meta-description {
+  color: #666;
+  font-size: 12px;
+}
+
+.todo-item .ant-avatar {
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 체크박스 스타일 */
+.todo-item .ant-checkbox-wrapper {
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.todo-item .ant-checkbox-wrapper:hover {
+  background-color: rgba(24, 144, 255, 0.1);
+}
+
+/* 완료된 할일 스타일 */
+.todo-item.completed .ant-list-item-meta-title {
+  color: #999 !important;
+}
+
+.todo-item.completed .ant-list-item-meta-description {
+  color: #bbb !important;
+}
+
+/* 태그 스타일 */
+.todo-item .ant-tag {
+  margin-left: 8px;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* 삭제 버튼 고정 위치 스타일 */
+.fixed-delete-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  max-width: 300px;
+  width: 90%;
+}
+
+.fixed-delete-button .ant-btn {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: none;
+  height: 48px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 통계 박스 스타일 */
+.todo-stats-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.todo-stats-box .ant-checkbox-wrapper {
+  color: white;
+}
+
+.todo-stats-box .ant-checkbox-wrapper:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .todo-item {
+    padding: 12px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .todo-item .ant-list-item-meta {
+    margin-bottom: 0;
+  }
+  
+  .todo-item .ant-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 16px !important;
+  }
+  
+  .fixed-delete-button {
+    bottom: 16px;
+    width: 95%;
+  }
+  
+  .fixed-delete-button .ant-btn {
+    height: 44px;
+    font-size: 14px;
+  }
+
+  .todo-stats-box {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .todo-item {
+    padding: 8px !important;
+  }
+  
+  .todo-item .ant-list-item-meta-title {
+    font-size: 14px;
+  }
+  
+  .todo-item .ant-list-item-meta-description {
+    font-size: 11px;
+  }
+  
+  .todo-item .ant-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 14px !important;
+  }
+
+  .todo-item .ant-tag {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+}
+
+/* 상세 페이지 스타일 */
+.todo-detail-form .ant-form-item-label > label {
+  font-weight: 600;
+  color: #262626;
+}
+
+.todo-detail-form .ant-input,
+.todo-detail-form .ant-input-affix-wrapper,
+.todo-detail-form .ant-input-number {
+  border-radius: 6px;
+  border-color: #d9d9d9;
+  transition: all 0.2s ease;
+}
+
+.todo-detail-form .ant-input:focus,
+.todo-detail-form .ant-input-affix-wrapper:focus,
+.todo-detail-form .ant-input-affix-wrapper-focused,
+.todo-detail-form .ant-input-number:focus {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.todo-detail-form .ant-form-item-has-error .ant-input,
+.todo-detail-form .ant-form-item-has-error .ant-input-affix-wrapper,
+.todo-detail-form .ant-form-item-has-error .ant-input-number {
+  border-color: #ff4d4f;
+}
+
+.todo-detail-form .ant-divider-horizontal.ant-divider-with-text {
+  margin: 24px 0 16px 0;
+  font-weight: 600;
+  color: #595959;
+}
+
+/* Switch 스타일 개선 */
+.todo-detail-form .ant-switch {
+  background-color: #bfbfbf;
+}
+
+.todo-detail-form .ant-switch-checked {
+  background-color: #52c41a;
+}
+
+/* 부드러운 스크롤 애니메이션 */
+.todoslist-scroll-hide {
+  scroll-behavior: smooth;
+}
+
+/* 로딩 스피너 개선 */
+.ant-spin-container {
+  transition: opacity 0.3s;
+}
+
+.ant-spin-blur {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* FloatButton 스타일 개선 */
+.ant-float-btn-primary {
+  box-shadow: 0 4px 16px rgba(82, 196, 26, 0.4);
+  background-color: #52c41a;
+}
+
+.ant-float-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(82, 196, 26, 0.5);
+  background-color: #73d13d;
+}
+
+/* 필터 컨트롤 스타일 */
+.todo-filter-controls {
+  background-color: #fafafa;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+}
+
+.todo-filter-controls .ant-select {
+  border-radius: 6px;
+}
+
+.todo-filter-controls .ant-input-affix-wrapper {
+  border-radius: 6px;
+}

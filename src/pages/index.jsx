@@ -1,5 +1,5 @@
 import { Typography, Space, Button } from 'antd'
-import { UserOutlined, NumberOutlined } from '@ant-design/icons'
+import { UserOutlined, NumberOutlined, CheckSquareOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '../routes/routes'
 
@@ -36,6 +36,15 @@ const HomePage = () => {
                 size="large"
               >
                 Users 페이지
+              </Button>
+            </Link>
+            <Link to={ROUTES.TODOS}>
+              <Button 
+                type="default" 
+                icon={<CheckSquareOutlined />}
+                size="large"
+              >
+                Todos 페이지
               </Button>
             </Link>
           </Space>
