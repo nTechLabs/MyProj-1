@@ -3,7 +3,7 @@ import { List, Alert, Spin, Button, FloatButton } from 'antd'
 import { PlusOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { usePostsQuery, useDeletePostsMutation } from '../../hooks/usePostsQueries'
-import { useCheckedStore } from '../../store/useCheckedStore'
+import useCheckedStore from '../../store/useCheckedStore'
 import PostsItem from './PostsItem'
 import './posts-list.css'
 
@@ -15,14 +15,17 @@ const PostsList = memo(() => {
   const navigate = useNavigate()
   const { data: posts, isLoading, error } = usePostsQuery()
   const deletePostsMutation = useDeletePostsMutation()
-  const { checkedItems, hasCheckedItems, clearChecked } = useCheckedStore()
+  const { checkedIds, clearChecked } = useCheckedStore()
+
+  // 체크된 항목이 있는지 확인
+  const hasCheckedItems = checkedIds.length > 0
 
   // 체크된 항목들 삭제
   const handleDeleteSelected = async () => {
-    if (!hasCheckedItems()) return
+    if (checkedIds.length === 0) return
     
     try {
-      await deletePostsMutation.mutateAsync(Object.keys(checkedItems))
+      await deletePostsMutation.mutateAsync(checkedIds)
     } catch (error) {
       console.error('삭제 실패:', error)
     }
@@ -56,7 +59,7 @@ const PostsList = memo(() => {
           style={{ 
             maxHeight: 'calc(100vh - 350px)', 
             overflowY: 'auto',
-            paddingBottom: hasCheckedItems() ? '80px' : '20px'
+            paddingBottom: hasCheckedItems ? '80px' : '20px'
           }}
           renderItem={(post) => (
             <PostsItem key={post.id} post={post} />
@@ -78,11 +81,11 @@ const PostsList = memo(() => {
         type="primary"
         tooltip="새 게시글 추가"
         onClick={handleAddPost}
-        style={{ bottom: hasCheckedItems() ? 100 : 24 }}
+        style={{ bottom: hasCheckedItems ? 100 : 24 }}
       />
 
       {/* 선택된 항목들 삭제 버튼 (하단 고정) */}
-      {hasCheckedItems() && (
+      {hasCheckedItems && (
         <div className="fixed-delete-button">
           <Button
             type="primary"
@@ -93,7 +96,7 @@ const PostsList = memo(() => {
             onClick={handleDeleteSelected}
             block
           >
-            선택된 {Object.keys(checkedItems).length}개 게시글 삭제
+            선택된 {checkedIds.length}개 게시글 삭제
           </Button>
         </div>
       )}

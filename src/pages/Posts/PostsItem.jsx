@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { List, Checkbox, Typography, Tag, Avatar } from 'antd'
 import { BookOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { useCheckedStore } from '../../store/useCheckedStore'
+import { useIsChecked, useToggleCheck } from '../../store/useCheckedStore'
 
 const { Text, Paragraph } = Typography
 
@@ -12,14 +12,17 @@ const { Text, Paragraph } = Typography
  */
 const PostsItem = memo(({ post }) => {
   const navigate = useNavigate()
-  const { checkedItems, toggleItem } = useCheckedStore()
-  const isChecked = checkedItems[post.id] || false
+  
+  // Zustand 선택자를 사용하여 필요한 부분만 구독 (리렌더링 최적화)
+  const isChecked = useIsChecked()
+  const toggleCheck = useToggleCheck()
+  const checked = isChecked(post.id)
 
   // 체크박스 상태 변경
   const handleCheckboxChange = useCallback((e) => {
     e.stopPropagation()
-    toggleItem(post.id)
-  }, [post.id, toggleItem])
+    toggleCheck(post.id)
+  }, [post.id, toggleCheck])
 
   // 게시글 클릭 시 상세 페이지로 이동
   const handleItemClick = useCallback(() => {
@@ -38,14 +41,14 @@ const PostsItem = memo(({ post }) => {
 
   return (
     <List.Item
-      className={`post-item list-item-base ${isChecked ? 'checked' : ''}`}
+      className={`post-item list-item-base ${checked ? 'checked' : ''}`}
       onClick={handleItemClick}
       style={{ 
         cursor: 'pointer',
         padding: '16px',
         borderRadius: '8px',
         border: '1px solid #f0f0f0',
-        backgroundColor: isChecked ? '#f0f9ff' : '#ffffff'
+        backgroundColor: checked ? '#f0f9ff' : '#ffffff'
       }}
       actions={[
         <Tag key="id" color="blue">
@@ -59,7 +62,7 @@ const PostsItem = memo(({ post }) => {
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', width: '100%' }}>
         {/* 체크박스 */}
         <Checkbox
-          checked={isChecked}
+          checked={checked}
           onChange={handleCheckboxChange}
           onClick={(e) => e.stopPropagation()}
         />
