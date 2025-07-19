@@ -1,7 +1,7 @@
 import { Typography, Space, Button } from 'antd'
 import { UserOutlined, NumberOutlined, CheckSquareOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import { ROUTES } from '../routes/routes'
+import { ROUTES } from '../routes/AppRoutes'
 
 const { Title, Paragraph } = Typography
 

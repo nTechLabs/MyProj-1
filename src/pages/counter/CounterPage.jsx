@@ -2,7 +2,7 @@ import { Typography, Space, Divider, Button, Card, Statistic } from 'antd'
 import { ArrowLeftOutlined, NumberOutlined, PlusOutlined, MinusOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import useCountStore from '../../store/useCountStore'
-import { ROUTES } from '../../routes/routes'
+import { ROUTES } from '../../routes/AppRoutes'
 
 const { Title, Paragraph } = Typography
 

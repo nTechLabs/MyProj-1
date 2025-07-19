@@ -2,7 +2,7 @@ import { Typography, Space, Divider, Button } from 'antd'
 import { ArrowLeftOutlined, CheckSquareOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import TodosList from './TodosList'
-import { ROUTES } from '../../routes/routes'
+import { ROUTES } from '../../routes/AppRoutes'
 
 const { Title, Paragraph } = Typography
 

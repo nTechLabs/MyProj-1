@@ -5,7 +5,42 @@ import UsersDetail from '../pages/users/UsersDetail'
 import TodosPage from '../pages/Todos/TodosPage'
 import TodosDetail from '../pages/Todos/TodosDetail'
 import CounterPage from '../pages/counter/CounterPage'
-import { ROUTES } from './routes'
+
+// 라우트 경로 상수들
+export const ROUTES = {
+  HOME: '/',
+  USERS: '/users',
+  USER_DETAIL: '/users/user/:id',
+  USER_NEW: '/users/user/new',
+  TODOS: '/todos',
+  TODO_DETAIL: '/todos/todo/:id',
+  TODO_NEW: '/todos/todo/new',
+  COUNTER: '/counter',
+}
+
+// 라우트 정보 객체들
+export const routeConfig = [
+  {
+    path: ROUTES.HOME,
+    name: 'Home',
+    title: '홈',
+  },
+  {
+    path: ROUTES.USERS,
+    name: 'Users',
+    title: '사용자',
+  },
+  {
+    path: ROUTES.TODOS,
+    name: 'Todos',
+    title: '할일',
+  },
+  {
+    path: ROUTES.COUNTER,
+    name: 'Counter',
+    title: '카운터',
+  },
+]
 
 const AppRoutes = () => {
   return (

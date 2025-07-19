@@ -1,5 +1,5 @@
 import { Layout, Typography } from 'antd'
-import { AppRoutes } from './routes'
+import AppRoutes from './routes/AppRoutes'
 import './App.css'
 
 const { Header, Content } = Layout
