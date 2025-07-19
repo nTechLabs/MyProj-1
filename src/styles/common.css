@@ -1,0 +1,217 @@
+/* 공통 최적화 스타일 */
+
+/* 리스트 아이템 공통 스타일 */
+.list-item-base {
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.list-item-base:hover {
+  background-color: #f8f9fa !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-item-base.checked {
+  background-color: #f0f9ff !important;
+  border-color: #1890ff !important;
+}
+
+.list-item-base.checked:hover {
+  background-color: #e6f7ff !important;
+}
+
+/* 스크롤바 숨김 처리 (공통) */
+.scroll-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scroll-behavior: smooth;
+}
+
+.scroll-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 고정 삭제 버튼 (공통) */
+.fixed-delete-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 90%;
+  max-width: 400px;
+  padding: 0 20px;
+  box-shadow: 0 4px 16px rgba(255, 77, 79, 0.3);
+}
+
+.fixed-delete-button .ant-btn {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: none;
+  height: 48px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 플로팅 버튼 스타일 개선 (공통) */
+.ant-float-btn-primary {
+  box-shadow: 0 4px 16px rgba(24, 144, 255, 0.4);
+  background-color: #1890ff;
+}
+
+.ant-float-btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(24, 144, 255, 0.6);
+}
+
+/* 로딩 스피너 개선 (공통) */
+.ant-spin-container {
+  transition: opacity 0.3s;
+}
+
+.ant-spin-blur {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* 폼 스타일 개선 (공통) */
+.detail-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.detail-form .ant-input,
+.detail-form .ant-input-affix-wrapper {
+  border-radius: 6px;
+  border: 1.5px solid #d9d9d9;
+  transition: all 0.2s ease;
+}
+
+.detail-form .ant-input:focus,
+.detail-form .ant-input-focused,
+.detail-form .ant-input-affix-wrapper:focus,
+.detail-form .ant-input-affix-wrapper-focused {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.detail-form .ant-form-item-has-error .ant-input,
+.detail-form .ant-form-item-has-error .ant-input-affix-wrapper {
+  border-color: #ff4d4f;
+}
+
+.detail-form .ant-divider-horizontal.ant-divider-with-text {
+  margin: 24px 0 16px 0;
+  font-weight: 600;
+  color: #595959;
+}
+
+/* 반응형 스타일 (공통) */
+@media (max-width: 768px) {
+  .list-item-base {
+    padding: 12px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .list-item-base .ant-list-item-meta {
+    margin-bottom: 0;
+  }
+  
+  .list-item-base .ant-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 16px !important;
+  }
+  
+  .fixed-delete-button {
+    bottom: 16px;
+    width: 95%;
+  }
+  
+  .fixed-delete-button .ant-btn {
+    height: 44px;
+    font-size: 14px;
+  }
+  
+  .detail-form {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .list-item-base {
+    padding: 8px !important;
+  }
+  
+  .fixed-delete-button {
+    width: 98%;
+  }
+  
+  .fixed-delete-button .ant-btn {
+    height: 40px;
+    font-size: 13px;
+  }
+}
+
+/* 성능 최적화를 위한 하드웨어 가속 */
+.hardware-accelerated {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 이미지 최적화 */
+.optimized-image {
+  image-rendering: optimizeQuality;
+  image-rendering: -webkit-optimize-contrast;
+  backface-visibility: hidden;
+}
+
+/* 텍스트 렌더링 최적화 */
+.optimized-text {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 애니메이션 성능 최적화 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 테마별 색상 변수 */
+:root {
+  --primary-color: #1890ff;
+  --success-color: #52c41a;
+  --warning-color: #faad14;
+  --error-color: #ff4d4f;
+  --text-primary: #262626;
+  --text-secondary: #666;
+  --text-disabled: #999;
+  --border-color: #d9d9d9;
+  --border-radius: 6px;
+  --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #ffffff;
+    --text-secondary: #d9d9d9;
+    --text-disabled: #8c8c8c;
+    --border-color: #424242;
+  }
+  
+  .list-item-base:hover {
+    background-color: #262626 !important;
+  }
+  
+  .list-item-base.checked {
+    background-color: #001529 !important;
+  }
+}

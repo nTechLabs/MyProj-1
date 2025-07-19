@@ -8,7 +8,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "setup": "node setup-project.js"
+    "setup": "node setup-project.js",
+    "build:analyze": "vite build --mode analyze",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.83.0",
