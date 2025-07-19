@@ -1,5 +1,5 @@
 import { Typography, Space, Button } from 'antd'
-import { UserOutlined, NumberOutlined, CheckSquareOutlined } from '@ant-design/icons'
+import { UserOutlined, NumberOutlined, CheckSquareOutlined, BookOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
 const { Title, Paragraph } = Typography
@@ -35,6 +35,15 @@ const HomePage = () => {
                 size="large"
               >
                 Users 페이지
+              </Button>
+            </Link>
+            <Link to="/posts">
+              <Button 
+                type="default" 
+                icon={<BookOutlined />}
+                size="large"
+              >
+                Posts 페이지
               </Button>
             </Link>
             <Link to="/todos">

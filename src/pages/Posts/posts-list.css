@@ -1,0 +1,186 @@
+/* Posts 리스트 전용 스타일 */
+
+/* 스크롤바 숨김 처리 */
+.postslist-scroll-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scroll-behavior: smooth;
+}
+
+.postslist-scroll-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Posts 리스트 컨테이너 */
+.posts-list-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Posts 아이템 스타일 */
+.post-item {
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #f0f0f0;
+  background-color: #ffffff;
+}
+
+.post-item:hover {
+  background-color: #f8f9fa !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(114, 46, 209, 0.1);
+  border-color: #722ed1;
+}
+
+.post-item.checked {
+  background-color: #f0f9ff !important;
+  border-color: #722ed1 !important;
+  box-shadow: 0 2px 8px rgba(114, 46, 209, 0.15);
+}
+
+.post-item.checked:hover {
+  background-color: #e6f7ff !important;
+  box-shadow: 0 4px 16px rgba(114, 46, 209, 0.2);
+}
+
+/* Posts 상세 폼 스타일 */
+.post-detail-form {
+  .ant-form-item-label > label {
+    font-weight: 600;
+    color: #262626;
+  }
+
+  .ant-input,
+  .ant-input-affix-wrapper {
+    border-radius: 6px;
+    border: 1.5px solid #d9d9d9;
+    transition: all 0.2s ease;
+  }
+
+  .ant-input:focus,
+  .ant-input-focused,
+  .ant-input-affix-wrapper:focus,
+  .ant-input-affix-wrapper-focused {
+    border-color: #722ed1;
+    box-shadow: 0 0 0 2px rgba(114, 46, 209, 0.2);
+  }
+
+  .ant-form-item-has-error .ant-input,
+  .ant-form-item-has-error .ant-input-affix-wrapper {
+    border-color: #ff4d4f;
+  }
+}
+
+/* Posts 태그 스타일 */
+.post-item .ant-tag {
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 2px;
+}
+
+/* Posts 메타 정보 스타일 */
+.post-item .ant-list-item-meta-title {
+  margin-bottom: 8px;
+}
+
+.post-item .ant-list-item-meta-description {
+  color: #666666;
+  line-height: 1.5;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .post-item {
+    padding: 12px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .post-item .ant-list-item-meta {
+    margin-bottom: 0;
+  }
+  
+  .post-item .ant-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 16px !important;
+  }
+  
+  .post-item .ant-list-item-action {
+    margin-top: 8px;
+  }
+  
+  .post-item .ant-tag {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+  
+  .post-detail-form {
+    padding: 16px;
+  }
+  
+  .post-detail-form .ant-row {
+    margin: 0 -8px;
+  }
+  
+  .post-detail-form .ant-col {
+    padding: 0 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-item {
+    padding: 10px !important;
+  }
+  
+  .post-item .ant-list-item-action {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  
+  .post-item .ant-tag {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+  
+  .post-detail-form .ant-form-item {
+    margin-bottom: 12px;
+  }
+}
+
+/* 성능 최적화를 위한 하드웨어 가속 */
+.post-item {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 접근성 향상 */
+.post-item:focus-within {
+  outline: 2px solid #722ed1;
+  outline-offset: 2px;
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+  .post-item {
+    background-color: #1f1f1f;
+    border-color: #424242;
+    color: #ffffff;
+  }
+  
+  .post-item:hover {
+    background-color: #262626 !important;
+  }
+  
+  .post-item.checked {
+    background-color: #001529 !important;
+    border-color: #722ed1 !important;
+  }
+  
+  .post-item .ant-list-item-meta-description {
+    color: #d9d9d9;
+  }
+}
