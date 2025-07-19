@@ -10,6 +10,8 @@ const TodosPage = lazy(() => import('../pages/Todos/TodosPage'))
 const TodosDetail = lazy(() => import('../pages/Todos/TodosDetail'))
 const PostsPage = lazy(() => import('../pages/Posts/PostsPage'))
 const PostsDetail = lazy(() => import('../pages/Posts/PostsDetail'))
+const CommentsPage = lazy(() => import('../pages/comments/CommentsPage'))
+const CommentsDetail = lazy(() => import('../pages/comments/CommentsDetail'))
 const CounterPage = lazy(() => import('../pages/counter/CounterPage'))
 
 // 로딩 컴포넌트
@@ -38,6 +40,8 @@ const AppRoutes = () => {
         <Route path="/posts/post/:id" element={<PostsDetail />} />
         <Route path="/todos" element={<TodosPage />} />
         <Route path="/todos/todo/:id" element={<TodosDetail />} />
+        <Route path="/comments" element={<CommentsPage />} />
+        <Route path="/comments/comment/:id" element={<CommentsDetail />} />
         <Route path="/counter" element={<CounterPage />} />
       </Routes>
     </Suspense>

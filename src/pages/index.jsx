@@ -1,5 +1,5 @@
 import { Typography, Space, Button } from 'antd'
-import { UserOutlined, NumberOutlined, CheckSquareOutlined, BookOutlined } from '@ant-design/icons'
+import { UserOutlined, NumberOutlined, CheckSquareOutlined, BookOutlined, CommentOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
 const { Title, Paragraph } = Typography
@@ -53,6 +53,15 @@ const HomePage = () => {
                 size="large"
               >
                 Todos 페이지
+              </Button>
+            </Link>
+            <Link to="/comments">
+              <Button 
+                type="default" 
+                icon={<CommentOutlined />}
+                size="large"
+              >
+                Comments 페이지
               </Button>
             </Link>
           </Space>

@@ -1,0 +1,633 @@
+/**
+ * Comments 특화 스타일 - 최적화 버전
+ * 공통 스타일과 충돌 없이 Comments만의 스타일 정의
+ */
+
+/* =========================
+   Comments 컨테이너 기본 설정
+   ========================= */
+
+.comments-page {
+  --comments-primary: #ff9500;
+  --comments-primary-hover: #e6850e;
+  --comments-text-primary: #333;
+  --comments-text-secondary: #666;
+  --comments-bg-light: rgba(255, 149, 0, 0.05);
+  --comments-border: #e6850e;
+}
+
+/* Comments 페이지 전체 레이아웃 */
+.comments-page .ant-list {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 리스트 아이템 컨테이너 */
+.comments-page .ant-list .ant-list-items {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 각 리스트 아이템 래퍼 */
+.comments-page .ant-list .ant-list-item {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  float: none !important;
+  position: static !important;
+}
+
+/* =========================
+   Comments 리스트 아이템 완전 재정의
+   ========================= */
+
+.comments-page .ant-list-item {
+  background: white !important;
+  border: 1px solid #f0f0f0 !important;
+  border-radius: 8px !important;
+  margin-bottom: 20px !important;
+  padding: 20px !important;
+  transition: all 0.2s ease !important;
+  min-height: 180px !important;
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  clear: both !important;
+}
+
+.comments-page .ant-list-item:hover {
+  background: #f8f9fa !important;
+  border-color: #ff9500 !important;
+  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.1) !important;
+}
+
+/* 리스트 아이템 내부 레이아웃 정렬 */
+.comments-page .ant-list-item-meta {
+  display: flex !important;
+  align-items: flex-start !important;
+  flex: 1 !important;
+  margin: 0 !important;
+}
+
+.comments-page .ant-list-item-meta-avatar {
+  margin-right: 16px !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.comments-page .ant-list-item-meta-content {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.comments-page .ant-list-item-action {
+  display: flex !important;
+  align-items: center !important;
+  margin-left: 16px !important;
+  flex-shrink: 0 !important;
+}
+
+.comments-page .ant-list-item-action li {
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 4px !important;
+}
+
+.comments-page .ant-list-item-action .ant-checkbox-wrapper {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.comments-page .list-item-base:hover {
+  border-color: var(--comments-primary) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.15) !important;
+}
+
+.comments-page .list-item-base.checked .ant-list-item {
+  background: var(--comments-bg-light) !important;
+  border-color: var(--comments-primary) !important;
+  border-left: 4px solid var(--comments-primary) !important;
+}
+
+/* =========================
+   Comments 메타 정보 재정의
+   ========================= */
+
+.comments-page .ant-list-item-meta {
+  align-items: flex-start !important;
+}
+
+.comments-page .ant-list-item-meta-avatar {
+  margin-right: 16px !important;
+}
+
+.comments-page .ant-list-item-meta-content {
+  overflow: hidden !important;
+  flex: 1 !important;
+}
+
+.comments-page .ant-list-item-meta-title {
+  margin-bottom: 12px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--comments-text-primary) !important;
+  line-height: 1.4 !important;
+  max-height: 3.5em !important;
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+}
+
+.comments-page .ant-list-item-meta-description {
+  color: var(--comments-text-secondary) !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  display: block !important;
+}
+
+/* =========================
+   Comments 본문 텍스트 강제 스타일
+   ========================= */
+
+.comments-page .comment-body {
+  color: var(--comments-text-secondary) !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  margin: 12px 0 0 0 !important;
+  padding: 0 !important;
+  max-height: 9.6em !important;
+  overflow: hidden !important;
+  display: block !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  text-overflow: ellipsis !important;
+  position: relative !important;
+}
+
+/* =========================
+   Comments 메타 섹션
+   ========================= */
+
+.comments-page .comment-meta {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+}
+
+.comments-page .item-meta-title {
+  color: var(--comments-text-primary) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.comments-page .comment-email {
+  color: var(--comments-primary) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+.comments-page .comment-post-id {
+  background: #f5f5f5 !important;
+  color: var(--comments-text-secondary) !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+/* =========================
+   Comments 태그 스타일
+   ========================= */
+
+.comments-page .comment-tags {
+  display: flex !important;
+  gap: 8px !important;
+  margin-top: 16px !important;
+  flex-wrap: wrap !important;
+  clear: both !important;
+}
+
+.comments-page .comment-tag {
+  background: rgba(255, 149, 0, 0.1) !important;
+  color: var(--comments-primary) !important;
+  border: 1px solid rgba(255, 149, 0, 0.3) !important;
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+  display: inline-block !important;
+  line-height: 1.2 !important;
+}
+
+/* =========================
+   Comments 아바타
+   ========================= */
+
+.comments-page .comment-avatar {
+  background: linear-gradient(135deg, var(--comments-primary), #ffb84d) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  border: none !important;
+}
+
+/* =========================
+   Comments 체크박스 스타일
+   ========================= */
+
+.comments-page .checkbox-container {
+  position: absolute !important;
+  left: 12px !important;
+  top: 16px !important;
+  z-index: 10 !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* 체크박스가 있을 때 메타 콘텐츠 여백 조정 */
+.comments-page .ant-list-item-meta {
+  margin-left: 40px !important;
+  padding-left: 0 !important;
+}
+
+.comments-page .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--comments-primary) !important;
+  border-color: var(--comments-primary) !important;
+}
+
+.comments-page .ant-checkbox-wrapper:hover .ant-checkbox-inner {
+  border-color: var(--comments-primary) !important;
+}
+
+/* =========================
+   Comments Float 버튼
+   ========================= */
+
+.comments-page .ant-float-btn-primary {
+  background-color: var(--comments-primary) !important;
+  border-color: var(--comments-primary) !important;
+}
+
+.comments-page .ant-float-btn-primary:hover {
+  background-color: var(--comments-primary-hover) !important;
+  border-color: var(--comments-primary-hover) !important;
+}
+
+/* =========================
+   Comments 검색 필터
+   ========================= */
+
+.comments-page .search-filter-container .ant-input:focus,
+.comments-page .search-filter-container .ant-input-focused {
+  border-color: var(--comments-primary) !important;
+  box-shadow: 0 0 0 2px rgba(255, 149, 0, 0.1) !important;
+}
+
+.comments-page .search-filter-container .ant-select-focused .ant-select-selector {
+  border-color: var(--comments-primary) !important;
+  box-shadow: 0 0 0 2px rgba(255, 149, 0, 0.1) !important;
+}
+
+/* =========================
+   반응형 디자인
+   ========================= */
+
+@media (max-width: 768px) {
+  .comments-page .ant-list-item {
+    padding: 16px !important;
+    min-height: 200px !important;
+    margin-bottom: 16px !important;
+  }
+  
+  .comments-page .ant-list-item-meta-title {
+    font-size: 15px !important;
+  }
+  
+  .comments-page .comment-body {
+    font-size: 13px !important;
+    max-height: 10.4em !important;
+    line-height: 1.6 !important;
+  }
+  
+  .comments-page .checkbox-container {
+    left: 10px !important;
+    top: 14px !important;
+  }
+  
+  .comments-page .ant-list-item-meta {
+    margin-left: 36px !important;
+  }
+}
+
+/* 페이지네이션 스타일 조정 */
+.comments-page .ant-pagination {
+  margin-top: 24px !important;
+  text-align: center !important;
+  clear: both !important;
+}
+
+/* 리스트 스크롤 영역 */
+.comments-page .page-list {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+/* =========================
+   다크 모드 지원
+   ========================= */
+
+@media (prefers-color-scheme: dark) {
+  .comments-page {
+    --comments-text-primary: #e0e0e0;
+    --comments-text-secondary: #b0b0b0;
+  }
+  
+  .comments-page .ant-list-item {
+    background: #1f1f1f !important;
+    border-color: #333 !important;
+  }
+  
+  .comments-page .ant-list-item:hover {
+    background: #2a2a2a !important;
+  }
+  
+  .comments-page .comment-post-id {
+    background: #404040 !important;
+    color: #e0e0e0 !important;
+    border-color: #555 !important;
+  }
+  
+  .comments-page .comment-email {
+    color: #ffaa44 !important;
+  }
+}
+
+/* =========================
+   전체 선택 및 통계 섹션
+   ========================= */
+
+.select-all-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 12px 16px !important;
+  background: #fafafa !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 6px !important;
+  margin-bottom: 16px !important;
+}
+
+.select-all-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0 !important;
+}
+
+.select-all-left .ant-checkbox-wrapper {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.select-all-left .ant-checkbox {
+  margin-right: 8px !important;
+}
+
+.select-stats {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.select-stats .ant-space {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.select-stats .ant-badge {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.select-stats .ant-badge-count {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 20px !important;
+  height: 20px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+/* 모든 아이콘 기본 스타일 */
+.comments-page .anticon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+}
+
+/* 버튼 내 아이콘 */
+.comments-page .ant-btn .anticon {
+  font-size: 14px !important;
+  margin-right: 6px !important;
+}
+
+/* FloatButton 아이콘 */
+.comments-page .ant-float-btn .anticon {
+  font-size: 18px !important;
+  margin: 0 !important;
+}
+
+/* Empty 상태 아이콘 */
+.comments-page .empty-icon {
+  font-size: 48px !important;
+  color: #ff9500 !important;
+  margin-bottom: 16px !important;
+}
+
+/* Badge와 함께 사용되는 아이콘 */
+.comments-page .select-stats .anticon {
+  font-size: 14px !important;
+}
+
+/* 체크박스 아이콘 */
+.comments-page .ant-checkbox-inner {
+  border-radius: 4px !important;
+}
+
+/* 아바타 아이콘 */
+.comments-page .ant-list-item-meta-avatar .ant-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+.comments-page .ant-list-item-meta-description *,
+.comments-page .comment-body,
+.comments-page .comment-body * {
+  color: var(--comments-text-secondary) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  display: block !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow: visible !important;
+  text-overflow: none !important;
+}
+
+/* =========================
+   다중 선택 필터 스타일
+   ========================= */
+
+/* 필터 Select 컴포넌트 */
+.filter-select {
+  min-width: 200px !important;
+}
+
+.filter-select .ant-select-selector {
+  background: white !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 6px 6px 6px 6px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 4px 8px !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.filter-select .ant-select-arrow {
+  color: #999 !important;
+  font-size: 12px !important;
+  margin-top: 0 !important;
+  transform: translateY(0) !important;
+}
+
+.filter-select .ant-select-clear {
+  color: #999 !important;
+  font-size: 12px !important;
+  margin-top: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.filter-select:hover .ant-select-selector {
+  border-color: #4096ff !important;
+}
+
+.filter-select:hover .ant-select-arrow {
+  color: #4096ff !important;
+}
+
+.filter-select.ant-select-focused .ant-select-selector {
+  border-color: #4096ff !important;
+  box-shadow: 0 0 0 2px rgba(64, 150, 255, 0.2) !important;
+}
+
+/* =========================
+   검색 및 필터 섹션
+   ========================= */
+
+.search-filter-container {
+  margin-bottom: 16px !important;
+}
+
+.search-filter-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.search-input {
+  flex: 1 !important;
+}
+
+/* 검색 입력 아이콘 스타일 */
+.search-input .ant-input-prefix {
+  margin-right: 8px !important;
+}
+
+.search-input .ant-input-prefix .anticon {
+  font-size: 16px !important;
+  color: #ff9500 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.search-input .ant-input-search-button .anticon {
+  font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 검색 입력 스타일 */
+.search-filter-container .ant-input-search {
+  border-radius: 6px !important;
+}
+
+.search-filter-container .ant-input-search .ant-input {
+  border-radius: 6px 0 0 6px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.search-filter-container .ant-input-search .ant-input-group-addon {
+  border-radius: 0 6px 6px 0 !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.filter-select .ant-select-selection-placeholder {
+  color: rgba(0, 0, 0, 0.6) !important;
+  font-size: 14px !important;
+}
+
+.filter-select .ant-select-selection-item {
+  background: #1890ff !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 2px 8px !important;
+  margin: 2px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+.filter-select .ant-select-selection-item-remove {
+  color: rgba(255, 255, 255, 0.8) !important;
+  margin-left: 4px !important;
+}
+
+.filter-select .ant-select-selection-item-remove:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 2px !important;
+}
+
+.filter-select .ant-select-clear {
+  background: rgba(24, 144, 255, 0.1) !important;
+  color: #1890ff !important;
+}
+
+.filter-select .ant-select-clear:hover {
+  color: #40a9ff !important;
+}
