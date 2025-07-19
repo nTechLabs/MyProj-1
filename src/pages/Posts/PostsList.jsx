@@ -90,7 +90,6 @@ const PostsList = memo(() => {
             size="large"
             loading={deletePostsMutation.isPending}
             onClick={handleDeleteSelected}
-            block
           >
             선택된 {checkedIds.length}개 게시글 삭제
           </Button>
