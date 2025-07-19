@@ -24,7 +24,7 @@ import {
   useAddPostMutation, 
   useUpdatePostMutation 
 } from '../../hooks/usePostsQueries'
-import { useNotificationStore } from '../../store/useNotificationStore'
+import useNotificationStore from '../../store/useNotificationStore'
 
 const { Title, Text } = Typography
 const { TextArea } = Input
