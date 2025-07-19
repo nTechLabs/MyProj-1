@@ -1,5 +1,3 @@
-// Posts API 기본 URL
-const POSTS_API_URL = 'https://jsonplaceholder.typicode.com/posts'
 
 /**
  * Posts API 관련 함수들

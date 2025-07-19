@@ -1,5 +1,3 @@
-// Todos API 기본 URL
-const TODOS_API_URL = 'https://jsonplaceholder.typicode.com/todos'
 
 /**
  * Todos API 관련 함수들

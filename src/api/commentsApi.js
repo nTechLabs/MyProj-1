@@ -3,7 +3,7 @@
  * @description Comments 엔티티에 대한 CRUD 작업을 위한 API 함수들
  */
 
-const API_URL = 'https://jsonplaceholder.typicode.com/comments'
+
 
 /**
  * Comments API 객체
@@ -15,7 +15,7 @@ export const commentsApi = {
    * @returns {Promise<Array>} 댓글 목록
    */
   getAll: async () => {
-    const response = await fetch(API_URL)
+    const response = await fetch(COMMENTS_API_URL)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
@@ -28,7 +28,7 @@ export const commentsApi = {
    * @returns {Promise<Object>} 댓글 객체
    */
   getById: async (id) => {
-    const response = await fetch(`${API_URL}/${id}`)
+    const response = await fetch(`${COMMENTS_API_URL}/${id}`)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
@@ -45,7 +45,7 @@ export const commentsApi = {
    * @returns {Promise<Object>} 생성된 댓글 객체
    */
   create: async (data) => {
-    const response = await fetch(API_URL, {
+    const response = await fetch(COMMENTS_API_URL, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json' 
@@ -65,7 +65,7 @@ export const commentsApi = {
    * @returns {Promise<Object>} 수정된 댓글 객체
    */
   update: async (id, data) => {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${COMMENTS_API_URL}/${id}`, {
       method: 'PUT',
       headers: { 
         'Content-Type': 'application/json' 
@@ -84,7 +84,7 @@ export const commentsApi = {
    * @returns {Promise<Object>} 삭제 결과
    */
   delete: async (id) => {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${COMMENTS_API_URL}/${id}`, {
       method: 'DELETE'
     })
     if (!response.ok) {

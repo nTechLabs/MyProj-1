@@ -1,6 +1,3 @@
-// Photos API 기본 URL
-const PHOTOS_API_URL = 'https://jsonplaceholder.typicode.com/photos'
-
 /**
  * Photos API 관련 함수들
  */

@@ -1,5 +1,3 @@
-// Users API 기본 URL
-const USERS_API_URL = 'https://jsonplaceholder.typicode.com/users'
 
 /**
  * Users API 관련 함수들
