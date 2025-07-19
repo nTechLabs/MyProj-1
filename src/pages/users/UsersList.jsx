@@ -51,8 +51,8 @@ const UsersList = () => {
 
   // 선택된 항목들 삭제
   const handleDeleteSelected = () => {
-    if (checkedIds.length === 0) return
-    deleteUsersMutation.mutate(checkedIds)
+    if (checkedIds.size === 0) return
+    deleteUsersMutation.mutate(Array.from(checkedIds)) // Set을 배열로 변환
   }
 
   // 새 사용자 추가 페이지로 이동
@@ -106,10 +106,10 @@ const UsersList = () => {
             checked={isAllChecked(userIds)}
             onChange={handleSelectAll}
           >
-            전체 선택 ({checkedIds.length}/{filteredUsers.length})
+            전체 선택 ({checkedIds.size}/{filteredUsers.length})
           </Checkbox>
           
-          {checkedIds.length > 0 && (
+          {checkedIds.size > 0 && (
             <Button
               type="primary"
               danger
@@ -117,7 +117,7 @@ const UsersList = () => {
               onClick={handleDeleteSelected}
               loading={deleteUsersMutation.isPending}
             >
-              선택된 항목 삭제 ({checkedIds.length})
+              선택된 항목 삭제 ({checkedIds.size})
             </Button>
           )}
         </div>
@@ -144,11 +144,11 @@ const UsersList = () => {
         type="primary"
         onClick={handleAddNew}
         tooltip="새 사용자 추가"
-        className={checkedIds.length > 0 ? 'float-button-with-action' : 'float-button-default'}
+        className={checkedIds.size > 0 ? 'float-button-with-action' : 'float-button-default'}
       />
 
       {/* 삭제 버튼 고정 배치 */}
-      {checkedIds.length > 0 && (
+      {checkedIds.size > 0 && (
         <div className="fixed-delete-button">
           <Button
             type="primary"
@@ -159,7 +159,7 @@ const UsersList = () => {
             loading={deleteUsersMutation.isPending}
             block
           >
-            {checkedIds.length}개 항목 삭제
+            {checkedIds.size}개 항목 삭제
           </Button>
         </div>
       )}

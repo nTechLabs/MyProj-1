@@ -19,14 +19,14 @@ const PostsList = memo(() => {
   const { checkedIds, clearChecked } = usePostsCheckedStore()
 
   // 체크된 항목이 있는지 확인
-  const hasCheckedItems = checkedIds.length > 0
+  const hasCheckedItems = checkedIds.size > 0
 
   // 체크된 항목들 삭제
   const handleDeleteSelected = async () => {
-    if (checkedIds.length === 0) return
+    if (checkedIds.size === 0) return
     
     try {
-      await deletePostsMutation.mutateAsync(checkedIds)
+      await deletePostsMutation.mutateAsync(Array.from(checkedIds)) // Set을 배열로 변환
     } catch (error) {
       console.error('삭제 실패:', error)
     }
@@ -92,7 +92,7 @@ const PostsList = memo(() => {
             loading={deletePostsMutation.isPending}
             className="delete-selected-button"
           >
-            선택된 {checkedIds.length}개 게시글 삭제
+            선택된 {checkedIds.size}개 게시글 삭제
           </Button>
         </div>
       )}

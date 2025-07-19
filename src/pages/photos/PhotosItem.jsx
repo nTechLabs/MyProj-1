@@ -15,7 +15,7 @@ const PhotosItem = React.memo(({ photo }) => {
   const { checkedIds, toggleCheck } = usePhotosCheckedStore()
 
   // 체크 상태
-  const isChecked = checkedIds.includes(photo.id)
+  const isChecked = checkedIds.has(photo.id) // Set 객체이므로 has() 메서드 사용
 
   // 이벤트 핸들러
   const handleCheck = useCallback((e) => {

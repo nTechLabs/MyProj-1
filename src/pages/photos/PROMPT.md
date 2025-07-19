@@ -101,12 +101,15 @@
 - **공통 클래스 사용**: 모든 컴포넌트에서 pages.css의 클래스 활용
 - **CSS 최적화**: 중복 제거, 공통 패턴 재사용, 반응형 디자인
 
-### CheckedStore 별도 구성:
+### CheckedStore 별도 구성 (최적화된 팩토리 패턴):
+- **공통 팩토리**: `src/store/createCheckedStore.js`에서 중복 제거 및 표준화
 - **엔티티별 독립 스토어**: `src/store/use{Entity}CheckedStore.js` 생성
 - **네이밍 규칙**: use + Entity명(PascalCase) + CheckedStore (예: usePhotosCheckedStore)
 - **상태 격리**: 각 엔티티의 체크박스 상태가 독립적으로 관리됨
-- **성능 최적화**: 선택자 패턴으로 불필요한 리렌더링 방지
+- **성능 최적화**: Set 기반 O(1) 조회, 선택자 패턴으로 불필요한 리렌더링 방지
 - **일관된 API**: 모든 엔티티 CheckedStore가 동일한 인터페이스 제공
+- **메모리 효율성**: subscribeWithSelector 미들웨어로 선택적 구독
+- **중복 코드 제거**: 90% 이상의 중복 제거로 유지보수성 향상
 
 ### 필수 공통 유틸리티 및 설정:
 ```javascript
@@ -308,80 +311,138 @@ export const useDelete{Entity}sMutation = () => {
 
 #### **CheckedStore 파일 (src/store/use{Entity}CheckedStore.js)**:
 ```javascript
-import { create } from 'zustand'
+import { createCheckedStore } from './createCheckedStore'
 
-// 메인 스토어
-const use{Entity}CheckedStore = create((set, get) => ({
-  checkedIds: new Set(),
-  
-  // 개별 체크 토글
-  toggleCheck: (id) => set((state) => {
-    const newCheckedIds = new Set(state.checkedIds)
-    if (newCheckedIds.has(id)) {
-      newCheckedIds.delete(id)
-    } else {
-      newCheckedIds.add(id)
-    }
-    return { checkedIds: newCheckedIds }
-  }),
-  
-  // 전체 선택/해제
-  toggleAllCheck: (allIds) => set((state) => {
-    const allIdsSet = new Set(allIds)
-    const currentChecked = state.checkedIds
-    const isAllChecked = allIds.length > 0 && allIds.every(id => currentChecked.has(id))
-    
-    if (isAllChecked) {
-      // 전체 해제
-      const newCheckedIds = new Set(currentChecked)
-      allIds.forEach(id => newCheckedIds.delete(id))
-      return { checkedIds: newCheckedIds }
-    } else {
-      // 전체 선택
-      const newCheckedIds = new Set(currentChecked)
-      allIds.forEach(id => newCheckedIds.add(id))
-      return { checkedIds: newCheckedIds }
-    }
-  }),
-  
-  // 체크 상태 초기화
-  clearChecked: () => set({ checkedIds: new Set() }),
-  
-  // 체크 상태 설정
-  setCheckedIds: (ids) => set({ checkedIds: new Set(ids) }),
-  
-  // 선택자 헬퍼 함수들
-  isChecked: (id) => get().checkedIds.has(id),
-  isAllChecked: (allIds) => {
-    const { checkedIds } = get()
-    return allIds.length > 0 && allIds.every(id => checkedIds.has(id))
-  },
-  isIndeterminate: (allIds) => {
-    const { checkedIds } = get()
-    const checkedCount = allIds.filter(id => checkedIds.has(id)).length
-    return checkedCount > 0 && checkedCount < allIds.length
-  },
-  getCheckedCount: () => get().checkedIds.size,
-  getCheckedIds: () => Array.from(get().checkedIds)
-}))
+/**
+ * {Entity} 체크된 항목들을 관리하는 Zustand 스토어 (최적화)
+ * {Entity} 리스트에서 다중 선택 기능을 위한 상태 관리
+ * 
+ * 공통 createCheckedStore 팩토리를 사용하여 중복 코드 제거 및 성능 최적화
+ */
+const use{Entity}CheckedStore = createCheckedStore('{Entity}')
 
-// 성능 최적화를 위한 개별 선택자 export
+export default use{Entity}CheckedStore
+
+// 성능 최적화를 위한 개별 선택자들 (리렌더링 최적화)
 export const use{Entity}CheckedIds = () => use{Entity}CheckedStore(state => state.checkedIds)
 export const use{Entity}ToggleCheck = () => use{Entity}CheckedStore(state => state.toggleCheck)
 export const use{Entity}ToggleAllCheck = () => use{Entity}CheckedStore(state => state.toggleAllCheck)
 export const use{Entity}ClearChecked = () => use{Entity}CheckedStore(state => state.clearChecked)
 export const use{Entity}SetCheckedIds = () => use{Entity}CheckedStore(state => state.setCheckedIds)
+export const use{Entity}IsChecked = () => use{Entity}CheckedStore(state => state.isChecked)
+export const use{Entity}IsAllChecked = () => use{Entity}CheckedStore(state => state.isAllChecked)
+export const use{Entity}IsIndeterminate = () => use{Entity}CheckedStore(state => state.isIndeterminate)
+export const use{Entity}CheckedCount = () => use{Entity}CheckedStore(state => state.getCheckedCount())
 
-// 컴포지트 선택자 (계산된 상태)
+// 컴포지트 선택자 (계산된 상태를 한 번에 반환)
 export const use{Entity}CheckedState = (allIds = []) => use{Entity}CheckedStore(state => ({
   checkedIds: state.checkedIds,
+  checkedIdsArray: Array.from(state.checkedIds),
   isAllChecked: state.isAllChecked(allIds),
   isIndeterminate: state.isIndeterminate(allIds),
   checkedCount: allIds.filter(id => state.checkedIds.has(id)).length,
-  hasChecked: state.checkedIds.size > 0
+  totalCount: allIds.length,
+  hasChecked: state.checkedIds.size > 0,
+  isEmpty: state.checkedIds.size === 0
 }))
+```
 
-export default use{Entity}CheckedStore
+### 공통 CheckedStore 팩토리 (src/store/createCheckedStore.js):
+```javascript
+import { create } from 'zustand'
+import { subscribeWithSelector } from 'zustand/middleware'
+
+/**
+ * 체크박스 상태 관리를 위한 공통 스토어 팩토리
+ * 엔티티별로 독립적인 체크 상태를 관리하는 Zustand 스토어를 생성
+ * 
+ * @param {string} entityName - 엔티티명 (디버깅용)
+ * @returns {Function} - Zustand 스토어 훅
+ */
+export const createCheckedStore = (entityName = 'Entity') => {
+  // 메인 스토어 생성
+  const useCheckedStore = create(
+    subscribeWithSelector(
+      (set, get) => ({
+        // 체크된 항목들의 ID Set (O(1) 조회 성능)
+        checkedIds: new Set(),
+        
+        // 단일 항목 체크/언체크 토글
+        toggleCheck: (id) => {
+          set((state) => {
+            const newCheckedIds = new Set(state.checkedIds)
+            if (newCheckedIds.has(id)) {
+              newCheckedIds.delete(id)
+            } else {
+              newCheckedIds.add(id)
+            }
+            return { checkedIds: newCheckedIds }
+          })
+        },
+        
+        // 전체 선택/해제
+        toggleAllCheck: (allIds) => {
+          set((state) => {
+            const allIdsArray = Array.isArray(allIds) ? allIds : []
+            const currentChecked = state.checkedIds
+            const isAllChecked = allIdsArray.length > 0 && 
+              allIdsArray.every(id => currentChecked.has(id))
+            
+            if (isAllChecked) {
+              // 전체 해제 - 현재 리스트의 모든 항목만 제거
+              const newCheckedIds = new Set(currentChecked)
+              allIdsArray.forEach(id => newCheckedIds.delete(id))
+              return { checkedIds: newCheckedIds }
+            } else {
+              // 전체 선택 - 현재 리스트의 모든 항목 추가
+              const newCheckedIds = new Set(currentChecked)
+              allIdsArray.forEach(id => newCheckedIds.add(id))
+              return { checkedIds: newCheckedIds }
+            }
+          })
+        },
+        
+        // 체크된 항목들 초기화
+        clearChecked: () => set({ checkedIds: new Set() }),
+        
+        // 특정 항목들을 체크 상태로 설정
+        setCheckedIds: (ids) => {
+          const idsArray = Array.isArray(ids) ? ids : []
+          set({ checkedIds: new Set(idsArray) })
+        },
+        
+        // 선택자 헬퍼 함수들 (컴퓨티드 속성)
+        isChecked: (id) => get().checkedIds.has(id),
+        
+        isAllChecked: (allIds) => {
+          const { checkedIds } = get()
+          const allIdsArray = Array.isArray(allIds) ? allIds : []
+          return allIdsArray.length > 0 && allIdsArray.every(id => checkedIds.has(id))
+        },
+        
+        isIndeterminate: (allIds) => {
+          const { checkedIds } = get()
+          const allIdsArray = Array.isArray(allIds) ? allIds : []
+          const checkedCount = allIdsArray.filter(id => checkedIds.has(id)).length
+          return checkedCount > 0 && checkedCount < allIdsArray.length
+        },
+        
+        getCheckedCount: () => get().checkedIds.size,
+        
+        getCheckedIds: () => Array.from(get().checkedIds)
+      })
+    )
+  )
+
+  // 개발 환경에서 디버깅을 위한 store 이름 설정
+  if (process.env.NODE_ENV === 'development') {
+    useCheckedStore.displayName = `${entityName}CheckedStore`
+  }
+
+  return useCheckedStore
+}
+
+export default createCheckedStore
 ```
 
 ### 기술 스택 및 라이브러리:

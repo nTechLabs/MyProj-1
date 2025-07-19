@@ -17,7 +17,7 @@ const UsersItem = memo(({ user }) => {
   // Users 전용 Zustand 스토어에서 체크 상태와 토글 함수 가져오기
   const checkedIds = useUsersCheckedStore(state => state.checkedIds)
   const toggleCheck = useUsersCheckedStore(state => state.toggleCheck)
-  const checked = checkedIds.includes(user.id)
+  const checked = checkedIds.has(user.id) // Set 객체이므로 has() 메서드 사용
 
   // 체크박스 클릭 핸들러 (이벤트 전파 방지) - 메모이제이션
   const handleCheckboxClick = useCallback((e) => {

@@ -157,8 +157,8 @@ const CommentsList = () => {
    * 선택된 댓글 삭제 핸들러
    */
   const handleDeleteSelected = useCallback(() => {
-    if (checkedIds.length === 0) return
-    deleteCommentsMutation.mutate(checkedIds)
+    if (checkedIds.size === 0) return
+    deleteCommentsMutation.mutate(Array.from(checkedIds)) // Set을 배열로 변환
   }, [checkedIds, deleteCommentsMutation])
 
   /**

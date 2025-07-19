@@ -67,8 +67,8 @@ const TodosList = () => {
 
   // 선택된 항목들 삭제
   const handleDeleteSelected = () => {
-    if (checkedIds.length === 0) return
-    deleteTodosMutation.mutate(checkedIds)
+    if (checkedIds.size === 0) return
+    deleteTodosMutation.mutate(Array.from(checkedIds)) // Set을 배열로 변환
   }
 
   // 새 할일 추가 페이지로 이동
@@ -141,7 +141,7 @@ const TodosList = () => {
               checked={isAllChecked(todoIds)}
               onChange={handleSelectAll}
             >
-              전체 선택 ({checkedIds.length}/{totalCount})
+              전체 선택 ({checkedIds.size}/{totalCount})
             </Checkbox>
             
             <span className="select-stats">
@@ -149,7 +149,7 @@ const TodosList = () => {
             </span>
           </div>
           
-          {checkedIds.length > 0 && (
+          {checkedIds.size > 0 && (
             <Button
               type="primary"
               danger
@@ -157,7 +157,7 @@ const TodosList = () => {
               onClick={handleDeleteSelected}
               loading={deleteTodosMutation.isPending}
             >
-              선택된 항목 삭제 ({checkedIds.length})
+              선택된 항목 삭제 ({checkedIds.size})
             </Button>
           )}
         </div>
@@ -184,11 +184,11 @@ const TodosList = () => {
         type="primary"
         onClick={handleAddNew}
         tooltip="새 할일 추가"
-        className={checkedIds.length > 0 ? 'float-button-with-action' : 'float-button-default'}
+        className={checkedIds.size > 0 ? 'float-button-with-action' : 'float-button-default'}
       />
 
       {/* 삭제 버튼 고정 배치 */}
-      {checkedIds.length > 0 && (
+      {checkedIds.size > 0 && (
         <div className="fixed-delete-button">
           <Button
             type="primary"
@@ -199,7 +199,7 @@ const TodosList = () => {
             loading={deleteTodosMutation.isPending}
             block
           >
-            {checkedIds.length}개 항목 삭제
+            {checkedIds.size}개 항목 삭제
           </Button>
         </div>
       )}

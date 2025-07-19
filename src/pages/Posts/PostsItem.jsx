@@ -17,7 +17,7 @@ const PostsItem = memo(({ post }) => {
   
   // Posts 전용 Zustand store에서 필요한 상태와 함수들을 가져오기
   const { checkedIds, toggleCheck } = usePostsCheckedStore()
-  const checked = checkedIds.includes(post.id)
+  const checked = checkedIds.has(post.id) // Set 객체이므로 has() 메서드 사용
 
   // 체크박스 상태 변경
   const handleCheckboxChange = useCallback((e) => {

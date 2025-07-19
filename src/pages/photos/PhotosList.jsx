@@ -109,10 +109,10 @@ const PhotosList = React.memo(() => {
   }, [filteredPhotos, toggleAllCheck])
 
   const handleDelete = useCallback(() => {
-    if (checkedIds.length === 0) return
+    if (checkedIds.size === 0) return
 
-    if (window.confirm(`선택된 ${checkedIds.length}개의 사진을 삭제하시겠습니까?`)) {
-      deletePhotosMutation.mutate(checkedIds)
+    if (window.confirm(`선택된 ${checkedIds.size}개의 사진을 삭제하시겠습니까?`)) {
+      deletePhotosMutation.mutate(Array.from(checkedIds)) // Set을 배열로 변환
     }
   }, [checkedIds, deletePhotosMutation])
 
