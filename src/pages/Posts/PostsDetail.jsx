@@ -15,7 +15,6 @@ import {
 import { 
   ArrowLeftOutlined, 
   SaveOutlined, 
-  BookOutlined,
   UserOutlined 
 } from '@ant-design/icons'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -177,12 +176,9 @@ const PostsDetail = () => {
       {/* 메인 카드 */}
       <Card
         title={
-          <Space>
-            <BookOutlined style={{ color: '#722ed1' }} />
-            <Title level={3} style={{ margin: 0 }}>
-              {isNewPost ? '새 게시글 작성' : '게시글 편집'}
-            </Title>
-          </Space>
+          <Title level={3} style={{ margin: 0 }}>
+            {isNewPost ? '새 게시글 작성' : '게시글 편집'}
+          </Title>
         }
         style={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}
       >
