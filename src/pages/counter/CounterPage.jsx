@@ -2,7 +2,6 @@ import { Typography, Space, Divider, Button, Card, Statistic } from 'antd'
 import { ArrowLeftOutlined, NumberOutlined, PlusOutlined, MinusOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import useCountStore from '../../store/useCountStore'
-import { ROUTES } from '../../routes/AppRoutes'
 
 const { Title, Paragraph } = Typography
 
@@ -14,7 +13,7 @@ const CounterPage = () => {
     <div style={{ padding: '20px' }}>
       <Button 
         icon={<ArrowLeftOutlined />} 
-        onClick={() => navigate(ROUTES.HOME)}
+        onClick={() => navigate("/")}
         style={{ marginBottom: '20px' }}
       >
         뒤로 가기
