@@ -5,7 +5,7 @@
 
 ## 사용법
 
-아래 프롬프트를 복사하여 사용하고, `{https://jsonplaceholder.typicode.com/comments}`과 `{comments}`을 실제 값으로 교체하세요. 
+아래 프롬프트를 복사하여 사용하고, `{https://jsonplaceholder.typicode.com/photos}`과 `{photos}`을 실제 값으로 교체하세요. 
 디렉토리명은 엔티티명과 동일하게 자동으로 설정됩니다.
 
 ---
