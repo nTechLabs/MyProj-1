@@ -45,6 +45,11 @@ const PostsItem = memo(({ post }) => {
     <List.Item
       className={`list-item-base ${checked ? 'checked' : ''}`}
       onClick={handleItemClick}
+      style={{
+        overflow: 'hidden',
+        wordBreak: 'break-word',
+        overflowWrap: 'break-word'
+      }}
       actions={[
         <Tag key="id" color="blue" className="item-tag">
           <strong>ID: {post.id}</strong>
@@ -54,12 +59,19 @@ const PostsItem = memo(({ post }) => {
         </Tag>
       ]}
     >
-      <div className="checkbox-container">
+      <div className="checkbox-container" style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '16px',
+        width: '100%',
+        overflow: 'hidden'
+      }}>
         {/* 체크박스 */}
         <Checkbox
           checked={checked}
           onChange={handleCheckboxChange}
           onClick={(e) => e.stopPropagation()}
+          style={{ flexShrink: 0, marginTop: '4px' }}
         />
 
         {/* 게시글 메타 정보 */}
@@ -78,7 +90,10 @@ const PostsItem = memo(({ post }) => {
               lineHeight: 1.4,
               marginBottom: '12px',
               display: 'block',
-              width: '100%'
+              width: '100%',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+              whiteSpace: 'pre-wrap'
             }}>
               {truncatedTitle}
             </div>
@@ -93,7 +108,11 @@ const PostsItem = memo(({ post }) => {
               borderRadius: '8px',
               borderLeft: '3px solid #722ed1',
               display: 'block',
-              width: '100%'
+              width: '100%',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+              whiteSpace: 'pre-wrap',
+              minHeight: '50px'
             }}>
               {truncatedBody}
             </div>
