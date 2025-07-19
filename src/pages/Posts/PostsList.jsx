@@ -80,16 +80,17 @@ const PostsList = memo(() => {
         className={hasCheckedItems ? 'float-button-with-action' : 'float-button-default'}
       />
 
-      {/* 선택된 항목들 삭제 버튼 (하단 고정) */}
+      {/* 체크된 게시글 삭제 버튼 - 체크된 항목이 있을 때만 표시 */}
       {hasCheckedItems && (
-        <div className="fixed-delete-button">
+        <div className="bottom-action-bar">
           <Button
             type="primary"
             danger
-            icon={<DeleteOutlined />}
             size="large"
-            loading={deletePostsMutation.isPending}
+            icon={<DeleteOutlined />}
             onClick={handleDeleteSelected}
+            loading={deletePostsMutation.isPending}
+            className="delete-selected-button"
           >
             선택된 {checkedIds.length}개 게시글 삭제
           </Button>
