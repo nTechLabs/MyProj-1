@@ -2,6 +2,8 @@
 export const ROUTES = {
   HOME: '/',
   USERS: '/users',
+  USER_DETAIL: '/users/user/:id',
+  USER_NEW: '/users/user/new',
   COUNTER: '/counter',
 }
 

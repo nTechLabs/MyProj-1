@@ -1,10 +1,15 @@
-import { Card, Typography, Button } from 'antd'
+import { Typography, Space, Divider, Button } from 'antd'
 import { ArrowLeftOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import UsersList from './UsersList'
 import { ROUTES } from '../../routes/routes'
 
 const { Title, Paragraph } = Typography
 
+/**
+ * Users 메인 컨테이너 컴포넌트
+ * React Query + Zustand를 사용한 Users 관리 시스템
+ */
 const UsersPage = () => {
   const navigate = useNavigate()
 
@@ -18,17 +23,20 @@ const UsersPage = () => {
         뒤로 가기
       </Button>
       
-      <Card>
-        <div style={{ textAlign: 'center', padding: '40px' }}>
+      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+        <div style={{ textAlign: 'center' }}>
           <UserOutlined style={{ fontSize: '64px', color: '#1890ff', marginBottom: '20px' }} />
-          <Title level={2}>사용자 페이지</Title>
+          <Title level={2}>Users 관리 시스템</Title>
           <Paragraph>
-            이곳은 사용자 관련 기능들을 구현할 수 있는 페이지입니다.
+            React Query + Zustand를 사용한 Users CRUD 예제입니다.
             <br />
-            향후 사용자 목록, 프로필 관리 등의 기능을 추가할 수 있습니다.
+            JSONPlaceholder API를 통해 사용자를 관리할 수 있습니다.
           </Paragraph>
         </div>
-      </Card>
+        
+        <Divider>React Query + Zustand 상태 관리</Divider>
+        <UsersList />
+      </Space>
     </div>
   )
 }
