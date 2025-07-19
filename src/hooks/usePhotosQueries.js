@@ -3,7 +3,7 @@ import { photosApi } from '../api/photosApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import { useClearChecked } from '../store/useCheckedStore'
+import { usePhotosClearChecked } from '../store/usePhotosCheckedStore'
 
 /**
  * Photos QueryKey Factory Pattern (최적화)
@@ -56,7 +56,7 @@ export const usePhotoQuery = (id, options = {}) => {
  */
 export const useDeletePhotosMutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const clearChecked = useClearChecked()
+  const clearChecked = usePhotosClearChecked()
   
   return useMutation({
     mutationFn: photosApi.deleteMany,

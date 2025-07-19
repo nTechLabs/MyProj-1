@@ -3,7 +3,7 @@ import { List, Button, Alert, Spin, FloatButton, Checkbox, Input, Space } from '
 import { PlusOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useUsersQuery, useDeleteUsersMutation } from '../../hooks/useUsersQueries'
-import useCheckedStore from '../../store/useCheckedStore'
+import useUsersCheckedStore from '../../store/useUsersCheckedStore'
 import UsersItem from './UsersItem'
 import './users-list.css'
 import '../../styles/pages.css'
@@ -23,14 +23,14 @@ const UsersList = () => {
   // 삭제 뮤테이션
   const deleteUsersMutation = useDeleteUsersMutation()
 
-  // 체크된 항목들 관리
+  // Users 전용 체크된 항목들 관리
   const { 
     checkedIds, 
     toggleAllCheck, 
     clearChecked, 
     isAllChecked, 
     isIndeterminate 
-  } = useCheckedStore()
+  } = useUsersCheckedStore()
 
   // 검색 필터링된 사용자 목록
   const filteredUsers = useMemo(() => {

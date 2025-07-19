@@ -3,7 +3,7 @@ import { postsApi } from '../api/postsApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import { useClearChecked } from '../store/useCheckedStore'
+import { usePostsClearChecked } from '../store/usePostsCheckedStore'
 
 /**
  * Posts QueryKey Factory Pattern (최적화)
@@ -56,7 +56,7 @@ export const usePostQuery = (id, options = {}) => {
  */
 export const useDeletePostsMutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const clearChecked = useClearChecked()
+  const clearChecked = usePostsClearChecked()
   
   return useMutation({
     mutationFn: postsApi.deleteMany,

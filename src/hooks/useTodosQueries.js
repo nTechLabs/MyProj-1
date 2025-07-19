@@ -3,7 +3,7 @@ import { todosApi } from '../api/todosApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import { useClearChecked } from '../store/useCheckedStore'
+import { useTodosClearChecked } from '../store/useTodosCheckedStore'
 
 /**
  * Todos QueryKey Factory Pattern (최적화)
@@ -57,7 +57,7 @@ export const useTodoQuery = (id, options = {}) => {
 export const useDeleteTodosMutation = () => {
   const queryClient = useQueryClient()
   const { showSuccess, showError } = useNotificationStore()
-  const clearChecked = useClearChecked()
+  const clearChecked = useTodosClearChecked()
 
   return useMutation({
     mutationFn: todosApi.deleteMultiple,

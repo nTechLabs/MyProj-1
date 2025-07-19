@@ -2,10 +2,10 @@ import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 
 /**
- * 체크된 항목들을 관리하는 Zustand 스토어 (최적화)
- * 리스트에서 다중 선택 기능을 위한 상태 관리
+ * Todos 체크된 항목들을 관리하는 Zustand 스토어 (최적화)
+ * Todos 리스트에서 다중 선택 기능을 위한 상태 관리
  */
-const useCheckedStore = create(
+const useTodosCheckedStore = create(
   subscribeWithSelector(
     (set, get) => ({
       // 체크된 항목들의 ID 배열
@@ -81,17 +81,17 @@ const useCheckedStore = create(
 
 // 개발 환경에서 디버깅을 위한 store 이름 설정
 if (process.env.NODE_ENV === 'development') {
-  useCheckedStore.displayName = 'CheckedStore'
+  useTodosCheckedStore.displayName = 'TodosCheckedStore'
 }
 
-export default useCheckedStore
+export default useTodosCheckedStore
 
 // 스토어 선택자 헬퍼 (리렌더링 최적화)
-export const useCheckedIds = () => useCheckedStore(state => state.checkedIds)
-export const useToggleCheck = () => useCheckedStore(state => state.toggleCheck)
-export const useToggleAllCheck = () => useCheckedStore(state => state.toggleAllCheck)
-export const useClearChecked = () => useCheckedStore(state => state.clearChecked)
-export const useIsChecked = () => useCheckedStore(state => state.isChecked)
-export const useIsAllChecked = () => useCheckedStore(state => state.isAllChecked)
-export const useIsIndeterminate = () => useCheckedStore(state => state.isIndeterminate)
-export const useCheckedCount = () => useCheckedStore(state => state.getCheckedCount())
+export const useTodosCheckedIds = () => useTodosCheckedStore(state => state.checkedIds)
+export const useTodosToggleCheck = () => useTodosCheckedStore(state => state.toggleCheck)
+export const useTodosToggleAllCheck = () => useTodosCheckedStore(state => state.toggleAllCheck)
+export const useTodosClearChecked = () => useTodosCheckedStore(state => state.clearChecked)
+export const useTodosIsChecked = () => useTodosCheckedStore(state => state.isChecked)
+export const useTodosIsAllChecked = () => useTodosCheckedStore(state => state.isAllChecked)
+export const useTodosIsIndeterminate = () => useTodosCheckedStore(state => state.isIndeterminate)
+export const useTodosCheckedCount = () => useTodosCheckedStore(state => state.getCheckedCount())

@@ -1,7 +1,7 @@
 import { List, Checkbox, Tag, Avatar } from 'antd'
 import { CheckCircleOutlined, ClockCircleOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import useCheckedStore from '../../store/useCheckedStore'
+import useTodosCheckedStore from '../../store/useTodosCheckedStore'
 
 /**
  * 개별 할일 항목을 표시하는 컴포넌트
@@ -10,7 +10,7 @@ import useCheckedStore from '../../store/useCheckedStore'
  */
 const TodosItem = ({ todo }) => {
   const navigate = useNavigate()
-  const { isChecked, toggleCheck } = useCheckedStore()
+  const { isChecked, toggleCheck } = useTodosCheckedStore()
 
   const checked = isChecked(todo.id)
 

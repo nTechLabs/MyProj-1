@@ -3,7 +3,7 @@ import { usersApi } from '../api/usersApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import { useClearChecked } from '../store/useCheckedStore'
+import { useUsersClearChecked } from '../store/useUsersCheckedStore'
 
 /**
  * Users QueryKey Factory Pattern (최적화)
@@ -57,7 +57,7 @@ export const useUserQuery = (id, options = {}) => {
 export const useDeleteUsersMutation = () => {
   const queryClient = useQueryClient()
   const { showSuccess, showError } = useNotificationStore()
-  const clearChecked = useClearChecked()
+  const clearChecked = useUsersClearChecked()
 
   return useMutation({
     mutationFn: usersApi.deleteMultiple,

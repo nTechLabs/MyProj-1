@@ -27,7 +27,7 @@ import {
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useCommentsQuery, useDeleteCommentsMutation } from '../../hooks/useCommentsQueries'
-import useCheckedStore from '../../store/useCheckedStore'
+import useCommentsCheckedStore from '../../store/useCommentsCheckedStore'
 import CommentsItem from './CommentsItem'
 import '../../styles/pages.css'
 import './comments-list.css'
@@ -65,7 +65,7 @@ const CommentsList = () => {
     isAllChecked,
     isIndeterminate,
     getCheckedCount 
-  } = useCheckedStore()
+  } = useCommentsCheckedStore()
 
   /**
    * 검색 및 필터링된 댓글 목록

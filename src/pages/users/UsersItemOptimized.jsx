@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { List, Checkbox, Avatar } from 'antd'
 import { UserOutlined, MailOutlined, PhoneOutlined, GlobalOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { useIsChecked, useToggleCheck } from '../../store/useCheckedStore'
+import { useUsersIsChecked, useUsersToggleCheck } from '../../store/useUsersCheckedStore'
 import './users-list.css'
 
 /**
@@ -14,9 +14,9 @@ import './users-list.css'
 const UsersItem = memo(({ user }) => {
   const navigate = useNavigate()
   
-  // Zustand 선택자를 사용하여 필요한 부분만 구독 (리렌더링 최적화)
-  const isChecked = useIsChecked()
-  const toggleCheck = useToggleCheck()
+  // Users 전용 Zustand 선택자를 사용하여 필요한 부분만 구독 (리렌더링 최적화)
+  const isChecked = useUsersIsChecked()
+  const toggleCheck = useUsersToggleCheck()
   const checked = isChecked(user.id)
 
   // 체크박스 클릭 핸들러 (이벤트 전파 방지) - 메모이제이션

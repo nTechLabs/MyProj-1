@@ -3,20 +3,20 @@ import { List, Alert, Spin, Button, FloatButton } from 'antd'
 import { PlusOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { usePostsQuery, useDeletePostsMutation } from '../../hooks/usePostsQueries'
-import useCheckedStore from '../../store/useCheckedStore'
+import usePostsCheckedStore from '../../store/usePostsCheckedStore'
 import PostsItem from './PostsItem'
 import './posts-list.css'
 import '../../styles/pages.css'
 
 /**
  * Posts 리스트 컴포넌트
- * React Query로 데이터 관리, Zustand로 체크박스 상태 관리
+ * React Query로 데이터 관리, Posts 전용 Zustand로 체크박스 상태 관리
  */
 const PostsList = memo(() => {
   const navigate = useNavigate()
   const { data: posts, isLoading, error } = usePostsQuery()
   const deletePostsMutation = useDeletePostsMutation()
-  const { checkedIds, clearChecked } = useCheckedStore()
+  const { checkedIds, clearChecked } = usePostsCheckedStore()
 
   // 체크된 항목이 있는지 확인
   const hasCheckedItems = checkedIds.length > 0
