@@ -6,6 +6,7 @@ import { useTodosQuery, useDeleteTodosMutation } from '../../hooks/useTodosQueri
 import useCheckedStore from '../../store/useCheckedStore'
 import TodosItem from './TodosItem'
 import './todos-list.css'
+import '../../styles/pages.css'
 
 const { Option } = Select
 
@@ -78,9 +79,9 @@ const TodosList = () => {
   // 로딩 상태
   if (isLoading) {
     return (
-      <div className="todoslist-scroll-hide" style={{ textAlign: 'center', padding: '50px' }}>
+      <div className="loading-container">
         <Spin size="large" />
-        <p style={{ marginTop: '20px' }}>할일 목록을 불러오는 중...</p>
+        <p className="loading-text">할일 목록을 불러오는 중...</p>
       </div>
     )
   }
@@ -107,9 +108,9 @@ const TodosList = () => {
   const totalCount = filteredTodos.length
 
   return (
-    <div className="todoslist-scroll-hide">
+    <div className="page-list-container">
       {/* 검색 및 필터 컨트롤 */}
-      <Space direction="vertical" size="middle" style={{ width: '100%', marginBottom: '20px' }}>
+      <Space direction="vertical" size="middle" className="search-filter-container">
         <Space wrap style={{ width: '100%' }}>
           <Input
             placeholder="할일 제목으로 검색..."
@@ -117,13 +118,13 @@ const TodosList = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             allowClear
-            style={{ minWidth: '300px', flex: 1 }}
+            className="search-input"
           />
           
           <Select
             value={statusFilter}
             onChange={setStatusFilter}
-            style={{ minWidth: '150px' }}
+            className="filter-select"
             suffixIcon={<FilterOutlined />}
           >
             <Option value="all">전체 보기</Option>
@@ -133,16 +134,8 @@ const TodosList = () => {
         </Space>
 
         {/* 통계 및 전체 선택 */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          padding: '12px 16px',
-          backgroundColor: '#f8f9fa',
-          borderRadius: '8px',
-          border: '1px solid #e9ecef'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div className="select-all-container">
+          <div className="select-all-left">
             <Checkbox
               indeterminate={isIndeterminate(todoIds)}
               checked={isAllChecked(todoIds)}
@@ -151,7 +144,7 @@ const TodosList = () => {
               전체 선택 ({checkedIds.length}/{totalCount})
             </Checkbox>
             
-            <span style={{ color: '#666', fontSize: '14px' }}>
+            <span className="select-stats">
               완료: {completedCount} / 전체: {totalCount}
             </span>
           </div>
@@ -172,6 +165,7 @@ const TodosList = () => {
 
       {/* 할일 목록 */}
       <List
+        className="list-scroll-hide page-list"
         itemLayout="horizontal"
         dataSource={filteredTodos}
         renderItem={(todo) => (
@@ -190,6 +184,7 @@ const TodosList = () => {
         type="primary"
         onClick={handleAddNew}
         tooltip="새 할일 추가"
+        className={checkedIds.length > 0 ? 'float-button-with-action' : 'float-button-default'}
       />
 
       {/* 삭제 버튼 고정 배치 */}

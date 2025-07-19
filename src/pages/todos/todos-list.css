@@ -1,37 +1,6 @@
-/* Todos 목록 스타일링 */
+/* Todos 리스트 특화 스타일 */
 
-/* 스크롤바 숨김 처리 */
-.todoslist-scroll-hide {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-}
-
-.todoslist-scroll-hide::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-/* 리스트 아이템 스타일링 */
-.todo-item {
-  transition: all 0.2s ease-in-out;
-  position: relative;
-  overflow: hidden;
-}
-
-.todo-item:hover {
-  background-color: #f8f9fa !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.todo-item.checked {
-  background-color: #f0f9ff !important;
-  border-color: #1890ff !important;
-}
-
-.todo-item.checked:hover {
-  background-color: #e6f7ff !important;
-}
-
+/* Todos 완료 상태별 색상 테마 */
 .todo-item.completed {
   background-color: #f6ffed !important;
   border-color: #b7eb8f !important;

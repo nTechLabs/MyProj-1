@@ -6,6 +6,7 @@ import { useUsersQuery, useDeleteUsersMutation } from '../../hooks/useUsersQueri
 import useCheckedStore from '../../store/useCheckedStore'
 import UsersItem from './UsersItem'
 import './users-list.css'
+import '../../styles/pages.css'
 
 /**
  * Users 목록 컴포넌트
@@ -62,9 +63,9 @@ const UsersList = () => {
   // 로딩 상태
   if (isLoading) {
     return (
-      <div className="userslist-scroll-hide" style={{ textAlign: 'center', padding: '50px' }}>
+      <div className="loading-container">
         <Spin size="large" />
-        <p style={{ marginTop: '20px' }}>사용자 목록을 불러오는 중...</p>
+        <p className="loading-text">사용자 목록을 불러오는 중...</p>
       </div>
     )
   }
@@ -87,18 +88,19 @@ const UsersList = () => {
   }
 
   return (
-    <div className="userslist-scroll-hide">
+    <div className="page-list-container">
       {/* 검색 및 전체 선택 컨트롤 */}
-      <Space direction="vertical" size="middle" style={{ width: '100%', marginBottom: '20px' }}>
+      <Space direction="vertical" size="middle" className="search-filter-container">
         <Input
           placeholder="이름, 이메일, 사용자명으로 검색..."
           prefix={<SearchOutlined />}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           allowClear
+          className="search-input"
         />
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="select-all-container">
           <Checkbox
             indeterminate={isIndeterminate(userIds)}
             checked={isAllChecked(userIds)}
@@ -123,6 +125,7 @@ const UsersList = () => {
 
       {/* 사용자 목록 */}
       <List
+        className="list-scroll-hide page-list"
         itemLayout="horizontal"
         dataSource={filteredUsers}
         renderItem={(user) => (
@@ -141,6 +144,7 @@ const UsersList = () => {
         type="primary"
         onClick={handleAddNew}
         tooltip="새 사용자 추가"
+        className={checkedIds.length > 0 ? 'float-button-with-action' : 'float-button-default'}
       />
 
       {/* 삭제 버튼 고정 배치 */}

@@ -1,0 +1,273 @@
+/* Pages 공통 스타일 */
+
+/* 스크롤바 숨김 처리 - 모든 리스트 컴포넌트에서 공통 사용 */
+.list-scroll-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scroll-behavior: smooth;
+}
+
+.list-scroll-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 공통 리스트 컨테이너 스타일 */
+.page-list-container {
+  position: relative;
+  width: 100%;
+}
+
+/* 공통 리스트 스타일 */
+.page-list {
+  max-height: calc(100vh - 350px);
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+.page-list.has-bottom-action {
+  padding-bottom: 80px;
+}
+
+/* 로딩 상태 스타일 */
+.loading-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.loading-text {
+  margin-top: 20px;
+  color: #666;
+}
+
+/* Empty 상태 스타일 */
+.empty-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  color: #d9d9d9;
+  margin-bottom: 16px;
+}
+
+.empty-text {
+  color: #666;
+  font-size: 14px;
+}
+
+/* 공통 리스트 아이템 기본 스타일 */
+.list-item-base {
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #f0f0f0;
+  background-color: #ffffff;
+  cursor: pointer;
+  padding: 16px;
+}
+
+.list-item-base:hover {
+  background-color: #f8f9fa !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.list-item-base.checked {
+  background-color: #f0f9ff !important;
+  border-color: #1890ff !important;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.15);
+}
+
+.list-item-base.checked:hover {
+  background-color: #e6f7ff !important;
+  box-shadow: 0 4px 16px rgba(24, 144, 255, 0.2);
+}
+
+/* 공통 FloatButton 위치 조정 */
+.float-button-default {
+  bottom: 24px;
+}
+
+.float-button-with-action {
+  bottom: 100px;
+}
+
+/* 하단 고정 액션 버튼 */
+.fixed-delete-button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #f0f0f0;
+  z-index: 1000;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 검색 및 필터 컨트롤 공통 스타일 */
+.search-filter-container {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  min-width: 300px;
+  flex: 1;
+}
+
+.filter-select {
+  min-width: 150px;
+}
+
+/* 전체 선택 컨트롤 스타일 */
+.select-all-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.select-all-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.select-stats {
+  color: #666;
+  font-size: 14px;
+}
+
+/* 공통 아바타 스타일 */
+.item-avatar {
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 공통 메타 정보 스타일 */
+.item-meta-title {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #262626;
+  font-weight: 600;
+}
+
+.item-meta-description {
+  color: #666666;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* 공통 태그 스타일 */
+.item-tag {
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 2px;
+}
+
+/* 체크박스 컨테이너 */
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .list-item-base {
+    padding: 12px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .item-meta-title {
+    font-size: 14px;
+  }
+  
+  .item-meta-description {
+    font-size: 12px;
+  }
+  
+  .item-tag {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+  
+  .search-input {
+    min-width: 200px;
+  }
+  
+  .fixed-delete-button {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .list-item-base {
+    padding: 10px !important;
+  }
+  
+  .item-tag {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+  
+  .select-all-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* 성능 최적화를 위한 하드웨어 가속 */
+.list-item-base {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 접근성 향상 */
+.list-item-base:focus-within {
+  outline: 2px solid #1890ff;
+  outline-offset: 2px;
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+  .list-item-base {
+    background-color: #1f1f1f;
+    border-color: #424242;
+    color: #ffffff;
+  }
+  
+  .list-item-base:hover {
+    background-color: #262626 !important;
+  }
+  
+  .list-item-base.checked {
+    background-color: #001529 !important;
+    border-color: #1890ff !important;
+  }
+  
+  .item-meta-description {
+    color: #d9d9d9;
+  }
+  
+  .select-all-container {
+    background-color: #262626;
+    border-color: #424242;
+  }
+  
+  .fixed-delete-button {
+    background: rgba(31, 31, 31, 0.95);
+    border-top-color: #424242;
+  }
+}

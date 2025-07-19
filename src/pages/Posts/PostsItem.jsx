@@ -3,6 +3,8 @@ import { List, Checkbox, Typography, Tag, Avatar } from 'antd'
 import { BookOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import useCheckedStore from '../../store/useCheckedStore'
+import './posts-list.css'
+import '../../styles/pages.css'
 
 const { Text, Paragraph } = Typography
 
@@ -41,25 +43,18 @@ const PostsItem = memo(({ post }) => {
 
   return (
     <List.Item
-      className={`post-item list-item-base ${checked ? 'checked' : ''}`}
+      className={`list-item-base ${checked ? 'checked' : ''}`}
       onClick={handleItemClick}
-      style={{ 
-        cursor: 'pointer',
-        padding: '16px',
-        borderRadius: '8px',
-        border: '1px solid #f0f0f0',
-        backgroundColor: checked ? '#f0f9ff' : '#ffffff'
-      }}
       actions={[
-        <Tag key="id" color="blue">
+        <Tag key="id" color="blue" className="item-tag">
           ID: {post.id}
         </Tag>,
-        <Tag key="userId" color="green" icon={<UserOutlined />}>
+        <Tag key="userId" color="green" icon={<UserOutlined />} className="item-tag">
           User: {post.userId}
         </Tag>
       ]}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', width: '100%' }}>
+      <div className="checkbox-container">
         {/* 체크박스 */}
         <Checkbox
           checked={checked}
@@ -72,31 +67,21 @@ const PostsItem = memo(({ post }) => {
           avatar={
             <Avatar 
               icon={<BookOutlined />} 
-              style={{ 
-                backgroundColor: '#722ed1',
-                fontSize: '18px'
-              }} 
+              className="item-avatar post-avatar"
             />
           }
           title={
             <div>
-              <Text strong style={{ fontSize: '16px', color: '#262626' }}>
+              <Typography.Text strong className="item-meta-title">
                 {truncatedTitle}
-              </Text>
+              </Typography.Text>
             </div>
           }
           description={
-            <div style={{ marginTop: '8px' }}>
-              <Paragraph
-                style={{
-                  margin: 0,
-                  color: '#666666',
-                  fontSize: '14px',
-                  lineHeight: '1.4'
-                }}
-              >
+            <div className="post-description-container">
+              <Typography.Paragraph className="item-meta-description">
                 {truncatedBody}
-              </Paragraph>
+              </Typography.Paragraph>
             </div>
           }
         />

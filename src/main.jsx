@@ -7,6 +7,7 @@ import { ConfigProvider } from 'antd'
 import koKR from 'antd/locale/ko_KR'
 import './index.css'
 import './styles/common.css'
+import './styles/pages.css'
 import App from './App.jsx'
 
 // React Query 클라이언트 생성 (최적화)

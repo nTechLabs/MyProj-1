@@ -6,6 +6,7 @@ import { usePostsQuery, useDeletePostsMutation } from '../../hooks/usePostsQueri
 import useCheckedStore from '../../store/useCheckedStore'
 import PostsItem from './PostsItem'
 import './posts-list.css'
+import '../../styles/pages.css'
 
 /**
  * Posts 리스트 컴포넌트
@@ -43,32 +44,27 @@ const PostsList = memo(() => {
         description="게시글 목록을 불러오는 중 오류가 발생했습니다."
         type="error"
         showIcon
-        style={{ margin: '20px 0' }}
+        className="error-alert"
       />
     )
   }
 
   return (
-    <div className="posts-list-container">
+    <div className="page-list-container posts-list-container">
       <Spin spinning={isLoading} tip="게시글을 불러오는 중...">
         <List
-          className="postslist-scroll-hide"
+          className={`list-scroll-hide page-list ${hasCheckedItems ? 'has-bottom-action' : ''}`}
           itemLayout="vertical"
           size="large"
           dataSource={posts || []}
-          style={{ 
-            maxHeight: 'calc(100vh - 350px)', 
-            overflowY: 'auto',
-            paddingBottom: hasCheckedItems ? '80px' : '20px'
-          }}
           renderItem={(post) => (
             <PostsItem key={post.id} post={post} />
           )}
           locale={{
             emptyText: (
-              <div style={{ textAlign: 'center', padding: '40px' }}>
-                <BookOutlined style={{ fontSize: '48px', color: '#d9d9d9', marginBottom: '16px' }} />
-                <p>등록된 게시글이 없습니다.</p>
+              <div className="empty-container">
+                <BookOutlined className="empty-icon" />
+                <p className="empty-text">등록된 게시글이 없습니다.</p>
               </div>
             )
           }}
@@ -81,7 +77,7 @@ const PostsList = memo(() => {
         type="primary"
         tooltip="새 게시글 추가"
         onClick={handleAddPost}
-        style={{ bottom: hasCheckedItems ? 100 : 24 }}
+        className={hasCheckedItems ? 'float-button-with-action' : 'float-button-default'}
       />
 
       {/* 선택된 항목들 삭제 버튼 (하단 고정) */}
