@@ -6,8 +6,8 @@ import { Spin } from 'antd'
 const HomePage = lazy(() => import('../pages'))
 const UsersPage = lazy(() => import('../pages/users/UsersPage'))
 const UsersDetail = lazy(() => import('../pages/users/UsersDetail'))
-const TodosPage = lazy(() => import('../pages/todos/TodosPage'))
-const TodosDetail = lazy(() => import('../pages/todos/TodosDetail'))
+const TodosPage = lazy(() => import('../pages/Todos/TodosPage'))
+const TodosDetail = lazy(() => import('../pages/Todos/TodosDetail'))
 const CounterPage = lazy(() => import('../pages/counter/CounterPage'))
 
 // 로딩 컴포넌트

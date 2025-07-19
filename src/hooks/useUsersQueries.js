@@ -1,13 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { usersApi } from '../api/usersApi'
-import { handleAxiosError } from '../utils/handleAxiosError'
-import { createQueryOptions, createMutationOptions } from '../config/reactQueryConfig'
+import { handleReactQueryError } from '../utils/handleAxiosError'
+import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import useCheckedStore from '../store/useCheckedStore'
+import { useClearChecked } from '../store/useCheckedStore'
 
 /**
- * Users QueryKey Factory Pattern
- * 일관된 쿼리 키 관리를 위한 팩토리 함수들
+ * Users QueryKey Factory Pattern (최적화)
  */
 export const usersKeys = {
   all: () => ["users"],
@@ -16,8 +15,7 @@ export const usersKeys = {
 }
 
 /**
- * Users 목록을 조회하는 React Query 훅
- * @param {Object} options - React Query 옵션들
+ * Users 목록 조회 훅 (최적화)
  */
 export const useUsersQuery = (options = {}) => {
   const { showError } = useNotificationStore()
@@ -27,8 +25,7 @@ export const useUsersQuery = (options = {}) => {
     queryFn: usersApi.getAll,
     ...createQueryOptions({
       onError: (error) => {
-        const errorMessage = handleAxiosError(error)
-        showError(`사용자 목록을 불러오는데 실패했습니다: ${errorMessage}`)
+        showError(handleReactQueryError(error, '사용자 목록 조회'))
       },
       ...options
     })
@@ -36,9 +33,7 @@ export const useUsersQuery = (options = {}) => {
 }
 
 /**
- * 특정 User를 조회하는 React Query 훅
- * @param {string|number} id - User ID
- * @param {Object} options - React Query 옵션들
+ * 특정 User 조회 훅 (최적화)
  */
 export const useUserQuery = (id, options = {}) => {
   const { showError } = useNotificationStore()
@@ -46,11 +41,10 @@ export const useUserQuery = (id, options = {}) => {
   return useQuery({
     queryKey: usersKeys.detail(id),
     queryFn: () => usersApi.getById(id),
-    enabled: !!id && id !== 'new', // id가 있고 'new'가 아닐 때만 실행
+    enabled: !!id && id !== 'new',
     ...createQueryOptions({
       onError: (error) => {
-        const errorMessage = handleAxiosError(error)
-        showError(`사용자 정보를 불러오는데 실패했습니다: ${errorMessage}`)
+        showError(handleReactQueryError(error, '사용자 정보 조회'))
       },
       ...options
     })
@@ -58,12 +52,12 @@ export const useUserQuery = (id, options = {}) => {
 }
 
 /**
- * 여러 Users를 삭제하는 React Query 뮤테이션 훅
+ * 다중 Users 삭제 뮤테이션 훅 (최적화)
  */
 export const useDeleteUsersMutation = () => {
   const queryClient = useQueryClient()
   const { showSuccess, showError } = useNotificationStore()
-  const { clearChecked } = useCheckedStore()
+  const clearChecked = useClearChecked()
 
   return useMutation({
     mutationFn: usersApi.deleteMultiple,
@@ -74,11 +68,7 @@ export const useDeleteUsersMutation = () => {
         
         if (successCount > 0) {
           showSuccess(`${successCount}개의 사용자가 삭제되었습니다.`)
-          
-          // 쿼리 캐시 무효화
-          queryClient.invalidateQueries({ queryKey: usersKeys.list() })
-          
-          // 선택된 항목들 초기화
+          invalidateQueries.listByEntity('users')
           clearChecked()
         }
         
@@ -87,15 +77,14 @@ export const useDeleteUsersMutation = () => {
         }
       },
       onError: (error) => {
-        const errorMessage = handleAxiosError(error)
-        showError(`사용자 삭제에 실패했습니다: ${errorMessage}`)
+        showError(handleReactQueryError(error, '사용자 삭제'))
       }
     })
   })
 }
 
 /**
- * 새 User를 추가하는 React Query 뮤테이션 훅
+ * User 추가 뮤테이션 훅 (최적화)
  */
 export const useAddUserMutation = () => {
   const queryClient = useQueryClient()
@@ -106,23 +95,18 @@ export const useAddUserMutation = () => {
     ...createMutationOptions({
       onSuccess: (data) => {
         showSuccess('새 사용자가 추가되었습니다.')
-        
-        // 쿼리 캐시 무효화
-        queryClient.invalidateQueries({ queryKey: usersKeys.list() })
-        
-        // 새로 생성된 사용자를 캐시에 추가
+        invalidateQueries.listByEntity('users')
         queryClient.setQueryData(usersKeys.detail(data.id), data)
       },
       onError: (error) => {
-        const errorMessage = handleAxiosError(error)
-        showError(`사용자 추가에 실패했습니다: ${errorMessage}`)
+        showError(handleReactQueryError(error, '사용자 추가'))
       }
     })
   })
 }
 
 /**
- * User를 수정하는 React Query 뮤테이션 훅
+ * User 수정 뮤테이션 훅 (최적화)
  */
 export const useUpdateUserMutation = () => {
   const queryClient = useQueryClient()
@@ -133,17 +117,12 @@ export const useUpdateUserMutation = () => {
     ...createMutationOptions({
       onSuccess: (data, variables) => {
         showSuccess('사용자 정보가 수정되었습니다.')
-        
-        // 관련 쿼리들 무효화
-        queryClient.invalidateQueries({ queryKey: usersKeys.list() })
-        queryClient.invalidateQueries({ queryKey: usersKeys.detail(variables.id) })
-        
-        // 수정된 사용자를 캐시에 업데이트
+        invalidateQueries.listByEntity('users')
+        invalidateQueries.detailByEntity('users', variables.id)
         queryClient.setQueryData(usersKeys.detail(variables.id), data)
       },
       onError: (error) => {
-        const errorMessage = handleAxiosError(error)
-        showError(`사용자 정보 수정에 실패했습니다: ${errorMessage}`)
+        showError(handleReactQueryError(error, '사용자 정보 수정'))
       }
     })
   })
