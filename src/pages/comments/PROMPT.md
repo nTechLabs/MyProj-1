@@ -1,7 +1,7 @@
-# React Query + Zustand 기반 CRUD 애플리케이션 생성 프롬프트 (v2024)
+# React Query + Zustand 기반 CRUD 애플리케이션 생성 프롬프트 (v2025)
 
 이 프롬프트를 사용하여 Users, Posts, Todos 디렉토리와 동일한 패턴으로 완전한 CRUD 애플리케이션을 생성할 수 있습니다. 
-최적화된 공통 스타일 시스템과 현대적인 React 패턴을 적용합니다.
+최적화된 공통 스타일 시스템, 중앙 집중식 React Query 설정, 현대적인 React 패턴을 적용합니다.
 
 ## 사용법
 
@@ -68,9 +68,10 @@
 6. **src/api/{ENTITY_NAME.toLowerCase()}Api.js**
    - 엔티티별 API 함수들 모음
    - fetch API 기반 (axios 대신 fetch 사용)
-   - 기본 구조: `{entity}Api = { getAll, getById, create, update, delete }`
+   - 기본 구조: `{entity}Api = { getAll, getById, create, update, delete, deleteMany }`
    - HTTP 상태 코드 검사 및 에러 처리
    - JSON 데이터 변환 처리
+   - `deleteMany` 메서드로 다중 삭제 지원
 
 7. **src/hooks/use{ENTITY_NAME}Queries.js**
    - React Query 커스텀 훅 모음
@@ -80,10 +81,10 @@
    - useAdd{ENTITY_NAME}Mutation: 추가
    - useUpdate{ENTITY_NAME}Mutation: 수정
    - useDelete{ENTITY_NAME}sMutation: 다중 삭제
-   - **필수 import**: `useQuery, useMutation, useQueryClient`, `handleReactQueryError`
+   - **필수 import**: `useQuery, useMutation`, `handleReactQueryError`, `createQueryOptions, createMutationOptions, invalidateQueries`
    - `useNotificationStore`를 통한 성공/실패 알림 (showSuccess, showError)
    - `useClearChecked`를 통한 체크박스 상태 초기화
-   - `queryClient.invalidateQueries()` 직접 사용으로 캐시 무효화
+   - `invalidateQueries` 헬퍼 유틸리티로 캐시 무효화
 
 ### 스타일 시스템:
 - **공통 스타일**: `src/styles/pages.css` 자동 임포트 (main.jsx에서 전역 로드)
@@ -97,12 +98,13 @@
 import { {entity}Api } from '../api/{entity}Api'
 
 // React Query 및 에러 처리
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { handleReactQueryError } from '../utils/handleAxiosError'
+import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 
 // 전역 상태 관리 (Zustand)
 import useNotificationStore from '../store/useNotificationStore'
-import useCheckedStore, { useClearChecked } from '../store/useCheckedStore'
+import { useClearChecked } from '../store/useCheckedStore'
 
 // 공통 스타일
 import '../../styles/pages.css'  // 전역에서 자동 로드됨 (main.jsx)
@@ -165,15 +167,23 @@ export const {entity}Api = {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     return response.json()
+  },
+
+  deleteMany: async (ids) => {
+    const results = await Promise.all(
+      ids.map(id => this.delete(id))
+    )
+    return ids // 삭제된 ID 배열 반환
   }
 }
 ```
 
 #### **React Query 훅 파일 (src/hooks/use{Entity}Queries.js)**:
 ```javascript
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { {entity}Api } from '../api/{entity}Api'
 import { handleReactQueryError } from '../utils/handleAxiosError'
+import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
 import { useClearChecked } from '../store/useCheckedStore'
 
@@ -191,13 +201,12 @@ export const use{Entity}sQuery = (options = {}) => {
   return useQuery({
     queryKey: {entity}Keys.list(),
     queryFn: {entity}Api.getAll,
-    staleTime: 5 * 60 * 1000, // 5분
-    gcTime: 10 * 60 * 1000,   // 10분
-    retry: 3,
-    onError: (error) => {
-      showError(handleReactQueryError(error, '{Entity} 목록 조회'))
-    },
-    ...options
+    ...createQueryOptions({
+      onError: (error) => {
+        showError(handleReactQueryError(error, '{Entity} 목록 조회'))
+      },
+      ...options
+    })
   })
 }
 
@@ -209,48 +218,49 @@ export const use{Entity}Query = (id, options = {}) => {
     queryKey: {entity}Keys.detail(id),
     queryFn: () => {entity}Api.getById(id),
     enabled: !!id && id !== 'new',
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    retry: 3,
-    onError: (error) => {
-      showError(handleReactQueryError(error, '{Entity} 조회'))
-    },
-    ...options
+    ...createQueryOptions({
+      onError: (error) => {
+        showError(handleReactQueryError(error, '{Entity} 조회'))
+      },
+      ...options
+    })
   })
 }
 
 // 추가 뮤테이션
 export const useAdd{Entity}Mutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const queryClient = useQueryClient()
   
   return useMutation({
     mutationFn: {entity}Api.create,
-    onSuccess: (data) => {
-      showSuccess('{Entity}가 성공적으로 추가되었습니다.')
-      queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
-    },
-    onError: (error) => {
-      showError(handleReactQueryError(error, '{Entity} 추가'))
-    }
+    ...createMutationOptions({
+      onSuccess: (newData) => {
+        showSuccess('{Entity}가 성공적으로 추가되었습니다.')
+        invalidateQueries.listByEntity('{entities}')
+      },
+      onError: (error) => {
+        showError(handleReactQueryError(error, '{Entity} 추가'))
+      }
+    })
   })
 }
 
 // 수정 뮤테이션  
 export const useUpdate{Entity}Mutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: ({ id, data }) => {entity}Api.update(id, data),
-    onSuccess: (data, { id }) => {
-      showSuccess('{Entity}가 성공적으로 수정되었습니다.')
-      queryClient.invalidateQueries({ queryKey: {entity}Keys.detail(id) })
-      queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
-    },
-    onError: (error) => {
-      showError(handleReactQueryError(error, '{Entity} 수정'))
-    }
+    mutationFn: ({ id, ...data }) => {entity}Api.update(id, data),
+    ...createMutationOptions({
+      onSuccess: (updatedData) => {
+        showSuccess('{Entity}가 성공적으로 수정되었습니다.')
+        invalidateQueries.listByEntity('{entities}')
+        invalidateQueries.detailByEntity('{entities}', updatedData.id)
+      },
+      onError: (error) => {
+        showError(handleReactQueryError(error, '{Entity} 수정'))
+      }
+    })
   })
 }
 
@@ -258,23 +268,19 @@ export const useUpdate{Entity}Mutation = () => {
 export const useDelete{Entity}sMutation = () => {
   const { showSuccess, showError } = useNotificationStore()
   const clearChecked = useClearChecked()
-  const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: async (ids) => {
-      const results = await Promise.all(
-        ids.map(id => {entity}Api.delete(id))
-      )
-      return results
-    },
-    onSuccess: (data, ids) => {
-      showSuccess(`${ids.length}개의 {Entity}가 성공적으로 삭제되었습니다.`)
-      clearChecked()
-      queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
-    },
-    onError: (error) => {
-      showError(handleReactQueryError(error, '{Entity} 삭제'))
-    }
+    mutationFn: {entity}Api.deleteMany,
+    ...createMutationOptions({
+      onSuccess: (deletedIds) => {
+        showSuccess(`${deletedIds.length}개의 {Entity}가 성공적으로 삭제되었습니다.`)
+        clearChecked()
+        invalidateQueries.listByEntity('{entities}')
+      },
+      onError: (error) => {
+        showError(handleReactQueryError(error, '{Entity} 삭제'))
+      }
+    })
   })
 }
 ```
@@ -332,11 +338,11 @@ export const useDelete{Entity}sMutation = () => {
 모든 파일에 상세한 주석을 포함하고, TypeScript 타입 정의가 필요한 경우 JSDoc을 사용하세요.
 
 **중요 구현 가이드**: 
-- **API 계층**: fetch API 사용, HTTP 상태 검사, JSON 변환 처리
+- **API 계층**: fetch API 사용, HTTP 상태 검사, JSON 변환 처리, `deleteMany` 메서드 구현
 - **에러 처리**: `handleReactQueryError(error, context)` 함수 활용
 - **알림 시스템**: `useNotificationStore`의 `showSuccess/showError` 메서드 사용
 - **상태 관리**: `useCheckedStore`로 체크박스 상태, `useClearChecked`로 초기화
-- **React Query**: QueryKey Factory 패턴, 직접 `queryClient.invalidateQueries()` 사용
+- **React Query**: QueryKey Factory 패턴, `createQueryOptions`/`createMutationOptions` 헬퍼 사용, `invalidateQueries` 유틸리티 활용
 - **스타일링**: 공통 클래스 우선 사용, 인라인 스타일 금지
 - **성능 최적화**: React.memo, useCallback, useMemo 적극 활용
 ```
@@ -351,6 +357,11 @@ export const useDelete{Entity}sMutation = () => {
 export const handleAxiosError = (error) => { ... }           // 기본 에러 처리
 export const handleReactQueryError = (error, context) => { ... }  // React Query용 에러 처리  
 export const handleErrorWithLogging = (error, operation) => { ... } // 개발환경 로깅
+
+// src/config/reactQueryConfig.jsx  
+export const createQueryOptions = (additionalOptions = {}) => ({ ... })  // 공통 쿼리 옵션
+export const createMutationOptions = (additionalOptions = {}) => ({ ... }) // 공통 뮤테이션 옵션
+export const invalidateQueries = { ... } // 캐시 무효화 헬퍼
 ```
 
 ### 🏪 **Zustand 스토어**
@@ -364,6 +375,7 @@ const {
   toggleCheck, 
   toggleAllCheck,
   clearChecked,
+  setCheckedIds,
   isChecked,
   isAllChecked,
   isIndeterminate,
@@ -383,17 +395,21 @@ export const {entity}Keys = {
   detail: (id) => [...{entity}Keys.all(), "detail", id]
 }
 
-// 기본 쿼리 옵션 (직접 설정)
-const defaultQueryOptions = {
-  staleTime: 5 * 60 * 1000,  // 5분
-  gcTime: 10 * 60 * 1000,    // 10분 (구 cacheTime)
-  retry: 3,
-  refetchOnWindowFocus: false
-}
+// React Query Config 사용 (중앙 집중식 관리)
+import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 
-// 캐시 무효화 (useQueryClient 직접 사용)
-const queryClient = useQueryClient()
-queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
+// 공통 쿼리 옵션 사용
+const queryOptions = createQueryOptions({
+  onError: (error) => showError(handleReactQueryError(error, 'context'))
+})
+
+// 공통 뮤테이션 옵션 사용
+const mutationOptions = createMutationOptions({
+  onSuccess: (data) => {
+    showSuccess('성공!')
+    invalidateQueries.listByEntity('entityName')
+  }
+})
 ```
 
 ---
@@ -477,7 +493,7 @@ queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
 9. ✅ **알림**: showSuccess/showError 메서드로 사용자 피드백 제공하는지 확인
 10. ✅ **반응형**: 모바일, 태블릿, 데스크톱에서 정상 작동하는지 확인
 
-## 최신 기능 및 개선사항 (2024)
+## 최신 기능 및 개선사항 (2024-2025)
 
 ### 🎨 스타일 시스템 v2.0
 - 공통 스타일 클래스 시스템으로 CSS 중복 90% 감소
@@ -489,21 +505,23 @@ queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
 - 구조적 공유(Structural Sharing) 활용
 - useMemo를 통한 필터링 최적화
 
-### 🔄 React Query v5 패턴
+### 🔄 React Query v5 중앙 집중식 설정
 - QueryKey Factory 패턴: `{entity}Keys = { all, list, detail }`
 - `handleReactQueryError` 통합 에러 처리
-- `useQueryClient` 직접 사용으로 캐시 무효화 
-- 기본 쿼리 옵션 직접 설정 (staleTime, gcTime, retry)
+- **중앙 집중식 설정**: `src/config/reactQueryConfig.jsx`에서 모든 React Query 설정 관리
+- `createQueryOptions`/`createMutationOptions` 헬퍼 함수로 일관성 확보
+- `invalidateQueries` 유틸리티로 캐시 무효화 표준화
 
-### 🏪 Zustand 스토어 통합
+### 🏪 Zustand 스토어 확장
 - `useNotificationStore`: showSuccess, showError, showWarning, showInfo
-- `useCheckedStore`: checkedIds, toggleCheck, clearChecked, 체크박스 상태 관리
+- `useCheckedStore`: checkedIds, toggleCheck, clearChecked, setCheckedIds 등 확장된 체크박스 관리
 - 선택자 헬퍼: useClearChecked, useCheckedIds 성능 최적화
 
-### 🌐 Fetch API 패턴
+### 🌐 API 계층 개선
 - axios 대신 fetch API 사용으로 번들 크기 최적화
 - HTTP 상태 코드 검사 및 JSON 변환 처리
 - 일관된 에러 처리 패턴
+- `deleteMany` 메서드로 다중 삭제 최적화
 
 ### 🎯 UX/UI 개선
 - 동적 FloatButton 위치 조정
