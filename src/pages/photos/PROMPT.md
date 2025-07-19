@@ -86,11 +86,27 @@
    - `useClearChecked`를 통한 체크박스 상태 초기화
    - `invalidateQueries` 헬퍼 유틸리티로 캐시 무효화
 
+8. **src/store/use{ENTITY_NAME}CheckedStore.js**
+   - 엔티티별 독립적인 체크박스 상태 관리 스토어
+   - Zustand를 사용한 가볍고 성능 최적화된 상태 관리
+   - 기본 구조: `{ checkedIds: Set(), toggleCheck, toggleAllCheck, clearChecked, setCheckedIds }`
+   - 선택자 헬퍼 함수: `isChecked, isAllChecked, isIndeterminate, getCheckedCount`
+   - 성능 최적화를 위한 개별 선택자 export
+   - immer 또는 zustand/middleware 사용하지 않고 순수 Zustand로 구현
+   - **네이밍 규칙**: `use{Entity}CheckedStore` (예: usePhotosCheckedStore, useUsersCheckedStore)
+
 ### 스타일 시스템:
 - **공통 스타일**: `src/styles/pages.css` 자동 임포트 (main.jsx에서 전역 로드)
 - **엔티티별 스타일**: `./[entity-name]-list.css` 각 컴포넌트에서 임포트
 - **공통 클래스 사용**: 모든 컴포넌트에서 pages.css의 클래스 활용
 - **CSS 최적화**: 중복 제거, 공통 패턴 재사용, 반응형 디자인
+
+### CheckedStore 별도 구성:
+- **엔티티별 독립 스토어**: `src/store/use{Entity}CheckedStore.js` 생성
+- **네이밍 규칙**: use + Entity명(PascalCase) + CheckedStore (예: usePhotosCheckedStore)
+- **상태 격리**: 각 엔티티의 체크박스 상태가 독립적으로 관리됨
+- **성능 최적화**: 선택자 패턴으로 불필요한 리렌더링 방지
+- **일관된 API**: 모든 엔티티 CheckedStore가 동일한 인터페이스 제공
 
 ### 필수 공통 유틸리티 및 설정:
 ```javascript
@@ -106,7 +122,7 @@ import { createQueryOptions, createMutationOptions, invalidateQueries } from '..
 
 // 전역 상태 관리 (Zustand)
 import useNotificationStore from '../store/useNotificationStore'
-import { useClearChecked } from '../store/useCheckedStore'
+import use{ENTITY_NAME}CheckedStore from '../store/use{ENTITY_NAME}CheckedStore'
 
 // 공통 스타일
 import '../../styles/pages.css'  // 전역에서 자동 로드됨 (main.jsx)
@@ -190,7 +206,7 @@ import { {entity}Api } from '../api/{entity}Api'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import { useClearChecked } from '../store/useCheckedStore'
+import use{Entity}CheckedStore from '../store/use{Entity}CheckedStore'
 
 // QueryKey Factory 패턴
 export const {entity}Keys = {
@@ -272,7 +288,7 @@ export const useUpdate{Entity}Mutation = () => {
 // 다중 삭제 뮤테이션
 export const useDelete{Entity}sMutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const clearChecked = useClearChecked()
+  const clearChecked = use{Entity}CheckedStore(state => state.clearChecked)
   
   return useMutation({
     mutationFn: {entity}Api.deleteMany,
@@ -290,11 +306,89 @@ export const useDelete{Entity}sMutation = () => {
 }
 ```
 
+#### **CheckedStore 파일 (src/store/use{Entity}CheckedStore.js)**:
+```javascript
+import { create } from 'zustand'
+
+// 메인 스토어
+const use{Entity}CheckedStore = create((set, get) => ({
+  checkedIds: new Set(),
+  
+  // 개별 체크 토글
+  toggleCheck: (id) => set((state) => {
+    const newCheckedIds = new Set(state.checkedIds)
+    if (newCheckedIds.has(id)) {
+      newCheckedIds.delete(id)
+    } else {
+      newCheckedIds.add(id)
+    }
+    return { checkedIds: newCheckedIds }
+  }),
+  
+  // 전체 선택/해제
+  toggleAllCheck: (allIds) => set((state) => {
+    const allIdsSet = new Set(allIds)
+    const currentChecked = state.checkedIds
+    const isAllChecked = allIds.length > 0 && allIds.every(id => currentChecked.has(id))
+    
+    if (isAllChecked) {
+      // 전체 해제
+      const newCheckedIds = new Set(currentChecked)
+      allIds.forEach(id => newCheckedIds.delete(id))
+      return { checkedIds: newCheckedIds }
+    } else {
+      // 전체 선택
+      const newCheckedIds = new Set(currentChecked)
+      allIds.forEach(id => newCheckedIds.add(id))
+      return { checkedIds: newCheckedIds }
+    }
+  }),
+  
+  // 체크 상태 초기화
+  clearChecked: () => set({ checkedIds: new Set() }),
+  
+  // 체크 상태 설정
+  setCheckedIds: (ids) => set({ checkedIds: new Set(ids) }),
+  
+  // 선택자 헬퍼 함수들
+  isChecked: (id) => get().checkedIds.has(id),
+  isAllChecked: (allIds) => {
+    const { checkedIds } = get()
+    return allIds.length > 0 && allIds.every(id => checkedIds.has(id))
+  },
+  isIndeterminate: (allIds) => {
+    const { checkedIds } = get()
+    const checkedCount = allIds.filter(id => checkedIds.has(id)).length
+    return checkedCount > 0 && checkedCount < allIds.length
+  },
+  getCheckedCount: () => get().checkedIds.size,
+  getCheckedIds: () => Array.from(get().checkedIds)
+}))
+
+// 성능 최적화를 위한 개별 선택자 export
+export const use{Entity}CheckedIds = () => use{Entity}CheckedStore(state => state.checkedIds)
+export const use{Entity}ToggleCheck = () => use{Entity}CheckedStore(state => state.toggleCheck)
+export const use{Entity}ToggleAllCheck = () => use{Entity}CheckedStore(state => state.toggleAllCheck)
+export const use{Entity}ClearChecked = () => use{Entity}CheckedStore(state => state.clearChecked)
+export const use{Entity}SetCheckedIds = () => use{Entity}CheckedStore(state => state.setCheckedIds)
+
+// 컴포지트 선택자 (계산된 상태)
+export const use{Entity}CheckedState = (allIds = []) => use{Entity}CheckedStore(state => ({
+  checkedIds: state.checkedIds,
+  isAllChecked: state.isAllChecked(allIds),
+  isIndeterminate: state.isIndeterminate(allIds),
+  checkedCount: allIds.filter(id => state.checkedIds.has(id)).length,
+  hasChecked: state.checkedIds.size > 0
+}))
+
+export default use{Entity}CheckedStore
+```
+
 ### 기술 스택 및 라이브러리:
 - React 18+ with JSX (함수형 컴포넌트, Hooks)
 - React Router (useParams, useNavigate)
 - React Query (@tanstack/react-query v5)
-- Zustand (useCheckedStore, useNotificationStore)
+- Zustand (엔티티별 CheckedStore, useNotificationStore)
 - Ant Design v5 (List, Button, Alert, Spin, FloatButton, Form, Input, Card, Typography, Space, Checkbox)
 - **Fetch API** (axios 대신 fetch 사용)
 - 공통 스타일 시스템 (src/styles/pages.css)
@@ -305,7 +399,7 @@ export const useDelete{Entity}sMutation = () => {
 - **handleErrorWithLogging** - 개발 환경 에러 로깅
 - **useQueryClient** - React Query 캐시 무효화 및 관리
 - **useNotificationStore** - showSuccess, showError, showWarning, showInfo 메서드
-- **useCheckedStore** - checkedIds, toggleCheck, clearChecked, isAllChecked 등
+- **use{Entity}CheckedStore** - 엔티티별 독립적인 체크박스 상태 관리 (checkedIds, toggleCheck, clearChecked, isAllChecked 등)
 
 ### API 엔드포인트:
 - GET {API_URL} - 목록 조회
@@ -346,7 +440,7 @@ export const useDelete{Entity}sMutation = () => {
 - **API 계층**: fetch API 사용, HTTP 상태 검사, JSON 변환 처리, `deleteMany` 메서드 구현
 - **에러 처리**: `handleReactQueryError(error, context)` 함수 활용
 - **알림 시스템**: `useNotificationStore`의 `showSuccess/showError` 메서드 사용
-- **상태 관리**: `useCheckedStore`로 체크박스 상태, `useClearChecked`로 초기화
+- **상태 관리**: `use{Entity}CheckedStore`로 엔티티별 체크박스 상태, `use{Entity}ClearChecked`로 초기화
 - **React Query**: QueryKey Factory 패턴, `createQueryOptions`/`createMutationOptions` 헬퍼 사용, `invalidateQueries` 유틸리티 활용
 - **스타일링**: 공통 클래스 우선 사용, 인라인 스타일 금지
 - **성능 최적화**: React.memo, useCallback, useMemo 적극 활용
@@ -374,7 +468,7 @@ export const invalidateQueries = { ... } // 캐시 무효화 헬퍼
 // src/store/useNotificationStore.js
 const { showSuccess, showError, showWarning, showInfo } = useNotificationStore()
 
-// src/store/useCheckedStore.js  
+// src/store/use{Entity}CheckedStore.js (엔티티별 독립 스토어)
 const { 
   checkedIds, 
   toggleCheck, 
@@ -385,10 +479,10 @@ const {
   isAllChecked,
   isIndeterminate,
   getCheckedCount
-} = useCheckedStore()
+} = use{Entity}CheckedStore()
 
 // 선택자 헬퍼 (성능 최적화용)
-import { useClearChecked, useCheckedIds, useToggleCheck } from '../store/useCheckedStore'
+import { use{Entity}ClearChecked, use{Entity}CheckedIds, use{Entity}ToggleCheck } from '../store/use{Entity}CheckedStore'
 ```
 
 ### ⚙️ **React Query 최적화 패턴**
@@ -479,7 +573,7 @@ const mutationOptions = createMutationOptions({
 생성된 파일들은 기존 Users, Posts, Todos 디렉토리와 동일한 아키텍처와 패턴을 따라야 합니다:
 
 1. **일관성**: 파일 구조, 네이밍 컨벤션, 코드 스타일이 기존 컴포넌트와 일치
-2. **재사용성**: 공통 store(useCheckedStore, useNotificationStore)와 스타일 시스템 활용
+2. **재사용성**: 공통 store(use{Entity}CheckedStore, useNotificationStore)와 스타일 시스템 활용
 3. **확장성**: 새로운 기능을 쉽게 추가할 수 있는 구조
 4. **유지보수성**: 명확한 관심사 분리와 모듈화
 5. **성능**: React.memo, useCallback, useMemo를 활용한 최적화
@@ -491,7 +585,7 @@ const mutationOptions = createMutationOptions({
 2. ✅ **API 연동**: fetch API를 사용한 엔드포인트가 올바르게 설정되었는지 확인  
 3. ✅ **라우팅**: 라우터 설정이 routes.js에 추가되었는지 확인
 4. ✅ **공통 함수**: handleReactQueryError, createQueryOptions 등 프로젝트 공통 함수 사용 확인
-5. ✅ **공통 스토어**: useNotificationStore, useCheckedStore 적절히 활용했는지 확인
+5. ✅ **공통 스토어**: useNotificationStore, use{Entity}CheckedStore 적절히 활용했는지 확인
 6. ✅ **스타일**: 공통 CSS 클래스 활용하고 인라인 스타일 제거했는지 확인
 7. ✅ **성능**: React.memo, useCallback 최적화가 적용되었는지 확인
 8. ✅ **에러 처리**: handleReactQueryError로 일관된 에러 처리 구현했는지 확인
@@ -519,8 +613,8 @@ const mutationOptions = createMutationOptions({
 
 ### 🏪 Zustand 스토어 확장
 - `useNotificationStore`: showSuccess, showError, showWarning, showInfo
-- `useCheckedStore`: checkedIds, toggleCheck, clearChecked, setCheckedIds 등 확장된 체크박스 관리
-- 선택자 헬퍼: useClearChecked, useCheckedIds 성능 최적화
+- `use{Entity}CheckedStore`: 엔티티별 독립적인 체크박스 관리 (checkedIds, toggleCheck, clearChecked, setCheckedIds 등 확장된 기능)
+- 선택자 헬퍼: use{Entity}ClearChecked, use{Entity}CheckedIds 성능 최적화
 
 ### 🌐 API 계층 개선
 - axios 대신 fetch API 사용으로 번들 크기 최적화
