@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { postsApi } from '../api/postsApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
@@ -55,7 +55,6 @@ export const usePostQuery = (id, options = {}) => {
  * 다중 Posts 삭제 뮤테이션 훅 (최적화)
  */
 export const useDeletePostsMutation = () => {
-  const queryClient = useQueryClient()
   const { showSuccess, showError } = useNotificationStore()
   const clearChecked = useClearChecked()
   
@@ -65,7 +64,7 @@ export const useDeletePostsMutation = () => {
       onSuccess: (deletedIds) => {
         showSuccess(`${deletedIds.length}개의 게시글이 삭제되었습니다.`)
         clearChecked()
-        invalidateQueries(queryClient, [postsKeys.all()])
+        invalidateQueries.listByEntity('posts')
       },
       onError: (error) => {
         showError(handleReactQueryError(error, '게시글 삭제'))
@@ -78,7 +77,6 @@ export const useDeletePostsMutation = () => {
  * Post 추가 뮤테이션 훅 (최적화)
  */
 export const useAddPostMutation = () => {
-  const queryClient = useQueryClient()
   const { showSuccess, showError } = useNotificationStore()
   
   return useMutation({
@@ -86,7 +84,7 @@ export const useAddPostMutation = () => {
     ...createMutationOptions({
       onSuccess: (newPost) => {
         showSuccess('새 게시글이 추가되었습니다.')
-        invalidateQueries(queryClient, [postsKeys.all()])
+        invalidateQueries.listByEntity('posts')
       },
       onError: (error) => {
         showError(handleReactQueryError(error, '게시글 추가'))
@@ -99,7 +97,6 @@ export const useAddPostMutation = () => {
  * Post 수정 뮤테이션 훅 (최적화)
  */
 export const useUpdatePostMutation = () => {
-  const queryClient = useQueryClient()
   const { showSuccess, showError } = useNotificationStore()
   
   return useMutation({
@@ -107,8 +104,8 @@ export const useUpdatePostMutation = () => {
     ...createMutationOptions({
       onSuccess: (updatedPost) => {
         showSuccess('게시글이 수정되었습니다.')
-        invalidateQueries(queryClient, [postsKeys.all()])
-        invalidateQueries(queryClient, [postsKeys.detail(updatedPost.id)])
+        invalidateQueries.listByEntity('posts')
+        invalidateQueries.detailByEntity('posts', updatedPost.id)
       },
       onError: (error) => {
         showError(handleReactQueryError(error, '게시글 수정'))
