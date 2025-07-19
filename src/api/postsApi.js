@@ -1,4 +1,6 @@
 
+import { POSTS_API_URL } from './apis'
+
 /**
  * Posts API 관련 함수들
  */

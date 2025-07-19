@@ -94,8 +94,10 @@
 
 ### 필수 공통 유틸리티 및 설정:
 ```javascript
-// API 계층
-import { {entity}Api } from '../api/{entity}Api'
+// API 계층 (중앙 집중식 URL 관리)
+import { {ENTITY_NAME_UPPER}_API_URL } from '../api/apis'
+// 또는 API_ENDPOINTS 사용
+import { API_ENDPOINTS } from '../api/apis'
 
 // React Query 및 에러 처리
 import { useQuery, useMutation } from '@tanstack/react-query'
@@ -115,12 +117,15 @@ import './{entity}-list.css'     // 엔티티 특화 스타일
 
 #### **API 파일 (src/api/{entity}Api.js)**:
 ```javascript
-// 기본 구조 예시
-const API_URL = 'https://api.example.com/{entities}'
+// 중앙 집중식 API URL 관리 사용
+import { {ENTITY_NAME_UPPER}_API_URL } from './apis'
+// 또는 구조분해할당으로 API_ENDPOINTS 사용
+// import { API_ENDPOINTS } from './apis'
+// const API_URL = API_ENDPOINTS.{ENTITY_NAME_UPPER}
 
 export const {entity}Api = {
   getAll: async () => {
-    const response = await fetch(API_URL)
+    const response = await fetch({ENTITY_NAME_UPPER}_API_URL)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
@@ -128,7 +133,7 @@ export const {entity}Api = {
   },
   
   getById: async (id) => {
-    const response = await fetch(`${API_URL}/${id}`)
+    const response = await fetch(`${{ENTITY_NAME_UPPER}_API_URL}/${id}`)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
@@ -136,7 +141,7 @@ export const {entity}Api = {
   },
   
   create: async (data) => {
-    const response = await fetch(API_URL, {
+    const response = await fetch({ENTITY_NAME_UPPER}_API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -148,7 +153,7 @@ export const {entity}Api = {
   },
   
   update: async (id, data) => {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${{ENTITY_NAME_UPPER}_API_URL}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -160,7 +165,7 @@ export const {entity}Api = {
   },
   
   delete: async (id) => {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${{ENTITY_NAME_UPPER}_API_URL}/${id}`, {
       method: 'DELETE'
     })
     if (!response.ok) {
@@ -171,7 +176,7 @@ export const {entity}Api = {
 
   deleteMany: async (ids) => {
     const results = await Promise.all(
-      ids.map(id => this.delete(id))
+      ids.map(id => {entity}Api.delete(id))
     )
     return ids // 삭제된 ID 배열 반환
   }

@@ -1,4 +1,6 @@
 
+import { USERS_API_URL } from './apis'
+
 /**
  * Users API 관련 함수들
  */

@@ -3,7 +3,7 @@
  * @description Comments 엔티티에 대한 CRUD 작업을 위한 API 함수들
  */
 
-
+import { COMMENTS_API_URL } from './apis'
 
 /**
  * Comments API 객체

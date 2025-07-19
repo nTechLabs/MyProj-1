@@ -1,3 +1,5 @@
+import { PHOTOS_API_URL } from './apis'
+
 /**
  * Photos API 관련 함수들
  */
