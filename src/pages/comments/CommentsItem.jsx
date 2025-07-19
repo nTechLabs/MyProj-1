@@ -139,7 +139,7 @@ const CommentsItem = React.memo(({ comment }) => {
             </div>
             
             {(comment.body?.length > 150 || comment.id <= 50 || comment.id > 450) && (
-              <div className="comment-tags">
+              <div className="comment-tags" style={{ display: 'flex', justifyContent: 'center', marginTop: '12px', gap: '8px' }}>
                 {comment.body?.length > 150 && (
                   <Tag className="comment-tag" size="small">긴 댓글</Tag>
                 )}
