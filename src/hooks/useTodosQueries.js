@@ -10,11 +10,9 @@ import useCheckedStore from '../store/useCheckedStore'
  * 일관된 쿼리 키 관리를 위한 팩토리 함수들
  */
 export const todosKeys = {
-  all: ['todos'],
-  lists: () => [...todosKeys.all, 'list'],
-  list: (filters) => [...todosKeys.lists(), filters],
-  details: () => [...todosKeys.all, 'detail'],
-  detail: (id) => [...todosKeys.details(), id],
+  all: () => ["todos"],
+  list: (filters = {}) => [...todosKeys.all(), "list", filters],
+  detail: (id) => [...todosKeys.all(), "detail", id],
 }
 
 /**
@@ -25,7 +23,7 @@ export const useTodosQuery = (options = {}) => {
   const { showError } = useNotificationStore()
 
   return useQuery({
-    queryKey: todosKeys.lists(),
+    queryKey: todosKeys.list(),
     queryFn: todosApi.getAll,
     ...createQueryOptions({
       onError: (error) => {
@@ -78,7 +76,7 @@ export const useDeleteTodosMutation = () => {
           showSuccess(`${successCount}개의 할일이 삭제되었습니다.`)
           
           // 쿼리 캐시 무효화
-          queryClient.invalidateQueries({ queryKey: todosKeys.lists() })
+          queryClient.invalidateQueries({ queryKey: todosKeys.list() })
           
           // 선택된 항목들 초기화
           clearChecked()
@@ -110,7 +108,7 @@ export const useAddTodoMutation = () => {
         showSuccess('새 할일이 추가되었습니다.')
         
         // 쿼리 캐시 무효화
-        queryClient.invalidateQueries({ queryKey: todosKeys.lists() })
+        queryClient.invalidateQueries({ queryKey: todosKeys.list() })
         
         // 새로 생성된 할일을 캐시에 추가
         queryClient.setQueryData(todosKeys.detail(data.id), data)
@@ -137,7 +135,7 @@ export const useUpdateTodoMutation = () => {
         showSuccess('할일이 수정되었습니다.')
         
         // 관련 쿼리들 무효화
-        queryClient.invalidateQueries({ queryKey: todosKeys.lists() })
+        queryClient.invalidateQueries({ queryKey: todosKeys.list() })
         queryClient.invalidateQueries({ queryKey: todosKeys.detail(variables.id) })
         
         // 수정된 할일을 캐시에 업데이트
