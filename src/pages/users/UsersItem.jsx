@@ -47,7 +47,11 @@ const UsersItem = memo(({ user }) => {
         borderRadius: '8px',
         marginBottom: '8px',
         border: checked ? '2px solid #1890ff' : '1px solid #f0f0f0',
-        transition: 'all 0.2s ease'
+        transition: 'all 0.2s ease',
+        overflow: 'hidden',
+        minHeight: '120px',
+        display: 'flex',
+        alignItems: 'stretch'
       }}
       actions={[
         <Checkbox
@@ -71,28 +75,92 @@ const UsersItem = memo(({ user }) => {
           </Avatar>
         }
         title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '16px', fontWeight: 'bold' }}>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px', 
+            flexWrap: 'wrap',
+            wordBreak: 'break-word',
+            maxWidth: '100%'
+          }}>
+            <span style={{ 
+              fontSize: '16px', 
+              fontWeight: 'bold',
+              wordBreak: 'break-word',
+              maxWidth: '200px'
+            }}>
               {user.name}
             </span>
-            <span style={{ color: '#666', fontSize: '14px' }}>
+            <span style={{ 
+              color: '#666', 
+              fontSize: '14px',
+              wordBreak: 'break-word',
+              maxWidth: '150px'
+            }}>
               @{user.username}
             </span>
           </div>
         }
         description={
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MailOutlined style={{ color: '#1890ff' }} />
-              <span>{user.email}</span>
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '4px',
+            maxWidth: '100%'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '6px',
+              wordBreak: 'break-word',
+              maxWidth: '100%'
+            }}>
+              <MailOutlined style={{ color: '#1890ff', flexShrink: 0 }} />
+              <span style={{ 
+                wordBreak: 'break-word',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                maxWidth: '300px'
+              }}>
+                {user.email}
+              </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <PhoneOutlined style={{ color: '#52c41a' }} />
-              <span>{user.phone}</span>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '6px',
+              wordBreak: 'break-word',
+              maxWidth: '100%'
+            }}>
+              <PhoneOutlined style={{ color: '#52c41a', flexShrink: 0 }} />
+              <span style={{ 
+                wordBreak: 'break-word',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                maxWidth: '300px'
+              }}>
+                {user.phone}
+              </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <GlobalOutlined style={{ color: '#fa8c16' }} />
-              <span>{user.website}</span>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '6px',
+              wordBreak: 'break-word',
+              maxWidth: '100%'
+            }}>
+              <GlobalOutlined style={{ color: '#fa8c16', flexShrink: 0 }} />
+              <span style={{ 
+                wordBreak: 'break-word',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                maxWidth: '300px'
+              }}>
+                {user.website}
+              </span>
             </div>
           </div>
         }
@@ -106,12 +174,26 @@ const UsersItem = memo(({ user }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-end',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        maxWidth: '150px',
+        flexShrink: 0
       }}>
-        <div style={{ fontWeight: 'bold', color: '#666' }}>
+        <div style={{ 
+          fontWeight: 'bold', 
+          color: '#666',
+          wordBreak: 'break-word',
+          textAlign: 'right',
+          maxWidth: '100%'
+        }}>
           {user.company?.name}
         </div>
-        <div>{user.address?.city}</div>
+        <div style={{
+          wordBreak: 'break-word',
+          textAlign: 'right',
+          maxWidth: '100%'
+        }}>
+          {user.address?.city}
+        </div>
       </div>
     </List.Item>
   )

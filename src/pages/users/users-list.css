@@ -13,16 +13,44 @@
 /* 리스트 아이템 내부 요소들 */
 .user-item .ant-list-item-meta-title {
   margin-bottom: 4px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .user-item .ant-list-item-meta-description {
   color: #666;
   font-size: 13px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.user-item .ant-list-item-meta {
+  flex: 1;
+  min-width: 0; /* flex item이 줄어들 수 있도록 */
+}
+
+.user-item .ant-list-item-meta-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .user-item .ant-avatar {
   border: 2px solid #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+/* List Item 전체 레이아웃 개선 */
+.user-item {
+  display: flex !important;
+  align-items: stretch !important;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.user-item .ant-list-item-action {
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 /* 체크박스 스타일 */
@@ -59,10 +87,23 @@
   .user-item {
     padding: 12px !important;
     margin-bottom: 4px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
   }
   
   .user-item .ant-list-item-meta {
-    margin-bottom: 0;
+    margin-bottom: 8px;
+    width: 100%;
+  }
+  
+  .user-item .ant-list-item-meta-title {
+    font-size: 14px;
+    word-break: break-all;
+  }
+  
+  .user-item .ant-list-item-meta-description {
+    font-size: 12px;
+    word-break: break-all;
   }
   
   .user-item .ant-avatar {
@@ -88,11 +129,11 @@
   }
   
   .user-item .ant-list-item-meta-title {
-    font-size: 14px;
+    font-size: 13px;
   }
   
   .user-item .ant-list-item-meta-description {
-    font-size: 12px;
+    font-size: 11px;
   }
   
   .user-item .ant-avatar {
