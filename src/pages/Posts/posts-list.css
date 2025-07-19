@@ -148,6 +148,18 @@
   }
 }
 
+/* Posts 삭제 버튼 가운데 정렬 */
+.posts-list-container .fixed-delete-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.posts-list-container .fixed-delete-button .ant-btn {
+  max-width: 400px;
+  width: 100%;
+}
+
 /* Posts 다크 모드 특화 */
 @media (prefers-color-scheme: dark) {
   .posts-list-container .list-item-base.checked {
