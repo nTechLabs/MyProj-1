@@ -10,11 +10,9 @@ import useCheckedStore from '../store/useCheckedStore'
  * 일관된 쿼리 키 관리를 위한 팩토리 함수들
  */
 export const usersKeys = {
-  all: ['users'],
-  lists: () => [...usersKeys.all, 'list'],
-  list: (filters) => [...usersKeys.lists(), filters],
-  details: () => [...usersKeys.all, 'detail'],
-  detail: (id) => [...usersKeys.details(), id],
+  all: () => ["users"],
+  list: (filters = {}) => [...usersKeys.all(), "list", filters],
+  detail: (id) => [...usersKeys.all(), "detail", id],
 }
 
 /**
@@ -25,7 +23,7 @@ export const useUsersQuery = (options = {}) => {
   const { showError } = useNotificationStore()
 
   return useQuery({
-    queryKey: usersKeys.lists(),
+    queryKey: usersKeys.list(),
     queryFn: usersApi.getAll,
     ...createQueryOptions({
       onError: (error) => {
@@ -78,7 +76,7 @@ export const useDeleteUsersMutation = () => {
           showSuccess(`${successCount}개의 사용자가 삭제되었습니다.`)
           
           // 쿼리 캐시 무효화
-          queryClient.invalidateQueries({ queryKey: usersKeys.lists() })
+          queryClient.invalidateQueries({ queryKey: usersKeys.list() })
           
           // 선택된 항목들 초기화
           clearChecked()
@@ -110,7 +108,7 @@ export const useAddUserMutation = () => {
         showSuccess('새 사용자가 추가되었습니다.')
         
         // 쿼리 캐시 무효화
-        queryClient.invalidateQueries({ queryKey: usersKeys.lists() })
+        queryClient.invalidateQueries({ queryKey: usersKeys.list() })
         
         // 새로 생성된 사용자를 캐시에 추가
         queryClient.setQueryData(usersKeys.detail(data.id), data)
@@ -137,7 +135,7 @@ export const useUpdateUserMutation = () => {
         showSuccess('사용자 정보가 수정되었습니다.')
         
         // 관련 쿼리들 무효화
-        queryClient.invalidateQueries({ queryKey: usersKeys.lists() })
+        queryClient.invalidateQueries({ queryKey: usersKeys.list() })
         queryClient.invalidateQueries({ queryKey: usersKeys.detail(variables.id) })
         
         // 수정된 사용자를 캐시에 업데이트
