@@ -31,14 +31,14 @@ const PostsItem = memo(({ post }) => {
     navigate(`/posts/post/${post.id}`)
   }, [navigate, post.id])
 
-  // 제목 줄임 처리
-  const truncatedTitle = post.title?.length > 50 
-    ? `${post.title.substring(0, 50)}...` 
+  // 제목 줄임 처리 - 더 긴 제목 허용
+  const truncatedTitle = post.title?.length > 80 
+    ? `${post.title.substring(0, 80)}...` 
     : post.title
 
-  // 내용 줄임 처리
-  const truncatedBody = post.body?.length > 100 
-    ? `${post.body.substring(0, 100)}...` 
+  // 내용 줄임 처리 - 더 많은 내용 표시
+  const truncatedBody = post.body?.length > 150 
+    ? `${post.body.substring(0, 150)}...` 
     : post.body
 
   return (
@@ -47,10 +47,10 @@ const PostsItem = memo(({ post }) => {
       onClick={handleItemClick}
       actions={[
         <Tag key="id" color="blue" className="item-tag">
-          ID: {post.id}
+          <strong>ID: {post.id}</strong>
         </Tag>,
         <Tag key="userId" color="green" icon={<UserOutlined />} className="item-tag">
-          User: {post.userId}
+          <strong>User: {post.userId}</strong>
         </Tag>
       ]}
     >
@@ -71,17 +71,31 @@ const PostsItem = memo(({ post }) => {
             />
           }
           title={
-            <div>
-              <Typography.Text strong className="item-meta-title">
-                {truncatedTitle}
-              </Typography.Text>
+            <div style={{ 
+              color: '#262626', 
+              fontSize: '18px', 
+              fontWeight: 700, 
+              lineHeight: 1.4,
+              marginBottom: '12px',
+              display: 'block',
+              width: '100%'
+            }}>
+              {truncatedTitle}
             </div>
           }
           description={
-            <div className="post-description-container">
-              <Typography.Paragraph className="item-meta-description">
-                {truncatedBody}
-              </Typography.Paragraph>
+            <div style={{ 
+              color: '#595959', 
+              fontSize: '15px', 
+              lineHeight: 1.6,
+              background: 'rgba(114, 46, 209, 0.02)',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              borderLeft: '3px solid #722ed1',
+              display: 'block',
+              width: '100%'
+            }}>
+              {truncatedBody}
             </div>
           }
         />
