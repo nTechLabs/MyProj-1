@@ -34,28 +34,3 @@ export const handleAxiosError = (error) => {
     return error.message || '알 수 없는 오류가 발생했습니다.'
   }
 }
-
-/**
- * React Query용 쿼리 옵션 생성 헬퍼
- * @param {Object} options - 추가 옵션들
- * @returns {Object} React Query 쿼리 옵션
- */
-export const createQueryOptions = (options = {}) => ({
-  staleTime: 5 * 60 * 1000, // 5분
-  gcTime: 10 * 60 * 1000, // 10분 (구 cacheTime)
-  retry: 3,
-  retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
-  refetchOnWindowFocus: false,
-  ...options
-})
-
-/**
- * React Query용 뮤테이션 옵션 생성 헬퍼
- * @param {Object} options - 추가 옵션들
- * @returns {Object} React Query 뮤테이션 옵션
- */
-export const createMutationOptions = (options = {}) => ({
-  retry: 1,
-  retryDelay: 1000,
-  ...options
-})

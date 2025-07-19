@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { todosApi } from '../api/todosApi'
-import { handleAxiosError, createQueryOptions, createMutationOptions } from '../api/config'
+import { handleAxiosError } from '../utils/handleAxiosError'
+import { createQueryOptions, createMutationOptions } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
 import useCheckedStore from '../store/useCheckedStore'
 
