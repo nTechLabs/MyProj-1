@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { List, Checkbox, Typography, Tag, Avatar } from 'antd'
 import { BookOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { useIsChecked, useToggleCheck } from '../../store/useCheckedStore'
+import useCheckedStore from '../../store/useCheckedStore'
 
 const { Text, Paragraph } = Typography
 
@@ -13,16 +13,16 @@ const { Text, Paragraph } = Typography
 const PostsItem = memo(({ post }) => {
   const navigate = useNavigate()
   
-  // Zustand 선택자를 사용하여 필요한 부분만 구독 (리렌더링 최적화)
-  const isChecked = useIsChecked()
-  const toggleCheck = useToggleCheck()
-  const checked = isChecked(post.id)
+  // Zustand store에서 필요한 상태와 함수들을 가져오기
+  const { checkedIds, toggleCheck } = useCheckedStore()
+  const checked = checkedIds.includes(post.id)
 
   // 체크박스 상태 변경
   const handleCheckboxChange = useCallback((e) => {
-    e.stopPropagation()
+    e.stopPropagation() // 이벤트 버블링 방지
+    console.log(`체크박스 클릭: Post ID ${post.id}, 현재 상태: ${checked}`) // 디버깅용
     toggleCheck(post.id)
-  }, [post.id, toggleCheck])
+  }, [post.id, toggleCheck, checked])
 
   // 게시글 클릭 시 상세 페이지로 이동
   const handleItemClick = useCallback(() => {
