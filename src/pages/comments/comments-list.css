@@ -148,8 +148,9 @@
   padding: 0;
 }
 
-/* 각 댓글 아이템 스타일 */
-.page-list-container .ant-list-item {
+/* 각 댓글 아이템 스타일 - CommentsItem에서 사용하는 클래스명 기준 */
+.page-list-container .ant-list-item,
+.page-list-container .comment-item {
   display: flex !important;
   background: white !important;
   border: 1px solid #f0f0f0 !important;
@@ -161,13 +162,43 @@
   position: relative !important;
   min-height: 120px !important;
   align-items: flex-start !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-.page-list-container .ant-list-item:hover {
+.page-list-container .ant-list-item:hover,
+.page-list-container .comment-item:hover {
   background: #f8f9fa !important;
   border-color: var(--comments-hover-border) !important;
   box-shadow: 0 2px 8px rgba(255, 149, 0, 0.1) !important;
   transform: translateY(-1px) !important;
+}
+
+.page-list-container .ant-list-item.checked,
+.page-list-container .comment-item.checked {
+  background: var(--comments-bg-light) !important;
+  border-color: var(--comments-primary) !important;
+}
+
+/* 체크박스 컨테이너 */
+.page-list-container .checkbox-container {
+  position: absolute !important;
+  top: 16px !important;
+  right: 16px !important;
+  z-index: 2 !important;
+}
+
+.page-list-container .checkbox-container .ant-checkbox-wrapper {
+  margin: 0 !important;
+}
+
+.page-list-container .checkbox-container .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--comments-primary) !important;
+  border-color: var(--comments-primary) !important;
+}
+
+.page-list-container .checkbox-container .ant-checkbox:hover .ant-checkbox-inner {
+  border-color: var(--comments-primary) !important;
 }
 
 /* 댓글 아이템 메타 영역 */
@@ -176,6 +207,7 @@
   align-items: flex-start !important;
   flex: 1 !important;
   margin: 0 !important;
+  margin-right: 50px !important; /* 체크박스 공간 확보 */
 }
 
 .page-list-container .ant-list-item-meta-avatar {
@@ -183,7 +215,8 @@
   flex-shrink: 0 !important;
 }
 
-.page-list-container .ant-list-item-meta-avatar .ant-avatar {
+.page-list-container .ant-list-item-meta-avatar .ant-avatar,
+.page-list-container .comment-avatar {
   width: 40px !important;
   height: 40px !important;
   background: var(--comments-primary) !important;
@@ -201,7 +234,8 @@
 }
 
 /* 댓글 제목 스타일 */
-.page-list-container .ant-list-item-meta-title {
+.page-list-container .ant-list-item-meta-title,
+.page-list-container .item-meta-title {
   color: var(--comments-text-primary) !important;
   font-weight: 600 !important;
   font-size: 16px !important;
@@ -210,16 +244,22 @@
   word-break: break-word !important;
 }
 
-.page-list-container .ant-list-item-meta-title:hover {
+.page-list-container .ant-list-item-meta-title:hover,
+.page-list-container .item-meta-title:hover {
   color: var(--comments-primary) !important;
 }
 
-/* 댓글 이메일 스타일 */
+/* 댓글 이메일 및 태그 스타일 */
 .page-list-container .comment-email {
+  background: var(--comments-bg-light) !important;
+  border-color: var(--comments-primary) !important;
   color: var(--comments-primary) !important;
-  font-size: 14px !important;
-  margin-bottom: 8px !important;
-  font-weight: 500 !important;
+}
+
+.page-list-container .comment-post-id {
+  background: #f0f0f0 !important;
+  border-color: #d9d9d9 !important;
+  color: var(--comments-text-secondary) !important;
 }
 
 /* 댓글 본문 스타일 */
@@ -227,16 +267,24 @@
   color: var(--comments-text-secondary) !important;
   font-size: 14px !important;
   line-height: 1.6 !important;
-  margin-bottom: 12px !important;
+  margin: 12px 0 !important;
   word-break: break-word !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 3 !important;
-  line-clamp: 3 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
+  white-space: pre-wrap !important;
 }
 
-/* 댓글 액션 영역 */
+/* 댓글 태그들 */
+.page-list-container .comment-tags {
+  margin-top: 8px !important;
+}
+
+.page-list-container .comment-tag {
+  background: #f0f0f0 !important;
+  border-color: #d9d9d9 !important;
+  color: var(--comments-text-secondary) !important;
+  font-size: 11px !important;
+}
+
+/* 댓글 액션 영역 - 필요시 사용 */
 .page-list-container .ant-list-item-action {
   margin-left: 16px !important;
   flex-shrink: 0 !important;
@@ -248,51 +296,17 @@
   margin: 0 4px !important;
 }
 
-.page-list-container .comment-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-top: 8px;
+/* 추가 유틸리티 스타일 */
+.page-list-container .ant-space {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
 }
 
-.page-list-container .comment-actions .ant-btn {
-  border-radius: 4px;
-  font-size: 12px;
-  height: 28px;
-  padding: 0 12px;
-  border: 1px solid var(--comments-border);
-}
-
-.page-list-container .comment-actions .ant-btn-primary {
-  background: var(--comments-primary);
-  border-color: var(--comments-primary);
-  color: white;
-}
-
-.page-list-container .comment-actions .ant-btn-primary:hover {
-  background: var(--comments-primary-hover);
-  border-color: var(--comments-primary-hover);
-}
-
-.page-list-container .comment-actions .ant-btn:hover {
-  border-color: var(--comments-primary);
-  color: var(--comments-primary);
-}
-
-/* 체크박스 스타일 */
-.page-list-container .ant-checkbox-wrapper {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-}
-
-.page-list-container .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: var(--comments-primary);
-  border-color: var(--comments-primary);
-}
-
-.page-list-container .ant-checkbox:hover .ant-checkbox-inner {
-  border-color: var(--comments-primary);
+.page-list-container .ant-tag {
+  margin: 2px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
 }
 
 /* =========================
@@ -458,23 +472,27 @@
   }
   
   /* 댓글 아이템 모바일 최적화 */
-  .page-list-container .ant-list-item {
+  .page-list-container .ant-list-item,
+  .page-list-container .comment-item {
     padding: 16px !important;
     margin-bottom: 12px !important;
     min-height: 100px !important;
   }
   
-  .page-list-container .ant-list-item-meta-avatar {
+  .page-list-container .ant-list-item-meta-avatar,
+  .page-list-container .comment-avatar {
     margin-right: 12px !important;
   }
   
-  .page-list-container .ant-list-item-meta-avatar .ant-avatar {
+  .page-list-container .ant-list-item-meta-avatar .ant-avatar,
+  .page-list-container .comment-avatar {
     width: 36px !important;
     height: 36px !important;
     font-size: 14px !important;
   }
   
-  .page-list-container .ant-list-item-meta-title {
+  .page-list-container .ant-list-item-meta-title,
+  .page-list-container .item-meta-title {
     font-size: 15px !important;
   }
   
@@ -482,10 +500,9 @@
     font-size: 13px !important;
   }
   
-  .page-list-container .comment-actions .ant-btn {
-    font-size: 11px !important;
-    height: 24px !important;
-    padding: 0 8px !important;
+  .page-list-container .checkbox-container {
+    top: 12px !important;
+    right: 12px !important;
   }
   
   /* 페이지네이션 모바일 최적화 */
@@ -522,46 +539,62 @@
     text-align: right;
   }
   
-  .page-list-container .ant-list-item {
+  .page-list-container .ant-list-item,
+  .page-list-container .comment-item {
     padding: 12px !important;
   }
   
   .page-list-container .ant-list-item-meta {
-    flex-direction: column !important;
+    flex-direction: row !important; /* 세로가 아닌 가로 유지 */
+    margin-right: 40px !important; /* 체크박스 공간 */
   }
   
-  .page-list-container .ant-list-item-meta-avatar {
-    margin-right: 0 !important;
-    margin-bottom: 8px !important;
+  .page-list-container .ant-list-item-meta-avatar,
+  .page-list-container .comment-avatar {
+    margin-right: 8px !important;
+    margin-bottom: 0 !important;
   }
   
-  .page-list-container .comment-actions {
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  
-  .page-list-container .comment-actions .ant-btn {
-    font-size: 10px !important;
-    height: 22px !important;
-    padding: 0 6px !important;
+  .page-list-container .checkbox-container {
+    top: 8px !important;
+    right: 8px !important;
   }
 }
 
 /* =========================
-   추가 개선사항
+   댓글 아이템 강제 표시 및 디버깅 스타일
    ========================= */
 
 /* 댓글 아이템이 확실히 보이도록 강제 스타일 */
 .page-list-container .ant-list-item,
-.page-list-container .ant-list-item * {
+.page-list-container .ant-list-item *,
+.page-list-container .comment-item,
+.page-list-container .comment-item * {
   box-sizing: border-box !important;
 }
 
 /* 리스트가 숨겨지지 않도록 */
-.page-list {
+.page-list,
+.page-list-container .ant-list,
+.page-list-container .ant-list-items {
   opacity: 1 !important;
   visibility: visible !important;
   display: block !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+/* 각 아이템이 확실히 표시되도록 */
+.page-list-container .ant-list-item,
+.page-list-container .comment-item {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  position: relative !important;
+  z-index: 1 !important;
+  clear: both !important;
+  float: none !important;
+  overflow: visible !important;
 }
 
 /* 스크롤 숨김 처리 */
@@ -572,4 +605,24 @@
 .list-scroll-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* 디버깅용 - 아이템에 최소 높이와 배경 보장 */
+.page-list-container .ant-list-item.ant-list-item {
+  background-color: white !important;
+  border: 1px solid #e8e8e8 !important;
+  margin-bottom: 12px !important;
+  min-height: 80px !important;
+  padding: 16px !important;
+}
+
+/* List.Item 컴포넌트가 제대로 렌더링되도록 */
+.ant-list .ant-list-item {
+  display: flex !important;
+  width: 100% !important;
+  padding: 16px !important;
+  background: white !important;
+  border: 1px solid #f0f0f0 !important;
+  border-radius: 8px !important;
+  margin-bottom: 12px !important;
 }
