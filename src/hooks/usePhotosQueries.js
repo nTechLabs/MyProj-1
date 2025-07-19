@@ -17,7 +17,7 @@ export const photosKeys = {
 /**
  * Photos 목록 조회 훅 (최적화)
  */
-export const usePhotosQuery = (options = {}) => {
+export const usePhotosQuery = () => {
   const { showError } = useNotificationStore()
 
   return useQuery({
@@ -26,8 +26,7 @@ export const usePhotosQuery = (options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '사진 목록 조회'))
-      },
-      ...options
+      }
     })
   })
 }
@@ -35,7 +34,7 @@ export const usePhotosQuery = (options = {}) => {
 /**
  * 특정 Photo 조회 훅 (최적화)
  */
-export const usePhotoQuery = (id, options = {}) => {
+export const usePhotoQuery = (id) => {
   const { showError } = useNotificationStore()
 
   return useQuery({
@@ -45,8 +44,7 @@ export const usePhotoQuery = (id, options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '사진 조회'))
-      },
-      ...options
+      }
     })
   })
 }

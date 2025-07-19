@@ -17,7 +17,7 @@ export const todosKeys = {
 /**
  * Todos 목록 조회 훅 (최적화)
  */
-export const useTodosQuery = (options = {}) => {
+export const useTodosQuery = () => {
   const { showError } = useNotificationStore()
 
   return useQuery({
@@ -26,8 +26,7 @@ export const useTodosQuery = (options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '할일 목록 조회'))
-      },
-      ...options
+      }
     })
   })
 }
@@ -35,7 +34,7 @@ export const useTodosQuery = (options = {}) => {
 /**
  * 특정 Todo 조회 훅 (최적화)
  */
-export const useTodoQuery = (id, options = {}) => {
+export const useTodoQuery = (id) => {
   const { showError } = useNotificationStore()
 
   return useQuery({
@@ -45,8 +44,7 @@ export const useTodoQuery = (id, options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '할일 조회'))
-      },
-      ...options
+      }
     })
   })
 }

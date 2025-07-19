@@ -8,6 +8,7 @@ import { commentsApi } from '../api/commentsApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import useNotificationStore from '../store/useNotificationStore'
 import { useCommentsClearChecked } from '../store/useCommentsCheckedStore'
+import { createQueryOptions, createMutationOptions } from '../config/reactQueryConfig'
 
 /**
  * QueryKey Factory 패턴 - Comments 쿼리 키 관리
@@ -21,47 +22,39 @@ export const commentsKeys = {
 
 /**
  * 댓글 목록 조회 훅
- * @param {Object} options - React Query 옵션
  * @returns {Object} React Query 결과 객체
  */
-export const useCommentsQuery = (options = {}) => {
+export const useCommentsQuery = () => {
   const { showError } = useNotificationStore()
   
   return useQuery({
     queryKey: commentsKeys.list(),
     queryFn: commentsApi.getAll,
-    staleTime: 5 * 60 * 1000, // 5분
-    gcTime: 10 * 60 * 1000,   // 10분
-    retry: 3,
-    refetchOnWindowFocus: false,
-    onError: (error) => {
-      showError(handleReactQueryError(error, 'Comments 목록 조회'))
-    },
-    ...options
+    ...createQueryOptions({
+      onError: (error) => {
+        showError(handleReactQueryError(error, 'Comments 목록 조회'))
+      }
+    })
   })
 }
 
 /**
  * 단일 댓글 조회 훅
  * @param {string|number} id - 댓글 ID
- * @param {Object} options - React Query 옵션
  * @returns {Object} React Query 결과 객체
  */
-export const useCommentQuery = (id, options = {}) => {
+export const useCommentQuery = (id) => {
   const { showError } = useNotificationStore()
   
   return useQuery({
     queryKey: commentsKeys.detail(id),
     queryFn: () => commentsApi.getById(id),
     enabled: !!id && id !== 'new',
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    retry: 3,
-    refetchOnWindowFocus: false,
-    onError: (error) => {
-      showError(handleReactQueryError(error, 'Comment 조회'))
-    },
-    ...options
+    ...createQueryOptions({
+      onError: (error) => {
+        showError(handleReactQueryError(error, 'Comment 조회'))
+      }
+    })
   })
 }
 
@@ -75,13 +68,15 @@ export const useAddCommentMutation = () => {
   
   return useMutation({
     mutationFn: commentsApi.create,
-    onSuccess: (data) => {
-      showSuccess('Comment가 성공적으로 추가되었습니다.')
-      queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
-    },
-    onError: (error) => {
-      showError(handleReactQueryError(error, 'Comment 추가'))
-    }
+    ...createMutationOptions({
+      onSuccess: (data) => {
+        showSuccess('Comment가 성공적으로 추가되었습니다.')
+        queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
+      },
+      onError: (error) => {
+        showError(handleReactQueryError(error, 'Comment 추가'))
+      }
+    })
   })
 }
 
@@ -95,14 +90,16 @@ export const useUpdateCommentMutation = () => {
   
   return useMutation({
     mutationFn: ({ id, data }) => commentsApi.update(id, data),
-    onSuccess: (data, { id }) => {
-      showSuccess('Comment가 성공적으로 수정되었습니다.')
-      queryClient.invalidateQueries({ queryKey: commentsKeys.detail(id) })
-      queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
-    },
-    onError: (error) => {
-      showError(handleReactQueryError(error, 'Comment 수정'))
-    }
+    ...createMutationOptions({
+      onSuccess: (data, { id }) => {
+        showSuccess('Comment가 성공적으로 수정되었습니다.')
+        queryClient.invalidateQueries({ queryKey: commentsKeys.detail(id) })
+        queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
+      },
+      onError: (error) => {
+        showError(handleReactQueryError(error, 'Comment 수정'))
+      }
+    })
   })
 }
 
@@ -122,13 +119,15 @@ export const useDeleteCommentsMutation = () => {
       )
       return results
     },
-    onSuccess: (data, ids) => {
-      showSuccess(`${ids.length}개의 Comment가 성공적으로 삭제되었습니다.`)
-      clearChecked()
-      queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
-    },
-    onError: (error) => {
-      showError(handleReactQueryError(error, 'Comment 삭제'))
-    }
+    ...createMutationOptions({
+      onSuccess: (data, ids) => {
+        showSuccess(`${ids.length}개의 Comment가 성공적으로 삭제되었습니다.`)
+        clearChecked()
+        queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
+      },
+      onError: (error) => {
+        showError(handleReactQueryError(error, 'Comment 삭제'))
+      }
+    })
   })
 }

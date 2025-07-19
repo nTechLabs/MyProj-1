@@ -17,7 +17,7 @@ export const postsKeys = {
 /**
  * Posts 목록 조회 훅 (최적화)
  */
-export const usePostsQuery = (options = {}) => {
+export const usePostsQuery = () => {
   const { showError } = useNotificationStore()
 
   return useQuery({
@@ -26,8 +26,7 @@ export const usePostsQuery = (options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '게시글 목록 조회'))
-      },
-      ...options
+      }
     })
   })
 }
@@ -35,7 +34,7 @@ export const usePostsQuery = (options = {}) => {
 /**
  * 특정 Post 조회 훅 (최적화)
  */
-export const usePostQuery = (id, options = {}) => {
+export const usePostQuery = (id) => {
   const { showError } = useNotificationStore()
 
   return useQuery({
@@ -45,8 +44,7 @@ export const usePostQuery = (id, options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '게시글 조회'))
-      },
-      ...options
+      }
     })
   })
 }

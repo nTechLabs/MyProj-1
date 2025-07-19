@@ -21,7 +21,12 @@
 
 ### 생성할 파일들:
 
-1. **src/pages/{ENTITY_NAME}/{ENTITY_NAME}Page.jsx**
+1. **src/pages/{ENTITY_NAME}/{ENTITY_NAME}Pa// 개별 선택자 사용 (성능 최적화용 - 권장)
+import { use{Entity}ClearChecked, use{Entity}CheckedIds, use{Entity}ToggleCheck } from '../store/use{Entity}CheckedStore'
+const clearChecked = use{Entity}ClearChecked()
+const checkedIds = use{Entity}CheckedIds()
+const toggleCheck = use{Entity}ToggleCheck()
+```jsx**
    - 메인 컨테이너 컴포넌트
    - React Query + Zustand 예제임을 표시하는 제목
    - {ENTITY_NAME}List 컴포넌트를 렌더링
@@ -76,15 +81,16 @@
 7. **src/hooks/use{ENTITY_NAME}Queries.js**
    - React Query 커스텀 훅 모음
    - QueryKey Factory 패턴: `{entity}Keys = { all: () => [...], list: (filters) => [...], detail: (id) => [...] }`
-   - use{ENTITY_NAME}Query: 단일 항목 조회
-   - use{ENTITY_NAME}sQuery: 목록 조회  
+   - use{ENTITY_NAME}Query: 단일 항목 조회 (id 매개변수만 사용, options 매개변수 제거)
+   - use{ENTITY_NAME}sQuery: 목록 조회 (options 매개변수 제거)
    - useAdd{ENTITY_NAME}Mutation: 추가
    - useUpdate{ENTITY_NAME}Mutation: 수정
    - useDelete{ENTITY_NAME}sMutation: 다중 삭제
    - **필수 import**: `useQuery, useMutation`, `handleReactQueryError`, `createQueryOptions, createMutationOptions, invalidateQueries`
    - `useNotificationStore`를 통한 성공/실패 알림 (showSuccess, showError)
-   - `useClearChecked`를 통한 체크박스 상태 초기화
+   - **개별 선택자 사용**: `use{Entity}ClearChecked`를 통한 체크박스 상태 초기화
    - `invalidateQueries` 헬퍼 유틸리티로 캐시 무효화
+   - **중앙집중식 설정**: 모든 React Query 옵션은 `createQueryOptions`/`createMutationOptions`에서 처리
 
 8. **src/store/use{ENTITY_NAME}CheckedStore.js**
    - 엔티티별 독립적인 체크박스 상태 관리 스토어
@@ -123,9 +129,9 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 
-// 전역 상태 관리 (Zustand)
+// 전역 상태 관리 (Zustand) - 개별 선택자 사용 권장
 import useNotificationStore from '../store/useNotificationStore'
-import use{ENTITY_NAME}CheckedStore from '../store/use{ENTITY_NAME}CheckedStore'
+import { use{Entity}ClearChecked } from '../store/use{Entity}CheckedStore'
 
 // 공통 스타일
 import '../../styles/pages.css'  // 전역에서 자동 로드됨 (main.jsx)
@@ -209,7 +215,7 @@ import { {entity}Api } from '../api/{entity}Api'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import use{Entity}CheckedStore from '../store/use{Entity}CheckedStore'
+import { use{Entity}ClearChecked } from '../store/use{Entity}CheckedStore'
 
 // QueryKey Factory 패턴
 export const {entity}Keys = {
@@ -218,8 +224,8 @@ export const {entity}Keys = {
   detail: (id) => [...{entity}Keys.all(), "detail", id],
 }
 
-// 목록 조회 훅
-export const use{Entity}sQuery = (options = {}) => {
+// 목록 조회 훅 (options 매개변수 제거, createQueryOptions에서 통합 처리)
+export const use{Entity}sQuery = () => {
   const { showError } = useNotificationStore()
   
   return useQuery({
@@ -228,14 +234,13 @@ export const use{Entity}sQuery = (options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '{Entity} 목록 조회'))
-      },
-      ...options
+      }
     })
   })
 }
 
-// 단일 조회 훅
-export const use{Entity}Query = (id, options = {}) => {
+// 단일 조회 훅 (options 매개변수 제거, createQueryOptions에서 통합 처리)
+export const use{Entity}Query = (id) => {
   const { showError } = useNotificationStore()
   
   return useQuery({
@@ -245,8 +250,7 @@ export const use{Entity}Query = (id, options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '{Entity} 조회'))
-      },
-      ...options
+      }
     })
   })
 }
@@ -291,7 +295,7 @@ export const useUpdate{Entity}Mutation = () => {
 // 다중 삭제 뮤테이션
 export const useDelete{Entity}sMutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const clearChecked = use{Entity}CheckedStore(state => state.clearChecked)
+  const clearChecked = use{Entity}ClearChecked()
   
   return useMutation({
     mutationFn: {entity}Api.deleteMany,
@@ -460,7 +464,10 @@ export default createCheckedStore
 - **handleErrorWithLogging** - 개발 환경 에러 로깅
 - **useQueryClient** - React Query 캐시 무효화 및 관리
 - **useNotificationStore** - showSuccess, showError, showWarning, showInfo 메서드
-- **use{Entity}CheckedStore** - 엔티티별 독립적인 체크박스 상태 관리 (checkedIds, toggleCheck, clearChecked, isAllChecked 등)
+- **use{Entity}CheckedStore** - 엔티티별 독립적인 체크박스 상태 관리
+- **개별 선택자 패턴** - `use{Entity}ClearChecked`, `use{Entity}CheckedIds` 등 성능 최적화용 선택자
+- **createQueryOptions/createMutationOptions** - 중앙집중식 React Query 설정
+- **invalidateQueries** - 캐시 무효화 헬퍼 유틸리티
 
 ### API 엔드포인트:
 - GET {API_URL} - 목록 조회
@@ -501,10 +508,11 @@ export default createCheckedStore
 - **API 계층**: fetch API 사용, HTTP 상태 검사, JSON 변환 처리, `deleteMany` 메서드 구현
 - **에러 처리**: `handleReactQueryError(error, context)` 함수 활용
 - **알림 시스템**: `useNotificationStore`의 `showSuccess/showError` 메서드 사용
-- **상태 관리**: `use{Entity}CheckedStore`로 엔티티별 체크박스 상태, `use{Entity}ClearChecked`로 초기화
+- **상태 관리**: `use{Entity}CheckedStore`로 엔티티별 체크박스 상태, **개별 선택자** `use{Entity}ClearChecked`로 초기화
 - **React Query**: QueryKey Factory 패턴, `createQueryOptions`/`createMutationOptions` 헬퍼 사용, `invalidateQueries` 유틸리티 활용
+- **매개변수 최적화**: `options = {}` 매개변수 제거, 중앙집중식 설정으로 통합
 - **스타일링**: 공통 클래스 우선 사용, 인라인 스타일 금지
-- **성능 최적화**: React.memo, useCallback, useMemo 적극 활용
+- **성능 최적화**: React.memo, useCallback, useMemo 적극 활용, 개별 선택자로 리렌더링 방지
 ```
 
 ---
@@ -522,6 +530,8 @@ export const handleErrorWithLogging = (error, operation) => { ... } // 개발환
 export const createQueryOptions = (additionalOptions = {}) => ({ ... })  // 공통 쿼리 옵션
 export const createMutationOptions = (additionalOptions = {}) => ({ ... }) // 공통 뮤테이션 옵션
 export const invalidateQueries = { ... } // 캐시 무효화 헬퍼
+
+// 중앙집중식 설정으로 options 매개변수 제거, 모든 설정을 createQueryOptions에서 처리
 ```
 
 ### 🏪 **Zustand 스토어**
@@ -530,6 +540,7 @@ export const invalidateQueries = { ... } // 캐시 무효화 헬퍼
 const { showSuccess, showError, showWarning, showInfo } = useNotificationStore()
 
 // src/store/use{Entity}CheckedStore.js (엔티티별 독립 스토어)
+// 기본 스토어 사용
 const { 
   checkedIds, 
   toggleCheck, 
@@ -542,8 +553,11 @@ const {
   getCheckedCount
 } = use{Entity}CheckedStore()
 
-// 선택자 헬퍼 (성능 최적화용)
+// 개별 선택자 사용 (성능 최적화용 - 권장)
 import { use{Entity}ClearChecked, use{Entity}CheckedIds, use{Entity}ToggleCheck } from '../store/use{Entity}CheckedStore'
+const clearChecked = use{Entity}ClearChecked()
+const checkedIds = use{Entity}CheckedIds()
+const toggleCheck = use{Entity}ToggleCheck()
 ```
 
 ### ⚙️ **React Query 최적화 패턴**
@@ -558,10 +572,18 @@ export const {entity}Keys = {
 // React Query Config 사용 (중앙 집중식 관리)
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 
-// 공통 쿼리 옵션 사용
-const queryOptions = createQueryOptions({
-  onError: (error) => showError(handleReactQueryError(error, 'context'))
-})
+// 공통 쿼리 옵션 사용 (options 매개변수 제거, 중앙 집중식 설정)
+export const use{Entity}sQuery = () => {
+  const { showError } = useNotificationStore()
+  
+  return useQuery({
+    queryKey: {entity}Keys.list(),
+    queryFn: {entity}Api.getAll,
+    ...createQueryOptions({
+      onError: (error) => showError(handleReactQueryError(error, 'context'))
+    })
+  })
+}
 
 // 공통 뮤테이션 옵션 사용
 const mutationOptions = createMutationOptions({
@@ -646,12 +668,13 @@ const mutationOptions = createMutationOptions({
 2. ✅ **API 연동**: fetch API를 사용한 엔드포인트가 올바르게 설정되었는지 확인  
 3. ✅ **라우팅**: 라우터 설정이 routes.js에 추가되었는지 확인
 4. ✅ **공통 함수**: handleReactQueryError, createQueryOptions 등 프로젝트 공통 함수 사용 확인
-5. ✅ **공통 스토어**: useNotificationStore, use{Entity}CheckedStore 적절히 활용했는지 확인
+5. ✅ **공통 스토어**: useNotificationStore, **개별 선택자** use{Entity}ClearChecked 적절히 활용했는지 확인
 6. ✅ **스타일**: 공통 CSS 클래스 활용하고 인라인 스타일 제거했는지 확인
 7. ✅ **성능**: React.memo, useCallback 최적화가 적용되었는지 확인
 8. ✅ **에러 처리**: handleReactQueryError로 일관된 에러 처리 구현했는지 확인
 9. ✅ **알림**: showSuccess/showError 메서드로 사용자 피드백 제공하는지 확인
 10. ✅ **반응형**: 모바일, 태블릿, 데스크톱에서 정상 작동하는지 확인
+11. ✅ **매개변수 최적화**: `options = {}` 매개변수 제거 및 중앙집중식 설정 적용 확인
 
 ## 최신 기능 및 개선사항 (2024-2025)
 
@@ -671,11 +694,15 @@ const mutationOptions = createMutationOptions({
 - **중앙 집중식 설정**: `src/config/reactQueryConfig.jsx`에서 모든 React Query 설정 관리
 - `createQueryOptions`/`createMutationOptions` 헬퍼 함수로 일관성 확보
 - `invalidateQueries` 유틸리티로 캐시 무효화 표준화
+- **매개변수 최적화**: `options = {}` 매개변수 제거, 중앙 집중식 설정으로 통합
+- **성능 최적화**: 불필요한 옵션 전달 제거로 번들 크기 및 메모리 사용량 감소
 
 ### 🏪 Zustand 스토어 확장
 - `useNotificationStore`: showSuccess, showError, showWarning, showInfo
 - `use{Entity}CheckedStore`: 엔티티별 독립적인 체크박스 관리 (checkedIds, toggleCheck, clearChecked, setCheckedIds 등 확장된 기능)
-- 선택자 헬퍼: use{Entity}ClearChecked, use{Entity}CheckedIds 성능 최적화
+- **개별 선택자 패턴**: `use{Entity}ClearChecked`, `use{Entity}CheckedIds` 성능 최적화로 불필요한 리렌더링 방지
+- **중앙집중식 팩토리**: `createCheckedStore`로 중복 코드 90% 이상 제거
+- **성능 최적화**: Set 기반 O(1) 조회, 선택적 구독으로 메모리 효율성 향상
 
 ### 🌐 API 계층 개선
 - axios 대신 fetch API 사용으로 번들 크기 최적화

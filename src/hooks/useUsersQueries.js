@@ -17,7 +17,7 @@ export const usersKeys = {
 /**
  * Users 목록 조회 훅 (최적화)
  */
-export const useUsersQuery = (options = {}) => {
+export const useUsersQuery = () => {
   const { showError } = useNotificationStore()
 
   return useQuery({
@@ -26,8 +26,7 @@ export const useUsersQuery = (options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '사용자 목록 조회'))
-      },
-      ...options
+      }
     })
   })
 }
@@ -35,7 +34,7 @@ export const useUsersQuery = (options = {}) => {
 /**
  * 특정 User 조회 훅 (최적화)
  */
-export const useUserQuery = (id, options = {}) => {
+export const useUserQuery = (id) => {
   const { showError } = useNotificationStore()
 
   return useQuery({
@@ -45,8 +44,7 @@ export const useUserQuery = (id, options = {}) => {
     ...createQueryOptions({
       onError: (error) => {
         showError(handleReactQueryError(error, '사용자 정보 조회'))
-      },
-      ...options
+      }
     })
   })
 }
