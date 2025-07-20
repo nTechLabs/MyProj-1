@@ -1,11 +1,14 @@
 import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
 import { message } from 'antd'
 
 /**
  * 알림/토스트 메시지를 관리하는 Zustand 스토어
  * Ant Design의 message API와 연동
  */
-const useNotificationStore = create((set, get) => ({
+const useNotificationStore = create(
+  devtools(
+    (set, get) => ({
   // 현재 표시 중인 알림들
   notifications: [],
   
@@ -85,6 +88,11 @@ const useNotificationStore = create((set, get) => ({
     const errorMessage = error?.response?.data?.message || error?.message || defaultMessage
     showError(errorMessage)
   }
-}))
+}),
+    {
+      name: 'notification-store', // DevTools에서 표시될 스토어 이름
+    }
+  )
+)
 
 export default useNotificationStore

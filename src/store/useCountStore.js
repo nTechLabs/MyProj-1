@@ -23,6 +23,7 @@
  */
 
 import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
 
 /**
  * 카운터 스토어 생성
@@ -30,7 +31,9 @@ import { create } from 'zustand'
  * @param {function} set - 상태 업데이트 함수
  * @returns {Object} 카운터 상태와 액션 함수들
  */
-const useCountStore = create((set) => ({
+const useCountStore = create(
+  devtools(
+    (set) => ({
   // ======================================
   // 상태 정의
   // ======================================
@@ -63,6 +66,11 @@ const useCountStore = create((set) => ({
    * 직접 새로운 상태 객체를 전달
    */
   reset: () => set({ count: 0 }),
-}))
+}),
+    {
+      name: 'count-store', // DevTools에서 표시될 스토어 이름
+    }
+  )
+)
 
 export default useCountStore

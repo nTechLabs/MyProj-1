@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { subscribeWithSelector } from 'zustand/middleware'
+import { subscribeWithSelector, devtools } from 'zustand/middleware'
 
 /**
  * 체크박스 상태 관리를 위한 공통 스토어 팩토리
@@ -11,8 +11,9 @@ import { subscribeWithSelector } from 'zustand/middleware'
 export const createCheckedStore = (entityName = 'Entity') => {
   // 메인 스토어 생성
   const useCheckedStore = create(
-    subscribeWithSelector(
-      (set, get) => ({
+    devtools(
+      subscribeWithSelector(
+        (set, get) => ({
         // 체크된 항목들의 ID Set (O(1) 조회 성능)
         checkedIds: new Set(),
         
@@ -87,13 +88,12 @@ export const createCheckedStore = (entityName = 'Entity') => {
           return Array.from(checkedIds).every(id => allIdsArray.includes(id))
         }
       })
+    ),
+      {
+        name: `${entityName}-checked-store`, // DevTools에서 표시될 스토어 이름
+      }
     )
   )
-
-  // 개발 환경에서 디버깅을 위한 store 이름 설정
-  if (process.env.NODE_ENV === 'development') {
-    useCheckedStore.displayName = `${entityName}CheckedStore`
-  }
 
   return useCheckedStore
 }
