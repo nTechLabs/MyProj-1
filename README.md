@@ -1,14 +1,34 @@
 # React + Vite + React Query + Zustand + Ant Design
 
-이 프로젝트는 React와 Vite를 기반으로 하며, 다음과 같은 주요 라이브러리들을 사용합니다:
+**고성능 React 애플리케이션** - 현대적인 기술 스택과 최적화 기법이 적용된 풀스택 데모 프로젝트
+
+이 프로젝트는 React 생태계의 최신 기술들을 통합하여 **성능 최적화**와 **개발자 경험(DX)** 모두를 고려한 최적의 아키텍처를 제공합니다.
 
 ## 🚀 주요 기술 스택
 
-- **React 18** - 사용자 인터페이스 구축을 위한 JavaScript 라이브러리
-- **Vite** - 빠른 개발 서버와 빌드 도구
-- **React Query (@tanstack/react-query)** - 서버 상태 관리와 데이터 페칭
-- **Zustand** - 경량 클라이언트 상태 관리
-- **Ant Design** - 기업급 UI 컴포넌트 라이브러리
+### Core Framework
+- **React 18** - 최신 Concurrent Features와 Automatic Batching 지원
+- **Vite** - 번개같이 빠른 개발 서버와 HMR (Hot Module Replacement)
+- **JSX** - 컴포넌트 기반 선언적 UI 구성
+
+### 상태 관리 & 데이터 페칭
+- **React Query (@tanstack/react-query v5)** - 서버 상태 관리의 표준
+  - 자동 캐싱, 백그라운드 업데이트, Optimistic Updates
+  - Stale-While-Revalidate 전략으로 최적의 사용자 경험
+- **Zustand** - 가볍고 직관적인 클라이언트 상태 관리 (2.5KB)
+  - Redux 복잡성 없는 간단한 API
+  - TypeScript 완벽 지원
+
+### UI & 스타일링
+- **Ant Design v5** - 기업급 React UI 컴포넌트 라이브러리
+  - 180+ 고품질 컴포넌트
+  - 한국어 로케일 완벽 지원
+  - 다크 모드 및 테마 커스터마이징
+
+### 라우팅 & 네비게이션
+- **React Router v7** - SPA를 위한 선언적 라우팅
+  - Code Splitting과 Lazy Loading으로 성능 최적화
+  - 중첩 라우팅과 동적 라우팅 지원
 
 ## 📦 설치 및 실행
 

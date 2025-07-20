@@ -1,40 +1,120 @@
 /**
- * 성능 최적화 유틸리티
- * React 컴포넌트 및 애플리케이션 성능 측정 도구
+ * 성능 최적화 및 모니터링 유틸리티
+ * 
+ * React 애플리케이션의 성능을 실시간으로 측정하고 분석하는 도구 모음
+ * 개발 환경에서 성능 병목지점을 발견하고 최적화 포인트를 제공
+ * 
+ * 주요 기능:
+ * - 컴포넌트별 렌더링 시간 측정
+ * - 메모리 사용량 추적
+ * - Long Task 감지 (50ms 이상 블로킹 작업)
+ * - React Query 캐시 상태 분석
+ * - 자동화된 성능 리포트 생성
+ * - 페이지 로드 성능 측정
+ * 
+ * 사용법:
+ * - 개발 환경에서만 자동 활성화
+ * - 컴포넌트에서 measureRenderTime() 사용
+ * - main.jsx에서 initPerformanceMonitoring() 호출
  */
 
+// ======================================
 // 컴포넌트 렌더링 성능 측정
+// ======================================
+
+/**
+ * React 컴포넌트의 렌더링 시간을 측정하는 함수
+ * Performance API를 사용하여 정확한 시간 측정
+ * 
+ * 사용법:
+ * ```javascript
+ * const timer = measureRenderTime('MyComponent')
+ * timer.start()
+ * // ... 컴포넌트 렌더링 로직
+ * const duration = timer.end() // 밀리초 단위 렌더링 시간 반환
+ * ```
+ * 
+ * @param {string} componentName - 측정할 컴포넌트 이름
+ * @returns {Object} start, end 메서드를 포함한 타이머 객체
+ */
 export const measureRenderTime = (componentName) => {
   return {
+    /**
+     * 렌더링 시간 측정 시작
+     * Performance Mark API를 사용하여 시작점 기록
+     */
     start: () => performance.mark(`${componentName}-start`),
+    
+    /**
+     * 렌더링 시간 측정 종료 및 결과 반환
+     * 시작점과 종료점 사이의 duration 계산
+     * 
+     * @returns {number} 렌더링에 소요된 시간 (밀리초)
+     */
     end: () => {
+      // 종료 지점 마크
       performance.mark(`${componentName}-end`)
+      
+      // 시작점과 종료점 사이의 시간 측정
       performance.measure(
         `${componentName}-render`,
         `${componentName}-start`,
         `${componentName}-end`
       )
       
+      // 측정 결과 가져오기
       const measure = performance.getEntriesByName(`${componentName}-render`)[0]
+      
+      // 개발 환경에서만 콘솔 출력
       if (process.env.NODE_ENV === 'development') {
-        console.log(`🔍 [Performance] ${componentName} rendered in ${measure.duration.toFixed(2)}ms`)
+        const duration = measure.duration.toFixed(2)
+        console.log(`🔍 [Performance] ${componentName} rendered in ${duration}ms`)
+        
+        // 50ms 이상 걸린 렌더링에 대해 경고
+        if (measure.duration > 50) {
+          console.warn(`⚠️  [Performance Warning] ${componentName} took ${duration}ms to render (>50ms)`)
+        }
       }
+      
       return measure.duration
     }
   }
 }
 
-// 메모리 사용량 측정 (브라우저 지원 시)
+// ======================================
+// 메모리 사용량 측정
+// ======================================
+
+/**
+ * 브라우저의 메모리 사용량을 측정하는 함수
+ * Chrome 기반 브라우저에서만 지원 (performance.memory API)
+ * 
+ * 측정 항목:
+ * - usedJSHeapSize: 현재 사용 중인 JavaScript 힙 메모리
+ * - totalJSHeapSize: 전체 할당된 JavaScript 힙 메모리
+ * - jsHeapSizeLimit: JavaScript 힙 메모리 한계
+ * 
+ * @returns {Object|null} 메모리 사용량 정보 (MB 단위) 또는 null (지원되지 않는 브라우저)
+ */
 export const measureMemoryUsage = () => {
+  // Chrome 기반 브라우저에서만 performance.memory API 지원
   if ('memory' in performance) {
     const memory = performance.memory
-    return {
-      usedJSHeapSize: (memory.usedJSHeapSize / 1048576).toFixed(2), // MB
-      totalJSHeapSize: (memory.totalJSHeapSize / 1048576).toFixed(2), // MB
-      jsHeapSizeLimit: (memory.jsHeapSizeLimit / 1048576).toFixed(2) // MB
+    const memoryInfo = {
+      usedJSHeapSize: (memory.usedJSHeapSize / 1048576).toFixed(2), // MB 단위 변환
+      totalJSHeapSize: (memory.totalJSHeapSize / 1048576).toFixed(2), // MB 단위 변환
+      jsHeapSizeLimit: (memory.jsHeapSizeLimit / 1048576).toFixed(2) // MB 단위 변환
     }
+    
+    // 메모리 사용량이 100MB를 초과할 경우 경고
+    if (memory.usedJSHeapSize / 1048576 > 100) {
+      console.warn(`⚠️  [Memory Warning] High memory usage: ${memoryInfo.usedJSHeapSize}MB`)
+    }
+    
+    return memoryInfo
   }
-  return null
+  
+  return null // 지원되지 않는 브라우저
 }
 
 // 번들 크기 분석 (개발 환경용)
