@@ -19,6 +19,12 @@
   - Redux 복잡성 없는 간단한 API
   - TypeScript 완벽 지원
 
+### HTTP 클라이언트
+- **Axios** - Promise 기반 HTTP 클라이언트
+  - 자동 JSON 파싱
+  - 향상된 에러 처리
+  - 요청/응답 인터셉터 지원
+
 ### UI & 스타일링
 - **Ant Design v5** - 기업급 React UI 컴포넌트 라이브러리
   - 180+ 고품질 컴포넌트
@@ -59,7 +65,8 @@ src/
 ├── components/     # React 컴포넌트들
 ├── store/         # Zustand 스토어들
 ├── hooks/         # 커스텀 훅들 (React Query 포함)
-├── api/           # API 관련 함수들
+├── api/           # API 관련 함수들 (Axios 기반)
+├── utils/         # 유틸리티 함수들
 ├── App.jsx        # 메인 앱 컴포넌트
 └── main.jsx       # 앱 진입점
 ```

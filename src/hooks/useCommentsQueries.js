@@ -115,7 +115,7 @@ export const useDeleteCommentsMutation = () => {
   return useMutation({
     mutationFn: async (ids) => {
       const results = await Promise.all(
-        ids.map(id => commentsApi.delete(id))
+        ids.map(id => commentsApi.remove(id))
       )
       return results
     },

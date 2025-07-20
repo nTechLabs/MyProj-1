@@ -3,6 +3,7 @@
  * @description Comments 엔티티에 대한 CRUD 작업을 위한 API 함수들
  */
 
+import axios from 'axios'
 import { COMMENTS_API_URL } from './apis'
 
 /**
@@ -15,11 +16,8 @@ export const commentsApi = {
    * @returns {Promise<Array>} 댓글 목록
    */
   getAll: async () => {
-    const response = await fetch(COMMENTS_API_URL)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+    const response = await axios.get(COMMENTS_API_URL)
+    return response.data
   },
 
   /**
@@ -28,11 +26,8 @@ export const commentsApi = {
    * @returns {Promise<Object>} 댓글 객체
    */
   getById: async (id) => {
-    const response = await fetch(`${COMMENTS_API_URL}/${id}`)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+    const response = await axios.get(`${COMMENTS_API_URL}/${id}`)
+    return response.data
   },
 
   /**
@@ -45,17 +40,8 @@ export const commentsApi = {
    * @returns {Promise<Object>} 생성된 댓글 객체
    */
   create: async (data) => {
-    const response = await fetch(COMMENTS_API_URL, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify(data)
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+    const response = await axios.post(COMMENTS_API_URL, data)
+    return response.data
   },
 
   /**
@@ -65,17 +51,8 @@ export const commentsApi = {
    * @returns {Promise<Object>} 수정된 댓글 객체
    */
   update: async (id, data) => {
-    const response = await fetch(`${COMMENTS_API_URL}/${id}`, {
-      method: 'PUT',
-      headers: { 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify(data)
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+    const response = await axios.put(`${COMMENTS_API_URL}/${id}`, data)
+    return response.data
   },
 
   /**
@@ -84,12 +61,19 @@ export const commentsApi = {
    * @returns {Promise<Object>} 삭제 결과
    */
   delete: async (id) => {
-    const response = await fetch(`${COMMENTS_API_URL}/${id}`, {
-      method: 'DELETE'
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+    const response = await axios.delete(`${COMMENTS_API_URL}/${id}`)
+    return response.data
+  },
+
+  /**
+   * 여러 댓글을 일괄 삭제합니다
+   * @param {Array<string|number>} ids - 삭제할 댓글 ID 배열
+   * @returns {Promise<Array>} 삭제된 ID 배열
+   */
+  deleteMany: async (ids) => {
+    const results = await Promise.all(
+      ids.map(id => commentsApi.remove(id))
+    )
+    return ids // 삭제된 ID 배열 반환
   }
 }
