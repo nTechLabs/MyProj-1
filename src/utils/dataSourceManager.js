@@ -10,9 +10,6 @@ const USE_NETWORK_PHOTOS = import.meta.env.VITE_USE_NETWORK_PHOTOS === 'true'
 const USE_NETWORK_TODOS = import.meta.env.VITE_USE_NETWORK_TODOS === 'true'
 const USE_NETWORK_POSTS = import.meta.env.VITE_USE_NETWORK_POSTS === 'true'
 
-// 하위 호환성을 위한 전역 설정
-const USE_NETWORK = import.meta.env.VITE_USE_NETWORK === 'true'
-
 // API별 네트워크 설정 맵
 const API_NETWORK_SETTINGS = {
   users: USE_NETWORK_USERS,
@@ -90,14 +87,13 @@ export const findLocalDataById = async (dataType, id) => {
  * @param {string} apiType - API 타입 (users, comments, photos, todos, posts)
  * @returns {boolean} 네트워크 사용 여부
  */
-export const isNetworkEnabled = (apiType = null) => {
+export const isNetworkEnabled = (apiType) => {
   if (!apiType) {
-    // API 타입이 지정되지 않은 경우 전역 설정 반환 (하위 호환성)
-    return USE_NETWORK
+    throw new Error('API 타입은 필수입니다. (users, comments, photos, todos, posts 중 하나)')
   }
   
   // 특정 API의 네트워크 설정 반환
-  return API_NETWORK_SETTINGS[apiType] ?? USE_NETWORK
+  return API_NETWORK_SETTINGS[apiType] ?? false
 }
 
 /**
@@ -106,7 +102,6 @@ export const isNetworkEnabled = (apiType = null) => {
  */
 export const getAllNetworkSettings = () => {
   return {
-    global: USE_NETWORK,
     ...API_NETWORK_SETTINGS
   }
 }
@@ -116,7 +111,6 @@ export const getAllNetworkSettings = () => {
  */
 export const logDataSourceInfo = () => {
   console.log('🌐 Data Source Configuration:')
-  console.log(`  Global (VITE_USE_NETWORK): ${USE_NETWORK ? 'Network API' : 'Local JSON'}`)
   console.log(`  Users: ${USE_NETWORK_USERS ? 'Network API' : 'Local JSON'}`)
   console.log(`  Comments: ${USE_NETWORK_COMMENTS ? 'Network API' : 'Local JSON'}`)
   console.log(`  Photos: ${USE_NETWORK_PHOTOS ? 'Network API' : 'Local JSON'}`)
