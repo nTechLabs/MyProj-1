@@ -25,6 +25,7 @@ import './styles/pages.css'  // 페이지별 공통 스타일
 
 import App from './App.jsx'
 import { initPerformanceMonitoring, measurePageLoad } from './utils/performanceUtils.js'
+import { logDataSourceInfo } from './utils/dataSourceManager.js'
 
 // ======================================
 // 성능 모니터링 초기화 (개발 환경 전용)
@@ -34,6 +35,7 @@ import { initPerformanceMonitoring, measurePageLoad } from './utils/performanceU
 if (process.env.NODE_ENV === 'development') {
   initPerformanceMonitoring() // 실시간 성능 모니터링 시작
   measurePageLoad()           // 페이지 로드 시간 측정
+  logDataSourceInfo()         // 데이터 소스 설정 정보 출력
 }
 
 // ======================================
@@ -215,7 +217,7 @@ createRoot(document.getElementById('root')).render(
             {/* 개발 환경에서만 React Query Devtools 표시 */}
             {process.env.NODE_ENV === 'development' && (
               <ReactQueryDevtools 
-                initialIsOpen={false} 
+                initialIsOpen={true} 
                 position="bottom-right"
               />
             )}

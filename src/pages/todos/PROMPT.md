@@ -67,7 +67,7 @@
 
 6. **src/api/{ENTITY_NAME.toLowerCase()}Api.js**
    - 엔티티별 API 함수들 모음
-   - fetch API 기반 (axios 대신 fetch 사용)
+   - axios 기반 HTTP 클라이언트 사용
    - 기본 구조: `{entity}Api = { getAll, getById, create, update, delete }`
    - HTTP 상태 코드 검사 및 에러 처리
    - JSON 데이터 변환 처리
@@ -113,58 +113,35 @@ import './{entity}-list.css'     // 엔티티 특화 스타일
 
 #### **API 파일 (src/api/{entity}Api.js)**:
 ```javascript
+// axios import 추가
+import axios from 'axios'
 // 기본 구조 예시
 const API_URL = 'https://api.example.com/{entities}'
 
 export const {entity}Api = {
   getAll: async () => {
-    const response = await fetch(API_URL)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+    const response = await axios.get(API_URL)
+    return response.data
   },
   
   getById: async (id) => {
-    const response = await fetch(`${API_URL}/${id}`)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+    const response = await axios.get(`${API_URL}/${id}`)
+    return response.data
   },
   
   create: async (data) => {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+    const response = await axios.post(API_URL, data)
+    return response.data
   },
   
   update: async (id, data) => {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+    const response = await axios.put(`${API_URL}/${id}`, data)
+    return response.data
   },
   
-  delete: async (id) => {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: 'DELETE'
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    return response.json()
+  remove: async (id) => {
+    const response = await axios.delete(`${API_URL}/${id}`)
+    return response.data
   }
 }
 ```
@@ -285,7 +262,7 @@ export const useDelete{Entity}sMutation = () => {
 - React Query (@tanstack/react-query v5)
 - Zustand (useCheckedStore, useNotificationStore)
 - Ant Design v5 (List, Button, Alert, Spin, FloatButton, Form, Input, Card, Typography, Space, Checkbox)
-- **Fetch API** (axios 대신 fetch 사용)
+- **Axios HTTP Client** (자동 JSON 파싱, 향상된 에러 처리)
 - 공통 스타일 시스템 (src/styles/pages.css)
 - React.memo + useCallback 성능 최적화
 
@@ -332,7 +309,7 @@ export const useDelete{Entity}sMutation = () => {
 모든 파일에 상세한 주석을 포함하고, TypeScript 타입 정의가 필요한 경우 JSDoc을 사용하세요.
 
 **중요 구현 가이드**: 
-- **API 계층**: fetch API 사용, HTTP 상태 검사, JSON 변환 처리
+- **API 계층**: axios 사용, 자동 JSON 파싱, 향상된 에러 처리
 - **에러 처리**: `handleReactQueryError(error, context)` 함수 활용
 - **알림 시스템**: `useNotificationStore`의 `showSuccess/showError` 메서드 사용
 - **상태 관리**: `useCheckedStore`로 체크박스 상태, `useClearChecked`로 초기화
@@ -467,7 +444,7 @@ queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
 ## 생성 후 확인사항
 
 1. ✅ **Import/Export**: 모든 import/export가 올바르게 작동하는지 확인
-2. ✅ **API 연동**: fetch API를 사용한 엔드포인트가 올바르게 설정되었는지 확인  
+2. ✅ **API 연동**: axios를 사용한 엔드포인트가 올바르게 설정되었는지 확인  
 3. ✅ **라우팅**: 라우터 설정이 routes.js에 추가되었는지 확인
 4. ✅ **공통 함수**: handleReactQueryError, createQueryOptions 등 프로젝트 공통 함수 사용 확인
 5. ✅ **공통 스토어**: useNotificationStore, useCheckedStore 적절히 활용했는지 확인
@@ -500,8 +477,8 @@ queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
 - `useCheckedStore`: checkedIds, toggleCheck, clearChecked, 체크박스 상태 관리
 - 선택자 헬퍼: useClearChecked, useCheckedIds 성능 최적화
 
-### 🌐 Fetch API 패턴
-- axios 대신 fetch API 사용으로 번들 크기 최적화
+### 🌐 Axios HTTP Client 패턴
+- axios를 사용한 HTTP 클라이언트로 자동 JSON 파싱과 향상된 에러 처리
 - HTTP 상태 코드 검사 및 JSON 변환 처리
 - 일관된 에러 처리 패턴
 

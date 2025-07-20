@@ -1,5 +1,11 @@
+/**
+ * Posts API - JSONPlaceholder를 사용한 게시글 데이터 관리
+ * @description Posts 엔티티에 대한 CRUD 작업을 위한 API 함수들
+ */
 
+import axios from 'axios'
 import { POSTS_API_URL } from './apis'
+import { isNetworkEnabled, loadLocalData, findLocalDataById } from '../utils/dataSourceManager'
 
 /**
  * Posts API 관련 함수들
@@ -7,67 +13,72 @@ import { POSTS_API_URL } from './apis'
 export const postsApi = {
   // 모든 게시글 조회
   getAll: async () => {
-    const response = await fetch(POSTS_API_URL)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (isNetworkEnabled('posts')) {
+      const response = await axios.get(POSTS_API_URL)
+      return response.data
+    } else {
+      return await loadLocalData('posts')
     }
-    return response.json()
   },
 
   // 특정 게시글 조회
   getById: async (id) => {
-    const response = await fetch(`${POSTS_API_URL}/${id}`)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (isNetworkEnabled('posts')) {
+      const response = await axios.get(`${POSTS_API_URL}/${id}`)
+      return response.data
+    } else {
+      return await findLocalDataById('posts', id)
     }
-    return response.json()
   },
 
   // 새 게시글 추가
   create: async (postData) => {
-    const response = await fetch(POSTS_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(postData)
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (isNetworkEnabled('posts')) {
+      const response = await axios.post(POSTS_API_URL, postData)
+      return response.data
+    } else {
+      const newPost = {
+        id: Date.now(),
+        ...postData
+      }
+      console.log('📝 [Local Mode] Created post:', newPost)
+      return newPost
     }
-    return response.json()
   },
 
   // 게시글 수정
   update: async (id, postData) => {
-    const response = await fetch(`${POSTS_API_URL}/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(postData)
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (isNetworkEnabled('posts')) {
+      const response = await axios.put(`${POSTS_API_URL}/${id}`, postData)
+      return response.data
+    } else {
+      const existingPost = await findLocalDataById('posts', id)
+      const updatedPost = { ...existingPost, ...postData }
+      console.log('✏️ [Local Mode] Updated post:', updatedPost)
+      return updatedPost
     }
-    return response.json()
   },
 
   // 게시글 삭제
-  delete: async (id) => {
-    const response = await fetch(`${POSTS_API_URL}/${id}`, {
-      method: 'DELETE'
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+  remove: async (id) => {
+    if (isNetworkEnabled('posts')) {
+      const response = await axios.delete(`${POSTS_API_URL}/${id}`)
+      return response.data
+    } else {
+      console.log('🗑️ [Local Mode] Deleted post with id:', id)
+      return { success: true, id }
     }
-    return response.json()
   },
 
   // 다중 게시글 삭제
   deleteMany: async (ids) => {
-    const deletePromises = ids.map(id => postsApi.delete(id))
-    await Promise.all(deletePromises)
-    return ids
+    if (isNetworkEnabled('posts')) {
+      const deletePromises = ids.map(id => postsApi.remove(id))
+      await Promise.all(deletePromises)
+      return ids
+    } else {
+      console.log('🗑️ [Local Mode] Bulk deleted posts with ids:', ids)
+      return ids
+    }
   }
 }

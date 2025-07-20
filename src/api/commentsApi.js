@@ -3,7 +3,9 @@
  * @description Comments 엔티티에 대한 CRUD 작업을 위한 API 함수들
  */
 
+import axios from 'axios'
 import { COMMENTS_API_URL } from './apis'
+import { isNetworkEnabled, loadLocalData, findLocalDataById } from '../utils/dataSourceManager'
 
 /**
  * Comments API 객체
@@ -15,11 +17,12 @@ export const commentsApi = {
    * @returns {Promise<Array>} 댓글 목록
    */
   getAll: async () => {
-    const response = await fetch(COMMENTS_API_URL)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (isNetworkEnabled('comments')) {
+      const response = await axios.get(COMMENTS_API_URL)
+      return response.data
+    } else {
+      return await loadLocalData('comments')
     }
-    return response.json()
   },
 
   /**
@@ -28,11 +31,12 @@ export const commentsApi = {
    * @returns {Promise<Object>} 댓글 객체
    */
   getById: async (id) => {
-    const response = await fetch(`${COMMENTS_API_URL}/${id}`)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (isNetworkEnabled('comments')) {
+      const response = await axios.get(`${COMMENTS_API_URL}/${id}`)
+      return response.data
+    } else {
+      return await findLocalDataById('comments', id)
     }
-    return response.json()
   },
 
   /**
@@ -45,17 +49,18 @@ export const commentsApi = {
    * @returns {Promise<Object>} 생성된 댓글 객체
    */
   create: async (data) => {
-    const response = await fetch(COMMENTS_API_URL, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify(data)
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (isNetworkEnabled('comments')) {
+      const response = await axios.post(COMMENTS_API_URL, data)
+      return response.data
+    } else {
+      // 로컬 모드에서의 가상 응답 반환
+      const newComment = {
+        id: Date.now(), // 임시 ID
+        ...data
+      }
+      console.log('💬 [Local Mode] Created comment:', newComment)
+      return newComment
     }
-    return response.json()
   },
 
   /**
@@ -65,17 +70,16 @@ export const commentsApi = {
    * @returns {Promise<Object>} 수정된 댓글 객체
    */
   update: async (id, data) => {
-    const response = await fetch(`${COMMENTS_API_URL}/${id}`, {
-      method: 'PUT',
-      headers: { 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify(data)
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (isNetworkEnabled('comments')) {
+      const response = await axios.put(`${COMMENTS_API_URL}/${id}`, data)
+      return response.data
+    } else {
+      // 로컬 모드에서의 기존 데이터와 병합한 가상 응답 반환
+      const existingComment = await findLocalDataById('comments', id)
+      const updatedComment = { ...existingComment, ...data }
+      console.log('✏️ [Local Mode] Updated comment:', updatedComment)
+      return updatedComment
     }
-    return response.json()
   },
 
   /**
@@ -84,12 +88,31 @@ export const commentsApi = {
    * @returns {Promise<Object>} 삭제 결과
    */
   delete: async (id) => {
-    const response = await fetch(`${COMMENTS_API_URL}/${id}`, {
-      method: 'DELETE'
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (isNetworkEnabled('comments')) {
+      const response = await axios.delete(`${COMMENTS_API_URL}/${id}`)
+      return response.data
+    } else {
+      // 로컬 모드에서의 가상 삭제 응답 반환
+      console.log('🗑️ [Local Mode] Deleted comment with id:', id)
+      return { success: true, id }
     }
-    return response.json()
+  },
+
+  /**
+   * 여러 댓글을 일괄 삭제합니다
+   * @param {Array<string|number>} ids - 삭제할 댓글 ID 배열
+   * @returns {Promise<Array>} 삭제된 ID 배열
+   */
+  deleteMany: async (ids) => {
+    if (isNetworkEnabled('comments')) {
+      const results = await Promise.all(
+        ids.map(id => commentsApi.delete(id))
+      )
+      return ids // 삭제된 ID 배열 반환
+    } else {
+      // 로컬 모드에서의 가상 일괄 삭제 응답 반환
+      console.log('🗑️ [Local Mode] Bulk deleted comments with ids:', ids)
+      return ids
+    }
   }
 }
