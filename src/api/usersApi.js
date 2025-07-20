@@ -14,7 +14,7 @@ import { isNetworkEnabled, loadLocalData, findLocalDataById } from '../utils/dat
 export const usersApi = {
   // 모든 사용자 조회
   getAll: async () => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('users')) {
       const response = await axios.get(USERS_API_URL)
       return response.data
     } else {
@@ -24,7 +24,7 @@ export const usersApi = {
 
   // 특정 사용자 조회
   getById: async (id) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('users')) {
       const response = await axios.get(`${USERS_API_URL}/${id}`)
       return response.data
     } else {
@@ -34,7 +34,7 @@ export const usersApi = {
 
   // 새 사용자 추가
   create: async (userData) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('users')) {
       const response = await axios.post(USERS_API_URL, userData)
       return response.data
     } else {
@@ -49,7 +49,7 @@ export const usersApi = {
 
   // 사용자 수정
   update: async (id, userData) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('users')) {
       const response = await axios.put(`${USERS_API_URL}/${id}`, userData)
       return response.data
     } else {
@@ -62,7 +62,7 @@ export const usersApi = {
 
   // 사용자 삭제
   remove: async (id) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('users')) {
       const response = await axios.delete(`${USERS_API_URL}/${id}`)
       return response.data
     } else {
@@ -73,7 +73,7 @@ export const usersApi = {
 
   // 여러 사용자 삭제 (실제 API에서는 지원하지 않으므로 개별 삭제)
   deleteMultiple: async (ids) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('users')) {
       const deletePromises = ids.map(async id => {
         try {
           await axios.delete(`${USERS_API_URL}/${id}`)

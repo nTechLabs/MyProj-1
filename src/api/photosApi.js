@@ -13,7 +13,7 @@ import { isNetworkEnabled, loadLocalData, findLocalDataById } from '../utils/dat
 export const photosApi = {
   // 모든 사진 조회
   getAll: async () => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('photos')) {
       const response = await axios.get(PHOTOS_API_URL)
       return response.data
     } else {
@@ -23,7 +23,7 @@ export const photosApi = {
 
   // 특정 사진 조회
   getById: async (id) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('photos')) {
       const response = await axios.get(`${PHOTOS_API_URL}/${id}`)
       return response.data
     } else {
@@ -33,7 +33,7 @@ export const photosApi = {
 
   // 새 사진 추가
   create: async (photoData) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('photos')) {
       const response = await axios.post(PHOTOS_API_URL, photoData)
       return response.data
     } else {
@@ -48,7 +48,7 @@ export const photosApi = {
 
   // 사진 수정
   update: async (id, photoData) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('photos')) {
       const response = await axios.put(`${PHOTOS_API_URL}/${id}`, photoData)
       return response.data
     } else {
@@ -61,7 +61,7 @@ export const photosApi = {
 
   // 사진 삭제
   remove: async (id) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('photos')) {
       const response = await axios.delete(`${PHOTOS_API_URL}/${id}`)
       return response.data
     } else {
@@ -72,7 +72,7 @@ export const photosApi = {
 
   // 다중 사진 삭제
   deleteMany: async (ids) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('photos')) {
       const results = await Promise.all(
         ids.map(id => photosApi.remove(id))
       )

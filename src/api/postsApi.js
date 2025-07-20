@@ -1,4 +1,3 @@
-
 /**
  * Posts API - JSONPlaceholder를 사용한 게시글 데이터 관리
  * @description Posts 엔티티에 대한 CRUD 작업을 위한 API 함수들
@@ -14,7 +13,7 @@ import { isNetworkEnabled, loadLocalData, findLocalDataById } from '../utils/dat
 export const postsApi = {
   // 모든 게시글 조회
   getAll: async () => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('posts')) {
       const response = await axios.get(POSTS_API_URL)
       return response.data
     } else {
@@ -24,7 +23,7 @@ export const postsApi = {
 
   // 특정 게시글 조회
   getById: async (id) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('posts')) {
       const response = await axios.get(`${POSTS_API_URL}/${id}`)
       return response.data
     } else {
@@ -34,7 +33,7 @@ export const postsApi = {
 
   // 새 게시글 추가
   create: async (postData) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('posts')) {
       const response = await axios.post(POSTS_API_URL, postData)
       return response.data
     } else {
@@ -42,14 +41,14 @@ export const postsApi = {
         id: Date.now(),
         ...postData
       }
-      console.log('📄 [Local Mode] Created post:', newPost)
+      console.log('📝 [Local Mode] Created post:', newPost)
       return newPost
     }
   },
 
   // 게시글 수정
   update: async (id, postData) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('posts')) {
       const response = await axios.put(`${POSTS_API_URL}/${id}`, postData)
       return response.data
     } else {
@@ -62,7 +61,7 @@ export const postsApi = {
 
   // 게시글 삭제
   remove: async (id) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('posts')) {
       const response = await axios.delete(`${POSTS_API_URL}/${id}`)
       return response.data
     } else {
@@ -73,7 +72,7 @@ export const postsApi = {
 
   // 다중 게시글 삭제
   deleteMany: async (ids) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('posts')) {
       const deletePromises = ids.map(id => postsApi.remove(id))
       await Promise.all(deletePromises)
       return ids

@@ -14,7 +14,7 @@ import { isNetworkEnabled, loadLocalData, findLocalDataById } from '../utils/dat
 export const todosApi = {
   // 모든 할일 조회
   getAll: async () => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('todos')) {
       const response = await axios.get(TODOS_API_URL)
       return response.data
     } else {
@@ -24,7 +24,7 @@ export const todosApi = {
 
   // 특정 할일 조회
   getById: async (id) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('todos')) {
       const response = await axios.get(`${TODOS_API_URL}/${id}`)
       return response.data
     } else {
@@ -34,7 +34,7 @@ export const todosApi = {
 
   // 새 할일 추가
   create: async (todoData) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('todos')) {
       const response = await axios.post(TODOS_API_URL, todoData)
       return response.data
     } else {
@@ -49,7 +49,7 @@ export const todosApi = {
 
   // 할일 수정
   update: async (id, todoData) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('todos')) {
       const response = await axios.put(`${TODOS_API_URL}/${id}`, todoData)
       return response.data
     } else {
@@ -62,7 +62,7 @@ export const todosApi = {
 
   // 할일 삭제
   remove: async (id) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('todos')) {
       const response = await axios.delete(`${TODOS_API_URL}/${id}`)
       return response.data
     } else {
@@ -73,7 +73,7 @@ export const todosApi = {
 
   // 여러 할일 삭제 (실제 API에서는 지원하지 않으므로 개별 삭제)
   deleteMultiple: async (ids) => {
-    if (isNetworkEnabled()) {
+    if (isNetworkEnabled('todos')) {
       const deletePromises = ids.map(async id => {
         try {
           await axios.delete(`${TODOS_API_URL}/${id}`)

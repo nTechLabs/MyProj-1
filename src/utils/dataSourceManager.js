@@ -1,10 +1,26 @@
 /**
  * Data Source Manager - 환경 변수에 따른 데이터 소스 관리
- * @description 네트워크 설정에 따라 API 호출 또는 로컬 JSON 파일 사용을 결정
+ * @description 각 API별 네트워크 설정에 따라 API 호출 또는 로컬 JSON 파일 사용을 결정
  */
 
-// 환경 변수에서 네트워크 사용 여부 확인
+// 환경 변수에서 각 API별 네트워크 사용 여부 확인
+const USE_NETWORK_USERS = import.meta.env.VITE_USE_NETWORK_USERS === 'true'
+const USE_NETWORK_COMMENTS = import.meta.env.VITE_USE_NETWORK_COMMENTS === 'true'
+const USE_NETWORK_PHOTOS = import.meta.env.VITE_USE_NETWORK_PHOTOS === 'true'
+const USE_NETWORK_TODOS = import.meta.env.VITE_USE_NETWORK_TODOS === 'true'
+const USE_NETWORK_POSTS = import.meta.env.VITE_USE_NETWORK_POSTS === 'true'
+
+// 하위 호환성을 위한 전역 설정
 const USE_NETWORK = import.meta.env.VITE_USE_NETWORK === 'true'
+
+// API별 네트워크 설정 맵
+const API_NETWORK_SETTINGS = {
+  users: USE_NETWORK_USERS,
+  comments: USE_NETWORK_COMMENTS,
+  photos: USE_NETWORK_PHOTOS,
+  todos: USE_NETWORK_TODOS,
+  posts: USE_NETWORK_POSTS
+}
 
 // 로컬 JSON 파일 경로 매핑 (public 폴더 기준)
 const LOCAL_DATA_PATHS = {
@@ -70,15 +86,40 @@ export const findLocalDataById = async (dataType, id) => {
 }
 
 /**
- * 현재 네트워크 사용 설정을 반환합니다
+ * 특정 API의 네트워크 사용 설정을 반환합니다
+ * @param {string} apiType - API 타입 (users, comments, photos, todos, posts)
  * @returns {boolean} 네트워크 사용 여부
  */
-export const isNetworkEnabled = () => USE_NETWORK
+export const isNetworkEnabled = (apiType = null) => {
+  if (!apiType) {
+    // API 타입이 지정되지 않은 경우 전역 설정 반환 (하위 호환성)
+    return USE_NETWORK
+  }
+  
+  // 특정 API의 네트워크 설정 반환
+  return API_NETWORK_SETTINGS[apiType] ?? USE_NETWORK
+}
+
+/**
+ * 모든 API의 네트워크 설정을 반환합니다
+ * @returns {Object} API별 네트워크 설정 객체
+ */
+export const getAllNetworkSettings = () => {
+  return {
+    global: USE_NETWORK,
+    ...API_NETWORK_SETTINGS
+  }
+}
 
 /**
  * 개발용 - 네트워크 설정 정보 출력
  */
 export const logDataSourceInfo = () => {
-  console.log(`🌐 Data Source: ${USE_NETWORK ? 'Network API' : 'Local JSON Files'}`)
-  console.log(`� Environment Variable VITE_USE_NETWORK:`, import.meta.env.VITE_USE_NETWORK)
+  console.log('🌐 Data Source Configuration:')
+  console.log(`  Global (VITE_USE_NETWORK): ${USE_NETWORK ? 'Network API' : 'Local JSON'}`)
+  console.log(`  Users: ${USE_NETWORK_USERS ? 'Network API' : 'Local JSON'}`)
+  console.log(`  Comments: ${USE_NETWORK_COMMENTS ? 'Network API' : 'Local JSON'}`)
+  console.log(`  Photos: ${USE_NETWORK_PHOTOS ? 'Network API' : 'Local JSON'}`)
+  console.log(`  Todos: ${USE_NETWORK_TODOS ? 'Network API' : 'Local JSON'}`)
+  console.log(`  Posts: ${USE_NETWORK_POSTS ? 'Network API' : 'Local JSON'}`)
 }
