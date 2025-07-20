@@ -43,17 +43,31 @@
 npm install
 ```
 
-### 2. 개발 서버 실행
+### 2. 환경 변수 설정
+프로젝트 루트에 `.env` 파일을 생성하고 다음과 같이 설정하세요:
+
+```bash
+# 네트워크 사용 여부 설정
+# true: 실제 API 서버에서 데이터 가져오기 (JSONPlaceholder)
+# false: 로컬 JSON 파일에서 데이터 가져오기 (/src/apidata/*.json)
+VITE_USE_NETWORK=false
+```
+
+#### 데이터 소스 옵션:
+- **네트워크 모드 (`VITE_USE_NETWORK=true`)**: JSONPlaceholder API에서 실시간 데이터를 가져옵니다
+- **로컬 모드 (`VITE_USE_NETWORK=false`)**: `/src/apidata/` 디렉토리의 JSON 파일에서 데이터를 가져옵니다
+
+### 3. 개발 서버 실행
 ```bash
 npm run dev
 ```
 
-### 3. 빌드
+### 4. 빌드
 ```bash
 npm run build
 ```
 
-### 4. 빌드된 프로젝트 미리보기
+### 5. 빌드된 프로젝트 미리보기
 ```bash
 npm run preview
 ```

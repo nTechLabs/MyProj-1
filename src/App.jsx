@@ -9,8 +9,10 @@
  * - 라우팅 시스템 통합 (AppRoutes 컴포넌트)
  */
 
+import { useEffect } from 'react'
 import { Layout, Typography } from 'antd'
 import AppRoutes from './routes/AppRoutes'
+import { logDataSourceInfo } from './utils/dataSourceManager'
 import './App.css'
 
 // Ant Design 컴포넌트 구조분해할당
@@ -32,6 +34,11 @@ const { Title } = Typography
  * @returns {JSX.Element} 레이아웃이 적용된 애플리케이션 구조
  */
 function App() {
+  // 애플리케이션 시작 시 데이터 소스 정보 로깅
+  useEffect(() => {
+    logDataSourceInfo()
+  }, [])
+
   return (
     <Layout style={{ minHeight: '100vh', background: '#f0f2f5' }}>
       {/* 상단 헤더 - 프로젝트 브랜딩 영역 */}

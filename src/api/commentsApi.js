@@ -5,6 +5,7 @@
 
 import axios from 'axios'
 import { COMMENTS_API_URL } from './apis'
+import { isNetworkEnabled, loadLocalData, findLocalDataById } from '../utils/dataSourceManager'
 
 /**
  * Comments API 객체
@@ -16,8 +17,12 @@ export const commentsApi = {
    * @returns {Promise<Array>} 댓글 목록
    */
   getAll: async () => {
-    const response = await axios.get(COMMENTS_API_URL)
-    return response.data
+    if (isNetworkEnabled()) {
+      const response = await axios.get(COMMENTS_API_URL)
+      return response.data
+    } else {
+      return await loadLocalData('comments')
+    }
   },
 
   /**
@@ -26,8 +31,12 @@ export const commentsApi = {
    * @returns {Promise<Object>} 댓글 객체
    */
   getById: async (id) => {
-    const response = await axios.get(`${COMMENTS_API_URL}/${id}`)
-    return response.data
+    if (isNetworkEnabled()) {
+      const response = await axios.get(`${COMMENTS_API_URL}/${id}`)
+      return response.data
+    } else {
+      return await findLocalDataById('comments', id)
+    }
   },
 
   /**
@@ -40,8 +49,18 @@ export const commentsApi = {
    * @returns {Promise<Object>} 생성된 댓글 객체
    */
   create: async (data) => {
-    const response = await axios.post(COMMENTS_API_URL, data)
-    return response.data
+    if (isNetworkEnabled()) {
+      const response = await axios.post(COMMENTS_API_URL, data)
+      return response.data
+    } else {
+      // 로컬 모드에서는 가짜 응답 반환
+      const newComment = {
+        id: Date.now(), // 임시 ID
+        ...data
+      }
+      console.log('📝 [Local Mode] Created comment:', newComment)
+      return newComment
+    }
   },
 
   /**
@@ -51,8 +70,16 @@ export const commentsApi = {
    * @returns {Promise<Object>} 수정된 댓글 객체
    */
   update: async (id, data) => {
-    const response = await axios.put(`${COMMENTS_API_URL}/${id}`, data)
-    return response.data
+    if (isNetworkEnabled()) {
+      const response = await axios.put(`${COMMENTS_API_URL}/${id}`, data)
+      return response.data
+    } else {
+      // 로컬 모드에서는 기존 데이터와 병합한 가짜 응답 반환
+      const existingComment = await findLocalDataById('comments', id)
+      const updatedComment = { ...existingComment, ...data }
+      console.log('✏️ [Local Mode] Updated comment:', updatedComment)
+      return updatedComment
+    }
   },
 
   /**
@@ -61,8 +88,14 @@ export const commentsApi = {
    * @returns {Promise<Object>} 삭제 결과
    */
   delete: async (id) => {
-    const response = await axios.delete(`${COMMENTS_API_URL}/${id}`)
-    return response.data
+    if (isNetworkEnabled()) {
+      const response = await axios.delete(`${COMMENTS_API_URL}/${id}`)
+      return response.data
+    } else {
+      // 로컬 모드에서는 가짜 삭제 응답 반환
+      console.log('🗑️ [Local Mode] Deleted comment with id:', id)
+      return { success: true, id }
+    }
   },
 
   /**
@@ -71,9 +104,15 @@ export const commentsApi = {
    * @returns {Promise<Array>} 삭제된 ID 배열
    */
   deleteMany: async (ids) => {
-    const results = await Promise.all(
-      ids.map(id => commentsApi.remove(id))
-    )
-    return ids // 삭제된 ID 배열 반환
+    if (isNetworkEnabled()) {
+      const results = await Promise.all(
+        ids.map(id => commentsApi.delete(id))
+      )
+      return ids // 삭제된 ID 배열 반환
+    } else {
+      // 로컬 모드에서는 가짜 일괄 삭제 응답 반환
+      console.log('🗑️ [Local Mode] Bulk deleted comments with ids:', ids)
+      return ids
+    }
   }
 }
