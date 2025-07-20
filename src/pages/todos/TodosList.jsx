@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { List, Button, Alert, Spin, FloatButton, Checkbox, Input, Space, Select } from 'antd'
 import { PlusOutlined, DeleteOutlined, SearchOutlined, FilterOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
@@ -11,11 +11,11 @@ import '../../styles/pages.css'
 const { Option } = Select
 
 /**
- * Todos 목록 컴포넌트
+ * Todos 목록 컴포넌트 (최적화)
  * React Query를 사용한 데이터 조회 및 표시
  * 체크박스를 이용한 다중 선택 기능
  */
-const TodosList = () => {
+const TodosList = React.memo(() => {
   const navigate = useNavigate()
   const [searchText, setSearchText] = useState('')
   const [statusFilter, setStatusFilter] = useState('all') // 'all', 'completed', 'pending'
@@ -60,21 +60,31 @@ const TodosList = () => {
 
   const todoIds = filteredTodos.map(todo => todo.id)
 
-  // 전체 선택/해제 핸들러
-  const handleSelectAll = () => {
+  // 전체 선택/해제 핸들러 - useCallback으로 최적화
+  const handleSelectAll = useCallback(() => {
     toggleAllCheck(todoIds)
-  }
+  }, [toggleAllCheck, todoIds])
 
-  // 선택된 항목들 삭제
-  const handleDeleteSelected = () => {
+  // 선택된 항목들 삭제 - useCallback으로 최적화
+  const handleDeleteSelected = useCallback(() => {
     if (checkedIds.size === 0) return
     deleteTodosMutation.mutate(Array.from(checkedIds)) // Set을 배열로 변환
-  }
+  }, [checkedIds, deleteTodosMutation])
 
-  // 새 할일 추가 페이지로 이동
-  const handleAddNew = () => {
+  // 새 할일 추가 페이지로 이동 - useCallback으로 최적화
+  const handleAddNew = useCallback(() => {
     navigate('/todos/todo/new')
-  }
+  }, [navigate])
+
+  // 검색 핸들러 - useCallback으로 최적화
+  const handleSearchChange = useCallback((e) => {
+    setSearchText(e.target.value)
+  }, [])
+
+  // 상태 필터 변경 핸들러 - useCallback으로 최적화
+  const handleStatusFilterChange = useCallback((value) => {
+    setStatusFilter(value)
+  }, [])
 
   // 로딩 상태
   if (isLoading) {
@@ -116,14 +126,14 @@ const TodosList = () => {
             placeholder="할일 제목으로 검색..."
             prefix={<SearchOutlined />}
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={handleSearchChange}
             allowClear
             className="search-input"
           />
           
           <Select
             value={statusFilter}
-            onChange={setStatusFilter}
+            onChange={handleStatusFilterChange}
             className="filter-select"
             suffixIcon={<FilterOutlined />}
           >
@@ -205,6 +215,8 @@ const TodosList = () => {
       )}
     </div>
   )
-}
+})
+
+TodosList.displayName = 'TodosList'
 
 export default TodosList

@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:analyze": "vite build --mode analyze",
+    "build:perf": "ANALYZE=true vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "setup": "node setup-project.js",
-    "build:analyze": "vite build --mode analyze",
     "type-check": "tsc --noEmit",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "perf": "node scripts/performance-check.js",
+    "bundle-size": "npm run build && du -sh dist/*"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.83.0",

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { List, Button, Alert, Spin, FloatButton, Checkbox, Input, Space } from 'antd'
 import { PlusOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
@@ -9,11 +9,11 @@ import './users-list.css'
 import '../../styles/pages.css'
 
 /**
- * Users 목록 컴포넌트
+ * Users 목록 컴포넌트 (최적화)
  * React Query를 사용한 데이터 조회 및 표시
  * 체크박스를 이용한 다중 선택 기능
  */
-const UsersList = () => {
+const UsersList = React.memo(() => {
   const navigate = useNavigate()
   const [searchText, setSearchText] = useState('')
 
@@ -44,21 +44,26 @@ const UsersList = () => {
 
   const userIds = filteredUsers.map(user => user.id)
 
-  // 전체 선택/해제 핸들러
-  const handleSelectAll = () => {
+  // 전체 선택/해제 핸들러 - useCallback으로 최적화
+  const handleSelectAll = useCallback(() => {
     toggleAllCheck(userIds)
-  }
+  }, [toggleAllCheck, userIds])
 
-  // 선택된 항목들 삭제
-  const handleDeleteSelected = () => {
+  // 선택된 항목들 삭제 - useCallback으로 최적화
+  const handleDeleteSelected = useCallback(() => {
     if (checkedIds.size === 0) return
     deleteUsersMutation.mutate(Array.from(checkedIds)) // Set을 배열로 변환
-  }
+  }, [checkedIds, deleteUsersMutation])
 
-  // 새 사용자 추가 페이지로 이동
-  const handleAddNew = () => {
+  // 새 사용자 추가 페이지로 이동 - useCallback으로 최적화
+  const handleAddNew = useCallback(() => {
     navigate('/users/user/new')
-  }
+  }, [navigate])
+
+  // 검색 핸들러 - useCallback으로 최적화
+  const handleSearchChange = useCallback((e) => {
+    setSearchText(e.target.value)
+  }, [])
 
   // 로딩 상태
   if (isLoading) {
@@ -95,7 +100,7 @@ const UsersList = () => {
           placeholder="이름, 이메일, 사용자명으로 검색..."
           prefix={<SearchOutlined />}
           value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
+          onChange={handleSearchChange}
           allowClear
           className="search-input"
         />
@@ -165,6 +170,8 @@ const UsersList = () => {
       )}
     </div>
   )
-}
+})
+
+UsersList.displayName = 'UsersList'
 
 export default UsersList

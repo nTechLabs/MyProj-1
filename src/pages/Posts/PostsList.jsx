@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import { List, Alert, Spin, Button, FloatButton } from 'antd'
 import { PlusOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
@@ -9,7 +9,7 @@ import './posts-list.css'
 import '../../styles/pages.css'
 
 /**
- * Posts 리스트 컴포넌트
+ * Posts 리스트 컴포넌트 (최적화)
  * React Query로 데이터 관리, Posts 전용 Zustand로 체크박스 상태 관리
  */
 const PostsList = memo(() => {
@@ -21,8 +21,8 @@ const PostsList = memo(() => {
   // 체크된 항목이 있는지 확인
   const hasCheckedItems = checkedIds.size > 0
 
-  // 체크된 항목들 삭제
-  const handleDeleteSelected = async () => {
+  // 체크된 항목들 삭제 - useCallback으로 최적화
+  const handleDeleteSelected = useCallback(async () => {
     if (checkedIds.size === 0) return
     
     try {
@@ -30,12 +30,12 @@ const PostsList = memo(() => {
     } catch (error) {
       console.error('삭제 실패:', error)
     }
-  }
+  }, [checkedIds, deletePostsMutation])
 
-  // 새 게시글 추가 페이지로 이동
-  const handleAddPost = () => {
+  // 새 게시글 추가 페이지로 이동 - useCallback으로 최적화
+  const handleAddPost = useCallback(() => {
     navigate('/posts/post/new')
-  }
+  }, [navigate])
 
   if (error) {
     return (

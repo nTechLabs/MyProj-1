@@ -1,29 +1,31 @@
+import React, { memo, useCallback } from 'react'
 import { List, Checkbox, Tag, Avatar } from 'antd'
 import { CheckCircleOutlined, ClockCircleOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import useTodosCheckedStore from '../../store/useTodosCheckedStore'
 
 /**
- * 개별 할일 항목을 표시하는 컴포넌트
+ * 개별 할일 항목을 표시하는 컴포넌트 (최적화)
+ * React.memo로 불필요한 리렌더링 방지
  * 체크박스와 항목 내용으로 구성
  * 항목 클릭 시 상세 페이지로 이동
  */
-const TodosItem = ({ todo }) => {
+const TodosItem = memo(({ todo }) => {
   const navigate = useNavigate()
   const { isChecked, toggleCheck } = useTodosCheckedStore()
 
   const checked = isChecked(todo.id)
 
-  // 체크박스 클릭 핸들러 (이벤트 전파 방지)
-  const handleCheckboxClick = (e) => {
+  // 체크박스 클릭 핸들러 (이벤트 전파 방지) - useCallback으로 최적화
+  const handleCheckboxClick = useCallback((e) => {
     e.stopPropagation()
     toggleCheck(todo.id)
-  }
+  }, [todo.id, toggleCheck])
 
-  // 항목 클릭 핸들러 (상세 페이지로 이동)
-  const handleItemClick = () => {
+  // 항목 클릭 핸들러 (상세 페이지로 이동) - useCallback으로 최적화
+  const handleItemClick = useCallback(() => {
     navigate(`/todos/todo/${todo.id}`)
-  }
+  }, [navigate, todo.id])
 
   return (
     <List.Item
@@ -94,6 +96,8 @@ const TodosItem = ({ todo }) => {
       />
     </List.Item>
   )
-}
+})
+
+TodosItem.displayName = 'TodosItem'
 
 export default TodosItem
