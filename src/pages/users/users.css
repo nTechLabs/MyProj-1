@@ -10,7 +10,7 @@
 
 /* 페이지 컨테이너 */
 .users-page-container {
-  padding: 20px;
+  padding: 0px;
 }
 
 /* 메인 컨텐츠 영역 */
@@ -292,7 +292,7 @@
 @media (max-width: 768px) {
   /* 페이지 레벨 반응형 */
   .users-page-container {
-    padding: 16px;
+    padding: 0px;
   }
   
   .users-page-icon {

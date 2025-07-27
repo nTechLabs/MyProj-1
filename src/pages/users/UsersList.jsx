@@ -88,7 +88,7 @@ const UsersList = React.memo(() => {
   return (
     <div className="page-list-container">
       {/* 검색 및 전체 선택 컨트롤 */}
-      <Space direction="vertical" size="middle" className="search-filter-container">
+      <Space direction="vertical" size={5} className="search-filter-container">
         <Input
           placeholder="이름, 이메일, 사용자명으로 검색..."
           prefix={<SearchOutlined />}
