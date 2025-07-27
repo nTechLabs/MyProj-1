@@ -150,7 +150,7 @@ const PhotosDetail = () => {
   // 로딩 상태
   if (isLoadingPhoto) {
     return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>
+      <div className="photo-detail loading-container">
         <Spin size="large" tip="사진 정보를 불러오는 중..." />
       </div>
     )
@@ -159,13 +159,13 @@ const PhotosDetail = () => {
   // 에러 상태
   if (photoError && !isNewPhoto) {
     return (
-      <div style={{ padding: '20px' }}>
+      <div className="photo-detail error-container">
         <Alert
           message="데이터 로딩 오류"
           description="사진 정보를 불러오는 중 오류가 발생했습니다."
           type="error"
           showIcon
-          style={{ marginBottom: '20px' }}
+          className="error-alert"
         />
         <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/photos')}>
           목록으로 돌아가기
@@ -175,9 +175,9 @@ const PhotosDetail = () => {
   }
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+    <div className="photo-detail detail-container">
       {/* 헤더 */}
-      <Space style={{ marginBottom: '20px' }}>
+      <Space className="header-space">
         <Button 
           icon={<ArrowLeftOutlined />} 
           onClick={handleCancel}
@@ -189,11 +189,11 @@ const PhotosDetail = () => {
       {/* 메인 카드 */}
       <Card
         title={
-          <Title level={3} style={{ margin: 0 }}>
+          <Title level={3} className="card-title">
             {isNewPhoto ? '새 사진 추가' : '사진 편집'}
           </Title>
         }
-        style={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}
+        className="main-card"
       >
         <Row gutter={[24, 0]}>
           {/* 폼 영역 */}
@@ -282,7 +282,7 @@ const PhotosDetail = () => {
               <Divider />
 
               {/* 버튼 영역 */}
-              <div style={{ textAlign: 'center' }}>
+              <div className="button-area">
                 <Space size="middle">
                   <Button 
                     onClick={handleCancel}
@@ -296,7 +296,7 @@ const PhotosDetail = () => {
                     icon={<SaveOutlined />}
                     loading={isSubmitting}
                     disabled={!hasUnsavedChanges && !isNewPhoto}
-                    style={{ backgroundColor: '#ff9500', borderColor: '#ff9500' }}
+                    className="save-button"
                   >
                     {isNewPhoto ? '사진 추가' : '변경사항 저장'}
                   </Button>
@@ -307,32 +307,20 @@ const PhotosDetail = () => {
 
           {/* 미리보기 영역 */}
           <Col xs={24} lg={10}>
-            <div style={{ position: 'sticky', top: '20px' }}>
-              <Title level={4} style={{ marginBottom: '16px' }}>미리보기</Title>
+            <div className="preview-area">
+              <Title level={4} className="preview-title">미리보기</Title>
               
               {/* 원본 이미지 미리보기 */}
               {previewUrl && (
-                <div style={{ marginBottom: '16px' }}>
-                  <Text strong style={{ display: 'block', marginBottom: '8px' }}>원본 이미지</Text>
+                <div className="image-section">
+                  <Text strong className="image-label">원본 이미지</Text>
                   <Image
                     src={previewUrl}
                     alt="원본 이미지 미리보기"
-                    style={{ 
-                      width: '100%', 
-                      maxHeight: '200px', 
-                      objectFit: 'cover',
-                      borderRadius: '8px'
-                    }}
+                    className="original-image"
                     placeholder={
-                      <div style={{ 
-                        height: '200px', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        backgroundColor: '#f5f5f5',
-                        borderRadius: '8px'
-                      }}>
-                        <CameraOutlined style={{ fontSize: 48, color: '#d9d9d9' }} />
+                      <div className="image-placeholder-large">
+                        <CameraOutlined className="placeholder-icon-large" />
                       </div>
                     }
                   />
@@ -342,27 +330,14 @@ const PhotosDetail = () => {
               {/* 썸네일 미리보기 */}
               {previewThumbnailUrl && (
                 <div>
-                  <Text strong style={{ display: 'block', marginBottom: '8px' }}>썸네일</Text>
+                  <Text strong className="image-label">썸네일</Text>
                   <Image
                     src={previewThumbnailUrl}
                     alt="썸네일 미리보기"
-                    style={{ 
-                      width: '150px', 
-                      height: '150px', 
-                      objectFit: 'cover',
-                      borderRadius: '8px'
-                    }}
+                    className="thumbnail-image"
                     placeholder={
-                      <div style={{ 
-                        width: '150px',
-                        height: '150px', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        backgroundColor: '#f5f5f5',
-                        borderRadius: '8px'
-                      }}>
-                        <PictureOutlined style={{ fontSize: 32, color: '#d9d9d9' }} />
+                      <div className="image-placeholder-small">
+                        <PictureOutlined className="placeholder-icon-small" />
                       </div>
                     }
                   />
@@ -370,14 +345,8 @@ const PhotosDetail = () => {
               )}
 
               {!previewUrl && !previewThumbnailUrl && (
-                <div style={{ 
-                  padding: '40px', 
-                  textAlign: 'center', 
-                  backgroundColor: '#f9f9f9',
-                  borderRadius: '8px',
-                  border: '2px dashed #d9d9d9'
-                }}>
-                  <CameraOutlined style={{ fontSize: 48, color: '#d9d9d9', marginBottom: '16px' }} />
+                <div className="empty-preview">
+                  <CameraOutlined className="empty-preview-icon" />
                   <Text type="secondary">URL을 입력하면 미리보기가 표시됩니다</Text>
                 </div>
               )}
@@ -392,7 +361,7 @@ const PhotosDetail = () => {
           message="저장되지 않은 변경사항이 있습니다."
           type="warning"
           showIcon
-          style={{ marginTop: '16px' }}
+          className="unsaved-alert"
         />
       )}
     </div>

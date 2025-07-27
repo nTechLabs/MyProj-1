@@ -1,0 +1,428 @@
+/* Photos 특화 스타일 */
+
+/* Photos 테마 색상 - 주황색 */
+.photos-list .item-avatar {
+  background: linear-gradient(135deg, #ff9500, #ff6b00);
+  color: white;
+}
+
+.photos-list .item-tag {
+  background-color: #fff7e6;
+  border-color: #ffd591;
+  color: #d46b08;
+}
+
+.photos-list .item-tag:hover {
+  background-color: #ffe7ba;
+  border-color: #ffb347;
+}
+
+/* Photos 특화 이미지 미리보기 */
+.photos-list .photo-thumbnail {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid #f0f0f0;
+  transition: all 0.3s ease;
+  flex-shrink: 0; /* 이미지 축소 방지 */
+}
+
+.photos-list .photo-thumbnail:hover {
+  border-color: #ff9500;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
+}
+
+/* Photos 아이템 특화 스타일 */
+.photos-list .list-item-base {
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+  min-height: 80px; /* 최소 높이 보장 */
+  padding: 16px !important;
+}
+
+.photos-list .list-item-base .ant-list-item-meta {
+  align-items: flex-start;
+  margin-bottom: 0;
+}
+
+.photos-list .list-item-base .ant-list-item-meta-content {
+  flex: 1;
+  min-width: 0; /* 텍스트 잘림 방지 */
+}
+
+.photos-list .list-item-base .ant-list-item-meta-title {
+  margin-bottom: 8px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.photos-list .list-item-base .ant-list-item-meta-description {
+  margin-bottom: 0;
+  line-height: 1.3;
+}
+
+.photos-list .list-item-base:hover {
+  border-left-color: #ff9500;
+  background-color: #fff9f0;
+}
+
+.photos-list .list-item-base.checked {
+  border-left-color: #ff6b00;
+  background-color: #fff7e6;
+}
+
+/* 앨범 ID 배지 */
+.photos-list .album-badge {
+  background: #ff9500;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+/* 체크박스 컨테이너 수정 */
+.photos-list .checkbox-container {
+  padding-right: 12px;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2px;
+}
+
+/* 아바타 영역 수정 */
+.photos-list .ant-list-item-meta-avatar {
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+  .photos-list .photo-thumbnail {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .photos-list .list-item-base {
+    min-height: 70px;
+    padding: 12px !important;
+  }
+  
+  .photos-list .album-badge {
+    display: none;
+  }
+  
+  .photos-list .ant-list-item-meta-avatar {
+    margin-right: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .photos-list .photo-thumbnail {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .photos-list .list-item-base {
+    min-height: 60px;
+    padding: 8px !important;
+  }
+}
+
+/* PhotosList 컴포넌트 추가 스타일 */
+
+/* 에러 알림 스타일 */
+.photos-list .error-alert {
+  margin: 20px;
+}
+
+/* 검색 및 필터 컨테이너 */
+.photos-list .search-filter-space {
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* 검색 입력 */
+.photos-list .search-input {
+  width: 250px;
+}
+
+/* 필터 선택 */
+.photos-list .filter-select {
+  width: 140px;
+}
+
+/* 선택된 항목 수 표시 */
+.photos-list .selected-count {
+  color: #ff9500;
+}
+
+/* 빈 상태 아이콘 */
+.photos-list .empty-icon {
+  font-size: 64px;
+  color: #ff9500;
+}
+
+/* 리스트 최소 높이 */
+.photos-list .list-container {
+  min-height: 400px;
+}
+
+/* 삭제 버튼 스타일 */
+.photos-list .delete-button {
+  border-radius: 25px;
+  padding: 0 24px;
+  height: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 페이지네이션 스타일 */
+.photos-list .ant-pagination {
+  text-align: center;
+  margin-top: 24px;
+}
+
+/* PhotosItem 컴포넌트 추가 스타일 */
+
+/* 리스트 아이템 커서 */
+.photos-list .list-item-clickable {
+  cursor: pointer;
+}
+
+/* 아바타 컨테이너 */
+.photos-list .avatar-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* 이미지 플레이스홀더 */
+.photos-list .image-placeholder {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+/* 플레이스홀더 아이콘 */
+.photos-list .placeholder-icon {
+  font-size: 24px;
+  color: #d9d9d9;
+}
+
+/* 이미지 클릭 가능 */
+.photos-list .image-clickable {
+  cursor: pointer;
+}
+
+/* 제목 컨테이너 */
+.photos-list .title-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 제목 텍스트 */
+.photos-list .item-meta-title {
+  color: #333;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* 태그 축소 방지 */
+.photos-list .item-tag-no-shrink {
+  flex-shrink: 0;
+}
+
+/* 설명 컨테이너 */
+.photos-list .item-meta-description {
+  margin-top: 4px;
+}
+
+/* 설명 첫 번째 줄 */
+.photos-list .description-first-line {
+  margin-bottom: 2px;
+}
+
+/* 설명 텍스트 - 큰 글씨 */
+.photos-list .description-text-large {
+  font-size: 13px;
+}
+
+/* 설명 텍스트 - 작은 글씨 */
+.photos-list .description-text-small {
+  font-size: 12px;
+  color: #999;
+}
+
+/* PhotosDetail 컴포넌트 스타일 */
+
+/* 로딩 컨테이너 */
+.photo-detail .loading-container {
+  padding: 20px;
+  text-align: center;
+}
+
+/* 에러 컨테이너 */
+.photo-detail .error-container {
+  padding: 20px;
+}
+
+/* 에러 알림 마진 */
+.photo-detail .error-alert {
+  margin-bottom: 20px;
+}
+
+/* 메인 컨테이너 */
+.photo-detail .detail-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* 헤더 스페이스 */
+.photo-detail .header-space {
+  margin-bottom: 20px;
+}
+
+/* 카드 제목 */
+.photo-detail .card-title {
+  margin: 0;
+}
+
+/* 메인 카드 */
+.photo-detail .main-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 버튼 영역 */
+.photo-detail .button-area {
+  text-align: center;
+}
+
+/* 저장 버튼 */
+.photo-detail .save-button {
+  background-color: #ff9500;
+  border-color: #ff9500;
+}
+
+/* 미리보기 영역 */
+.photo-detail .preview-area {
+  position: sticky;
+  top: 20px;
+}
+
+/* 미리보기 제목 */
+.photo-detail .preview-title {
+  margin-bottom: 16px;
+}
+
+/* 이미지 섹션 */
+.photo-detail .image-section {
+  margin-bottom: 16px;
+}
+
+/* 이미지 라벨 */
+.photo-detail .image-label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* 원본 이미지 */
+.photo-detail .original-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* 썸네일 이미지 */
+.photo-detail .thumbnail-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* 이미지 플레이스홀더 큰 것 */
+.photo-detail .image-placeholder-large {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+/* 이미지 플레이스홀더 작은 것 */
+.photo-detail .image-placeholder-small {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+/* 플레이스홀더 아이콘 큰 것 */
+.photo-detail .placeholder-icon-large {
+  font-size: 48px;
+  color: #d9d9d9;
+}
+
+/* 플레이스홀더 아이콘 작은 것 */
+.photo-detail .placeholder-icon-small {
+  font-size: 32px;
+  color: #d9d9d9;
+}
+
+/* 빈 미리보기 영역 */
+.photo-detail .empty-preview {
+  padding: 40px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 2px dashed #d9d9d9;
+}
+
+/* 빈 미리보기 아이콘 */
+.photo-detail .empty-preview-icon {
+  font-size: 48px;
+  color: #d9d9d9;
+  margin-bottom: 16px;
+}
+
+/* 변경사항 알림 */
+.photo-detail .unsaved-alert {
+  margin-top: 16px;
+}
+
+/* PhotosPage 컴포넌트 스타일 */
+
+/* 메인 페이지 컨테이너 */
+.photos-page {
+  padding: 20px;
+}
+
+/* 페이지 헤더 */
+.photos-page .page-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* 페이지 제목 */
+.photos-page .page-title {
+  margin: 0;
+  color: #ff9500;
+}

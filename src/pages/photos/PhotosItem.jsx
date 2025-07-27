@@ -34,9 +34,8 @@ const PhotosItem = React.memo(({ photo }) => {
 
   return (
     <List.Item 
-      className={`list-item-base ${isChecked ? 'checked' : ''}`}
+      className={`list-item-base list-item-clickable ${isChecked ? 'checked' : ''}`}
       onClick={handleItemClick}
-      style={{ cursor: 'pointer' }}
     >
       {/* 체크박스 */}
       <div className="checkbox-container" onClick={(e) => e.stopPropagation()}>
@@ -49,28 +48,19 @@ const PhotosItem = React.memo(({ photo }) => {
       {/* 사진 정보 */}
       <List.Item.Meta
         avatar={
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <div className="avatar-container">
             <Image
               src={photo.thumbnailUrl}
               alt={photo.title}
-              className="photo-thumbnail"
+              className="photo-thumbnail image-clickable"
               placeholder={
-                <div style={{ 
-                  width: 60, 
-                  height: 60, 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  backgroundColor: '#f5f5f5',
-                  borderRadius: '8px'
-                }}>
-                  <PictureOutlined style={{ fontSize: 24, color: '#d9d9d9' }} />
+                <div className="image-placeholder">
+                  <PictureOutlined className="placeholder-icon" />
                 </div>
               }
               preview={{
                 src: photo.url
               }}
-              style={{ cursor: 'pointer' }}
               onClick={(e) => e.stopPropagation()}
             />
             <span className="album-badge">
@@ -79,29 +69,28 @@ const PhotosItem = React.memo(({ photo }) => {
           </div>
         }
         title={
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', flexWrap: 'wrap' }}>
-            <Text strong className="item-meta-title" style={{ color: '#333', flex: '1 1 auto', minWidth: 0 }}>
+          <div className="title-container">
+            <Text strong className="item-meta-title">
               {truncatedTitle}
             </Text>
             <Tag 
               icon={<CameraOutlined />} 
               color="orange" 
-              className="item-tag"
-              style={{ flexShrink: 0 }}
+              className="item-tag item-tag-no-shrink"
             >
               ID: {photo.id}
             </Tag>
           </div>
         }
         description={
-          <div className="item-meta-description" style={{ marginTop: '4px' }}>
-            <div style={{ marginBottom: '2px' }}>
-              <Text type="secondary" style={{ fontSize: '13px' }}>
+          <div className="item-meta-description">
+            <div className="description-first-line">
+              <Text type="secondary" className="description-text-large">
                 앨범 ID: {photo.albumId} • 사진 ID: {photo.id}
               </Text>
             </div>
             <div>
-              <Text type="secondary" style={{ fontSize: '12px', color: '#999' }}>
+              <Text type="secondary" className="description-text-small">
                 URL: {photo.url?.substring(0, 50)}...
               </Text>
             </div>
