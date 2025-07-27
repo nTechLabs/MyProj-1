@@ -86,6 +86,20 @@ const CommentsItem = React.memo(({ comment }) => {
       onClick={handleItemClick}
     >
       <div className={`comment-item-container ${checked ? 'checked' : ''}`}>
+        {/* 배지들 (우측 위쪽) */}
+        <div className="comment-badges-container">
+          {comment.body?.length > 150 && (
+            <div className="comment-long-badge">
+              긴 댓글
+            </div>
+          )}
+          {comment.id > 450 && (
+            <div className="comment-latest-badge">
+              최신
+            </div>
+          )}
+        </div>
+        
         {/* 아바타 */}
         <div className="comment-item-avatar">
           <Avatar 
@@ -123,14 +137,8 @@ const CommentsItem = React.memo(({ comment }) => {
 
         {/* 태그 정보 */}
         <div className="comment-item-tags">
-          {comment.body?.length > 150 && (
-            <div className="comment-tag-item">긴 댓글</div>
-          )}
           {comment.id <= 50 && (
             <div className="comment-tag-item">인기</div>
-          )}
-          {comment.id > 450 && (
-            <div className="comment-tag-item">최신</div>
           )}
         </div>
 
