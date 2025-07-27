@@ -23,6 +23,7 @@ import {
   BankOutlined
 } from '@ant-design/icons'
 import { useUserQuery, useAddUserMutation, useUpdateUserMutation } from '../../hooks/useUsersQueries'
+import './users.css'
 
 const { Title } = Typography
 
@@ -117,9 +118,9 @@ const UsersDetail = () => {
   // 로딩 상태
   if (isLoading && !isNewUser) {
     return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>
+      <div className="users-detail-loading">
         <Spin size="large" />
-        <p style={{ marginTop: '20px' }}>사용자 정보를 불러오는 중...</p>
+        <p>사용자 정보를 불러오는 중...</p>
       </div>
     )
   }
@@ -127,7 +128,7 @@ const UsersDetail = () => {
   // 에러 상태
   if (error && !isNewUser) {
     return (
-      <div style={{ padding: '20px' }}>
+      <div className="users-detail-error">
         <Alert
           message="오류 발생"
           description="사용자 정보를 불러오는데 실패했습니다."
@@ -140,11 +141,11 @@ const UsersDetail = () => {
   }
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+    <div className="users-detail-container">
       <Card>
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
-          <div style={{ textAlign: 'center' }}>
-            <UserOutlined style={{ fontSize: '48px', color: '#1890ff', marginBottom: '16px' }} />
+        <Space direction="vertical" size="large" className="users-detail-form">
+          <div className="users-detail-header">
+            <UserOutlined className="users-detail-icon" />
             <Title level={2}>
               {isNewUser ? '새 사용자 추가' : '사용자 정보 수정'}
             </Title>
@@ -272,7 +273,7 @@ const UsersDetail = () => {
             </Form.Item>
 
             {/* 버튼 그룹 */}
-            <div style={{ textAlign: 'center', marginTop: '32px' }}>
+            <div className="users-detail-buttons">
               <Space size="middle">
                 <Button 
                   onClick={handleCancel}

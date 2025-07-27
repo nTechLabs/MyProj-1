@@ -35,6 +35,54 @@
    리스트 레벨 스타일 (기존 users-list.css)
    ======================================== */
 
+/* ========================================
+   상세 페이지 스타일 (UsersDetail.jsx)
+   ======================================== */
+
+/* 상세 페이지 메인 컨테이너 */
+.users-detail-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* 로딩 상태 컨테이너 */
+.users-detail-loading {
+  padding: 20px;
+  text-align: center;
+}
+
+.users-detail-loading p {
+  margin-top: 20px;
+}
+
+/* 에러 상태 컨테이너 */
+.users-detail-error {
+  padding: 20px;
+}
+
+/* 상세 페이지 헤더 */
+.users-detail-header {
+  text-align: center;
+}
+
+.users-detail-icon {
+  font-size: 48px;
+  color: #1890ff;
+  margin-bottom: 16px;
+}
+
+/* 폼 스타일 */
+.users-detail-form {
+  width: 100%;
+}
+
+/* 버튼 그룹 */
+.users-detail-buttons {
+  text-align: center;
+  margin-top: 32px;
+}
+
 /* Users 특화 색상 테마 - 기본 파란색 */
 .users-list-container .list-item-base.checked {
   background-color: #f0f9ff !important;
