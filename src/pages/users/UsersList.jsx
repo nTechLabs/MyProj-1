@@ -4,7 +4,7 @@ import { PlusOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useUsersQuery, useDeleteUsersMutation } from '../../hooks/useUsersQueries'
 import useUsersCheckedStore from '../../store/useUsersStore'
-import UsersItem from './UsersItem'
+import UsersItem from './UsersItemOptimized'
 import './users-list.css'
 import '../../styles/pages.css'
 
