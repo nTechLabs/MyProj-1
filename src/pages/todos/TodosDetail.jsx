@@ -9,7 +9,7 @@ import {
   Typography, 
   Spin, 
   Alert,
-  Switch,
+  Select,
   InputNumber,
   Divider,
   Tag
@@ -55,7 +55,7 @@ const TodosDetail = () => {
     if (todo && !isNewTodo) {
       form.setFieldsValue({
         title: todo.title,
-        completed: todo.completed,
+        status: todo.status,
         userId: todo.userId,
       })
       setHasChanges(false)
@@ -63,7 +63,7 @@ const TodosDetail = () => {
       // 새 할일의 기본값 설정
       form.setFieldsValue({
         title: '',
-        completed: false,
+        status: 'todo',
         userId: 1,
       })
     }
@@ -73,7 +73,7 @@ const TodosDetail = () => {
   const handleSubmit = async (values) => {
     const todoData = {
       title: values.title,
-      completed: values.completed || false,
+      status: values.status || 'todo',
       userId: values.userId || 1,
     }
 
@@ -119,13 +119,6 @@ const TodosDetail = () => {
   if (error && !isNewTodo) {
     return (
       <div className="todos-detail-error">
-        <Button 
-          icon={<ArrowLeftOutlined />} 
-          onClick={handleBack} 
-          className="todos-detail-back-button"
-        >
-          뒤로 가기
-        </Button>
         <Alert
           message="오류 발생"
           description="할일 정보를 불러오는데 실패했습니다."
@@ -139,14 +132,6 @@ const TodosDetail = () => {
 
   return (
     <div className="todos-detail-container">
-      <Button 
-        icon={<ArrowLeftOutlined />} 
-        onClick={handleBack}
-        className="todos-detail-back-button"
-      >
-        뒤로 가기
-      </Button>
-
       <Card>
         <Space direction="vertical" size="large" className="todos-detail-space">
           <div className="todos-detail-header">
@@ -158,10 +143,21 @@ const TodosDetail = () => {
             {!isNewTodo && todo && (
               <div className="todos-detail-tag-container">
                 <Tag 
-                  color={todo.completed ? 'success' : 'processing'} 
+                  color={
+                    todo.status === 'completed' ? 'success' : 
+                    todo.status === 'in_progress' ? 'processing' : 
+                    todo.status === 'review' ? 'warning' : 
+                    todo.status === 'cancelled' ? 'error' : 'default'
+                  } 
                   className="todos-detail-tag"
                 >
-                  {todo.completed ? '완료됨' : '진행중'}
+                  {
+                    todo.status === 'todo' ? '할 일' :
+                    todo.status === 'in_progress' ? '진행 중' :
+                    todo.status === 'review' ? '검토 중' :
+                    todo.status === 'completed' ? '완료됨' :
+                    todo.status === 'cancelled' ? '취소됨' : '할 일'
+                  }
                 </Tag>
               </div>
             )}
@@ -199,15 +195,16 @@ const TodosDetail = () => {
             </Form.Item>
 
             <Form.Item
-              name="completed"
+              name="status"
               label="완료 상태"
-              valuePropName="checked"
             >
-              <Switch 
-                checkedChildren="완료됨" 
-                unCheckedChildren="진행중"
-                size="default"
-              />
+              <Select placeholder="상태를 선택하세요">
+                <Select.Option value="todo">할 일</Select.Option>
+                <Select.Option value="in_progress">진행 중</Select.Option>
+                <Select.Option value="review">검토 중</Select.Option>
+                <Select.Option value="completed">완료됨</Select.Option>
+                <Select.Option value="cancelled">취소됨</Select.Option>
+              </Select>
             </Form.Item>
 
             <Divider orientation="left">

@@ -16,6 +16,45 @@ const TodosItem = memo(({ todo }) => {
 
   const checked = isChecked(todo.id)
 
+  // 상태별 설정 함수
+  const getStatusConfig = useCallback((status) => {
+    const configs = {
+      todo: {
+        icon: <ClockCircleOutlined />,
+        color: '#d9d9d9',
+        text: '할 일',
+        avatarClass: 'todo-item-avatar-todo'
+      },
+      in_progress: {
+        icon: <ClockCircleOutlined />,
+        color: '#1890ff',
+        text: '진행 중',
+        avatarClass: 'todo-item-avatar-in-progress'
+      },
+      review: {
+        icon: <ClockCircleOutlined />,
+        color: '#fa8c16',
+        text: '검토 중',
+        avatarClass: 'todo-item-avatar-review'
+      },
+      completed: {
+        icon: <CheckCircleOutlined />,
+        color: '#52c41a',
+        text: '완료됨',
+        avatarClass: 'todo-item-avatar-completed'
+      },
+      cancelled: {
+        icon: <ClockCircleOutlined />,
+        color: '#ff4d4f',
+        text: '취소됨',
+        avatarClass: 'todo-item-avatar-cancelled'
+      }
+    }
+    return configs[status] || configs.todo
+  }, [])
+
+  const statusConfig = getStatusConfig(todo.status)
+
   // UserId의 첫 글자를 아바타로 사용 (메모이제이션)
   const avatarText = React.useMemo(() => 
     todo.userId ? todo.userId.toString().charAt(0).toUpperCase() : 'U', 
@@ -43,7 +82,7 @@ const TodosItem = memo(({ todo }) => {
 
   return (
     <List.Item
-      className={`todo-item ${checked ? 'checked' : ''} ${todo.completed ? 'completed' : ''}`}
+      className={`todo-item ${checked ? 'checked' : ''} ${todo.status === 'completed' ? 'completed' : ''} ${todo.status === 'cancelled' ? 'cancelled' : ''}`}
       onClick={handleItemClick}
     >
       <div className={`todo-item-container ${checked ? 'checked' : ''}`}>
@@ -51,7 +90,7 @@ const TodosItem = memo(({ todo }) => {
         <div className="todo-item-avatar">
           <Avatar 
             size={48} 
-            className={`${todo.completed ? 'todo-item-avatar-completed' : 'todo-item-avatar-pending'} ${checked ? 'checked' : ''}`}
+            className={`${statusConfig.avatarClass} ${checked ? 'checked' : ''}`}
           >
             {avatarText}
           </Avatar>
@@ -61,7 +100,7 @@ const TodosItem = memo(({ todo }) => {
         <div className="todo-item-content">
           {/* 제목 줄 */}
           <div className="todo-item-title">
-            <span className={`todo-item-name ${todo.completed ? 'completed' : ''}`}>
+            <span className={`todo-item-name ${todo.status === 'completed' ? 'completed' : ''} ${todo.status === 'cancelled' ? 'cancelled' : ''}`}>
               {todo.title}
             </span>
           </div>
@@ -83,17 +122,10 @@ const TodosItem = memo(({ todo }) => {
         {/* 상태 정보 (UsersItem의 회사 정보와 같은 위치) */}
         <div className="todo-item-status">
           <div className="todo-item-status-main">
-            {todo.completed ? (
-              <>
-                <CheckCircleOutlined style={{ marginRight: '4px', color: '#52c41a' }} />
-                완료됨
-              </>
-            ) : (
-              <>
-                <ClockCircleOutlined style={{ marginRight: '4px', color: '#fa8c16' }} />
-                진행중
-              </>
-            )}
+            {React.cloneElement(statusConfig.icon, { 
+              style: { marginRight: '4px', color: statusConfig.color } 
+            })}
+            {statusConfig.text}
           </div>
         </div>
 

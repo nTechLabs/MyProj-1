@@ -18,7 +18,7 @@ const { Option } = Select
 const TodosList = React.memo(() => {
   const navigate = useNavigate()
   const [searchText, setSearchText] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all') // 'all', 'completed', 'pending'
+  const [statusFilter, setStatusFilter] = useState('all') // 'all', 'todo', 'in_progress', 'review', 'completed', 'cancelled'
 
   // React Query로 할일 목록 조회
   const { data: todos = [], isLoading, error, refetch } = useTodosQuery()
@@ -48,11 +48,7 @@ const TodosList = React.memo(() => {
 
     // 상태 필터
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(todo => {
-        if (statusFilter === 'completed') return todo.completed
-        if (statusFilter === 'pending') return !todo.completed
-        return true
-      })
+      filtered = filtered.filter(todo => todo.status === statusFilter)
     }
 
     return filtered
@@ -114,7 +110,7 @@ const TodosList = React.memo(() => {
   }
 
   // 통계 계산
-  const completedCount = filteredTodos.filter(todo => todo.completed).length
+  const completedCount = filteredTodos.filter(todo => todo.status === 'completed').length
   const totalCount = filteredTodos.length
 
   return (
@@ -138,8 +134,11 @@ const TodosList = React.memo(() => {
             suffixIcon={<FilterOutlined />}
           >
             <Option value="all">전체 보기</Option>
+            <Option value="todo">할 일</Option>
+            <Option value="in_progress">진행 중</Option>
+            <Option value="review">검토 중</Option>
             <Option value="completed">완료됨</Option>
-            <Option value="pending">미완료</Option>
+            <Option value="cancelled">취소됨</Option>
           </Select>
         </Space>
 
@@ -160,15 +159,9 @@ const TodosList = React.memo(() => {
           </div>
           
           {checkedIds.size > 0 && (
-            <Button
-              type="primary"
-              danger
-              icon={<DeleteOutlined />}
-              onClick={handleDeleteSelected}
-              loading={deleteTodosMutation.isPending}
-            >
-              선택된 항목 삭제 ({checkedIds.size})
-            </Button>
+            <span className="selected-count-text">
+              {checkedIds.size} 개 선택됨
+            </span>
           )}
         </div>
       </Space>
@@ -196,23 +189,6 @@ const TodosList = React.memo(() => {
         tooltip="새 할일 추가"
         className={checkedIds.size > 0 ? 'float-button-with-action' : 'float-button-default'}
       />
-
-      {/* 삭제 버튼 고정 배치 */}
-      {checkedIds.size > 0 && (
-        <div className="fixed-delete-button">
-          <Button
-            type="primary"
-            danger
-            size="large"
-            icon={<DeleteOutlined />}
-            onClick={handleDeleteSelected}
-            loading={deleteTodosMutation.isPending}
-            block
-          >
-            {checkedIds.size}개 항목 삭제
-          </Button>
-        </div>
-      )}
     </div>
   )
 })

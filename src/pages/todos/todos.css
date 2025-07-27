@@ -46,6 +46,22 @@
   background-color: #fa8c16 !important;
 }
 
+.todo-item-avatar-todo {
+  background-color: #d9d9d9 !important;
+}
+
+.todo-item-avatar-in-progress {
+  background-color: #1890ff !important;
+}
+
+.todo-item-avatar-review {
+  background-color: #fa8c16 !important;
+}
+
+.todo-item-avatar-cancelled {
+  background-color: #ff4d4f !important;
+}
+
 /* 메인 콘텐츠 */
 .todo-item-content {
   flex: 1;
@@ -71,6 +87,11 @@
 
 .todo-item-name.completed {
   color: #8c8c8c;
+  text-decoration: line-through;
+}
+
+.todo-item-name.cancelled {
+  color: #ff4d4f;
   text-decoration: line-through;
 }
 
@@ -297,25 +318,6 @@
   font-weight: 500;
 }
 
-/* 삭제 버튼 고정 위치 스타일 */
-.fixed-delete-button {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  max-width: 300px;
-  width: 90%;
-}
-
-.fixed-delete-button .ant-btn {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border: none;
-  height: 48px;
-  font-size: 16px;
-  font-weight: bold;
-}
-
 /* 통계 박스 스타일 */
 .todo-stats-box {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -349,16 +351,6 @@
     width: 40px !important;
     height: 40px !important;
     font-size: 16px !important;
-  }
-  
-  .fixed-delete-button {
-    bottom: 16px;
-    width: 95%;
-  }
-  
-  .fixed-delete-button .ant-btn {
-    height: 44px;
-    font-size: 14px;
   }
 
   .todo-stats-box {
@@ -518,6 +510,16 @@
   color: #666;
   font-size: 13px;
   font-weight: 500;
+}
+
+.selected-count-text {
+  color: #1890ff;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e6f7ff;
+  padding: 4px 12px;
+  border-radius: 16px;
+  border: 1px solid #91d5ff;
 }
 
 /* Float Button 상태별 스타일 */
