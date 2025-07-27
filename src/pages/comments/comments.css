@@ -1521,21 +1521,31 @@
   white-space: nowrap;
 }
 
-/* 체크박스 영역 */
+/* 체크박스 영역 - UsersItem과 동일하게 우측 중간 위치 */
 .comment-item-checkbox {
   margin-left: 12px;
   flex-shrink: 0;
   padding: 8px;
   border-radius: 4px;
   transition: background-color 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
 }
 
 .comment-item-checkbox:hover {
-  background-color: rgba(255, 149, 0, 0.1);
+  background-color: rgba(255, 149, 0, 0.1) !important;
 }
 
 .comment-item-checkbox .ant-checkbox-wrapper {
   padding: 0;
+}
+
+.comment-item-checkbox .ant-checkbox {
+  cursor: pointer;
 }
 
 /* List Item 전체 레이아웃 개선 */

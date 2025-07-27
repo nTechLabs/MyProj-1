@@ -134,8 +134,11 @@ const CommentsItem = React.memo(({ comment }) => {
           )}
         </div>
 
-        {/* 체크박스 (우측 끝) */}
-        <div className="checkbox-container comment-item-checkbox">
+        {/* 체크박스 (우측 중간) */}
+        <div 
+          className="checkbox-area comment-item-checkbox"
+          onClick={(e) => e.stopPropagation()}
+        >
           <Checkbox
             checked={checked}
             onChange={handleCheckToggle}
