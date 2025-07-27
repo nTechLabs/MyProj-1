@@ -14,15 +14,15 @@ const selectors = createCheckedSelectors(useCommentsStore, 'comments')
 export default useCommentsStore
 
 // 개별 선택자들 export (리렌더링 최적화)
-export const useCommentsCheckedIds = selectors.useCommentsCheckedIds
-export const useCommentsToggleCheck = selectors.useCommentsToggleCheck
-export const useCommentsToggleAllCheck = selectors.useCommentsToggleAllCheck
-export const useCommentsClearChecked = selectors.useCommentsClearChecked
-export const useCommentsSetCheckedIds = selectors.useCommentsSetCheckedIds
-export const useCommentsIsChecked = selectors.useCommentsIsChecked
-export const useCommentsIsAllChecked = selectors.useCommentsIsAllChecked
-export const useCommentsIsIndeterminate = selectors.useCommentsIsIndeterminate
-export const useCommentsCheckedCount = selectors.useCommentsCheckedCount
+export const useCommentsCheckedIds = selectors['useCommentsCheckedIds']
+export const useCommentsToggleCheck = selectors['useCommentsToggleCheck']
+export const useCommentsToggleAllCheck = selectors['useCommentsToggleAllCheck']
+export const useCommentsClearChecked = selectors['useCommentsClearChecked']
+export const useCommentsSetCheckedIds = selectors['useCommentsSetCheckedIds']
+export const useCommentsIsChecked = selectors['useCommentsIsChecked']
+export const useCommentsIsAllChecked = selectors['useCommentsIsAllChecked']
+export const useCommentsIsIndeterminate = selectors['useCommentsIsIndeterminate']
+export const useCommentsCheckedCount = selectors['useCommentsCheckedCount']
 
 // 컴포지트 선택자 (계산된 상태를 한 번에 반환)
-export const useCommentsCheckedState = selectors.useCommentsCheckedState
+export const useCommentsCheckedState = selectors['useCommentsCheckedState']

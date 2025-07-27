@@ -14,15 +14,15 @@ const selectors = createCheckedSelectors(useTodosStore, 'todos')
 export default useTodosStore
 
 // 개별 선택자들 export (리렌더링 최적화)
-export const useTodosCheckedIds = selectors.useTodosCheckedIds
-export const useTodosToggleCheck = selectors.useTodosToggleCheck
-export const useTodosToggleAllCheck = selectors.useTodosToggleAllCheck
-export const useTodosClearChecked = selectors.useTodosClearChecked
-export const useTodosSetCheckedIds = selectors.useTodosSetCheckedIds
-export const useTodosIsChecked = selectors.useTodosIsChecked
-export const useTodosIsAllChecked = selectors.useTodosIsAllChecked
-export const useTodosIsIndeterminate = selectors.useTodosIsIndeterminate
-export const useTodosCheckedCount = selectors.useTodosCheckedCount
+export const useTodosCheckedIds = selectors['useTodosCheckedIds']
+export const useTodosToggleCheck = selectors['useTodosToggleCheck']
+export const useTodosToggleAllCheck = selectors['useTodosToggleAllCheck']
+export const useTodosClearChecked = selectors['useTodosClearChecked']
+export const useTodosSetCheckedIds = selectors['useTodosSetCheckedIds']
+export const useTodosIsChecked = selectors['useTodosIsChecked']
+export const useTodosIsAllChecked = selectors['useTodosIsAllChecked']
+export const useTodosIsIndeterminate = selectors['useTodosIsIndeterminate']
+export const useTodosCheckedCount = selectors['useTodosCheckedCount']
 
 // 컴포지트 선택자 (계산된 상태를 한 번에 반환)
-export const useTodosCheckedState = selectors.useTodosCheckedState
+export const useTodosCheckedState = selectors['useTodosCheckedState']

@@ -14,7 +14,7 @@ const selectors = createCheckedSelectors(usePostsStore, 'posts')
 export default usePostsStore
 
 // 실제 사용되는 선택자들만 export (리렌더링 최적화)
-export const usePostsClearChecked = selectors.usePostsClearChecked
+export const usePostsClearChecked = selectors['usePostsClearChecked']
 
 // 향후 필요시 사용할 수 있는 선택자들 (현재 미사용)
 // export const usePostsCheckedIds = selectors.usePostsCheckedIds

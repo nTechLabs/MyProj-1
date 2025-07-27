@@ -14,15 +14,15 @@ const selectors = createCheckedSelectors(usePhotosStore, 'photos')
 export default usePhotosStore
 
 // 개별 선택자들 export (리렌더링 최적화)
-export const usePhotosCheckedIds = selectors.usePhotosCheckedIds
-export const usePhotosToggleCheck = selectors.usePhotosToggleCheck
-export const usePhotosToggleAllCheck = selectors.usePhotosToggleAllCheck
-export const usePhotosClearChecked = selectors.usePhotosClearChecked
-export const usePhotosSetCheckedIds = selectors.usePhotosSetCheckedIds
-export const usePhotosIsChecked = selectors.usePhotosIsChecked
-export const usePhotosIsAllChecked = selectors.usePhotosIsAllChecked
-export const usePhotosIsIndeterminate = selectors.usePhotosIsIndeterminate
-export const usePhotosCheckedCount = selectors.usePhotosCheckedCount
+export const usePhotosCheckedIds = selectors['usePhotosCheckedIds']
+export const usePhotosToggleCheck = selectors['usePhotosToggleCheck']
+export const usePhotosToggleAllCheck = selectors['usePhotosToggleAllCheck']
+export const usePhotosClearChecked = selectors['usePhotosClearChecked']
+export const usePhotosSetCheckedIds = selectors['usePhotosSetCheckedIds']
+export const usePhotosIsChecked = selectors['usePhotosIsChecked']
+export const usePhotosIsAllChecked = selectors['usePhotosIsAllChecked']
+export const usePhotosIsIndeterminate = selectors['usePhotosIsIndeterminate']
+export const usePhotosCheckedCount = selectors['usePhotosCheckedCount']
 
 // 컴포지트 선택자 (계산된 상태를 한 번에 반환)
-export const usePhotosCheckedState = selectors.usePhotosCheckedState
+export const usePhotosCheckedState = selectors['usePhotosCheckedState']
