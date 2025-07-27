@@ -4,18 +4,15 @@
  */
 
 import React, { useCallback } from 'react'
-import { List, Checkbox, Avatar, Tag, Typography, Space } from 'antd'
+import { List, Checkbox, Avatar } from 'antd'
 import { 
   CommentOutlined, 
-  MailOutlined,
-  NumberOutlined
+  MailOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import useCommentsStore from '../../store/useCommentsStore'
 import '../../styles/pages.css'
 import './comments.css'
-
-const { Text } = Typography
 
 /**
  * 댓글 아이템 컴포넌트
@@ -88,71 +85,64 @@ const CommentsItem = React.memo(({ comment }) => {
       className={`list-item-base ${checked ? 'checked' : ''} comment-item`}
       onClick={handleItemClick}
     >
-      <div className="checkbox-container">
-        <Checkbox
-          checked={checked}
-          onChange={handleCheckToggle}
-          onClick={(e) => e.stopPropagation()}
-        />
-      </div>
-      
-      <List.Item.Meta
-        avatar={
+      <div className={`comment-item-container ${checked ? 'checked' : ''}`}>
+        {/* 아바타 */}
+        <div className="comment-item-avatar">
           <Avatar 
-            className="comment-avatar item-avatar"
+            size={48}
+            className={`comment-avatar item-avatar ${checked ? 'checked' : ''}`}
             icon={<CommentOutlined />}
           >
             {getAvatarText(comment.email)}
           </Avatar>
-        }
-        title={
-          <>
-            <Text className="item-meta-title" strong>
+        </div>
+
+        {/* 메인 콘텐츠 */}
+        <div className="comment-item-content">
+          {/* 제목 줄 */}
+          <div className="comment-item-title">
+            <span className="comment-item-name">
               {getSummaryTitle(comment.name)}
-            </Text>
-            <div className="comment-item-tags">
-              <Space size={4}>
-                <Tag 
-                  icon={<MailOutlined />} 
-                  className="comment-email"
-                  color="orange"
-                  size="small"
-                >
-                  {comment.email}
-                </Tag>
-                <Tag 
-                  icon={<NumberOutlined />} 
-                  className="comment-post-id"
-                  size="small"
-                >
-                  Post #{comment.postId}
-                </Tag>
-              </Space>
+            </span>
+            <span className="comment-item-post-id">
+              Post #{comment.postId}
+            </span>
+          </div>
+
+          {/* 연락처 및 본문 정보 */}
+          <div className="comment-item-details">
+            <div className="comment-item-contact">
+              <MailOutlined />
+              <span>{comment.email}</span>
             </div>
-          </>
-        }
-        description={
-          <>
-            <div className="comment-body">
+            <div className="comment-item-body">
               {getSummaryBody(comment.body)}
             </div>
-            
-            {(comment.body?.length > 150 || comment.id <= 50 || comment.id > 450) && (
-              <div className="comment-item-tags-container">
-                {comment.body?.length > 150 && (
-                  <Tag className="comment-tag" size="small">긴 댓글</Tag>
-                )}
-                {comment.id <= 50 && (
-                  <Tag className="comment-tag" size="small">인기</Tag>
-                )}
-                {comment.id > 450 && (
-                  <Tag className="comment-tag" size="small">최신</Tag>
-                )}
-              </div>
-            )}
-          </>
-        }
-      />
+          </div>
+        </div>
+
+        {/* 태그 정보 */}
+        <div className="comment-item-tags">
+          {comment.body?.length > 150 && (
+            <div className="comment-tag-item">긴 댓글</div>
+          )}
+          {comment.id <= 50 && (
+            <div className="comment-tag-item">인기</div>
+          )}
+          {comment.id > 450 && (
+            <div className="comment-tag-item">최신</div>
+          )}
+        </div>
+
+        {/* 체크박스 (우측 끝) */}
+        <div className="checkbox-container comment-item-checkbox">
+          <Checkbox
+            checked={checked}
+            onChange={handleCheckToggle}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      </div>
     </List.Item>
   )
 })
