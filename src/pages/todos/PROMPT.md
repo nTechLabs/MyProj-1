@@ -21,34 +21,41 @@
 
 ### 생성할 파일들:
 
-1. **src/pages/{ENTITY_NAME}/{ENTITY_NAME}Page.jsx**
+1. **src/pages/{ENTITY_NAME}/{ENTITY_NAME}Page.jsx** (또는 index.jsx)
    - 메인 컨테이너 컴포넌트
-   - React Query + Zustand 예제임을 표시하는 제목
+   - React Query + Zustand 예제임을 표시하는 제목  
    - {ENTITY_NAME}List 컴포넌트를 렌더링
+   - CSS 클래스: `{entity}-page-container`, `{entity}-page-header`, `{entity}-page-icon` 등
+   - CSS import: `./{entity}.css`
 
 2. **src/pages/{ENTITY_NAME}/{ENTITY_NAME}List.jsx**
    - React Query를 사용한 데이터 조회 및 표시
    - Ant Design List 컴포넌트 사용
    - 공통 스타일 클래스 적용: `page-list-container`, `list-scroll-hide`, `page-list`
+   - 엔티티별 클래스: `{entity}-list-*` 패턴 사용
    - 체크박스를 이용한 개별 선택 기능 (useCheckedStore 사용)
    - 선택된 항목들 삭제 기능 (useMutation 사용)
    - FloatButton으로 새 항목 추가 버튼 (동적 위치 조정)
    - 삭제 버튼은 `fixed-delete-button` 클래스로 하단에 고정 배치
-   - 로딩 상태: `loading-container`, `loading-text` 클래스 사용
-   - 빈 상태: `empty-container`, `empty-icon`, `empty-text` 클래스 사용
-   - 에러 상태: `error-alert` 클래스 사용
-   - 검색/필터 컨트롤: `search-filter-container`, `search-input`, `filter-select` 클래스
+   - 로딩 상태: `{entity}-list-loading`, `{entity}-list-loading-text` 클래스 사용
+   - 빈 상태: 공통 `empty-container` 클래스 활용
+   - 에러 상태: `{entity}-list-error` 클래스 사용
+   - 검색/필터 컨트롤: `search-filter-container`, `search-filter-space` 클래스
    - 전체 선택: `select-all-container`, `select-all-left`, `select-stats` 클래스
+   - CSS import: `./{entity}.css`
 
 3. **src/pages/{ENTITY_NAME}/{ENTITY_NAME}Item.jsx**
    - 개별 항목을 표시하는 컴포넌트
    - 공통 스타일 클래스 적용: `list-item-base`, `checkbox-container`
+   - 엔티티별 클래스: `{entity}-item`, `{entity}-item-*` 패턴 사용
    - 체크박스와 항목 내용으로 구성
    - 항목 클릭 시 상세 페이지로 이동
    - List.Item.Meta를 사용한 정보 표시
-   - 아바타: `item-avatar` 클래스, 메타 정보: `item-meta-title`, `item-meta-description`
-   - 태그: `item-tag` 클래스 사용
+   - 아바타: `{entity}-item-avatar-*` 클래스, 메타 정보: `{entity}-item-title`, `{entity}-item-description`
+   - 태그: `{entity}-item-tag` 클래스 사용
    - React.memo로 최적화 및 useCallback 훅 사용
+   - **인라인 스타일 금지**: 모든 스타일을 CSS 클래스로 분리
+   - CSS import: `./{entity}.css`
 
 4. **src/pages/{ENTITY_NAME}/{ENTITY_NAME}Detail.jsx**
    - 상세 정보 표시 및 편집 컴포넌트
@@ -58,12 +65,17 @@
    - 변경사항 추적 및 취소 기능
    - 폼 레이아웃: Card > Form (vertical layout)
    - 로딩, 에러 상태 처리
+   - 엔티티별 클래스: `{entity}-detail-*` 패턴 사용
+   - **인라인 스타일 금지**: 모든 스타일을 CSS 클래스로 분리
+   - CSS import: `./{entity}.css`
 
-5. **src/pages/{ENTITY_NAME}/{ENTITY_NAME.toLowerCase()}-list.css**
-   - 엔티티별 특화 스타일만 포함 (공통 스타일은 src/styles/pages.css 사용)
+5. **src/pages/{ENTITY_NAME}/{ENTITY_NAME.toLowerCase()}.css**
+   - 엔티티별 통합 스타일 파일 (List, Item, Detail, Page 모든 컴포넌트용)
    - 엔티티별 색상 테마 (예: Posts=보라색, Users=파란색, Todos=녹색)
-   - 특화된 상태별 스타일 (예: Todos의 완료/미완료 상태)
-   - 반응형 스타일 오버라이드 (필요시)
+   - 컴포넌트별 클래스 네이밍: `{entity}-list-*`, `{entity}-item-*`, `{entity}-detail-*`, `{entity}-page-*`
+   - 상태별 스타일 (예: Todos의 완료/미완료, Posts의 published/draft)
+   - 반응형 스타일 및 모바일 최적화
+   - 공통 스타일(pages.css)을 확장하는 특화 스타일
 
 6. **src/api/{ENTITY_NAME.toLowerCase()}Api.js**
    - 엔티티별 API 함수들 모음
@@ -87,9 +99,10 @@
 
 ### 스타일 시스템:
 - **공통 스타일**: `src/styles/pages.css` 자동 임포트 (main.jsx에서 전역 로드)
-- **엔티티별 스타일**: `./[entity-name]-list.css` 각 컴포넌트에서 임포트
+- **엔티티별 통합 스타일**: `./{entity}.css` 각 컴포넌트에서 임포트 (List, Item, Detail, Page 모든 컴포넌트용)
+- **CSS 클래스 네이밍**: `{entity}-{component}-{element}` 패턴 (예: `todos-item-title`, `todos-detail-container`)
 - **공통 클래스 사용**: 모든 컴포넌트에서 pages.css의 클래스 활용
-- **CSS 최적화**: 중복 제거, 공통 패턴 재사용, 반응형 디자인
+- **CSS 최적화**: 중복 제거, 공통 패턴 재사용, 반응형 디자인, 인라인 스타일 금지
 
 ### 필수 공통 유틸리티 및 설정:
 ```javascript
@@ -106,7 +119,7 @@ import useCheckedStore, { useClearChecked } from '../store/useCheckedStore'
 
 // 공통 스타일
 import '../../styles/pages.css'  // 전역에서 자동 로드됨 (main.jsx)
-import './{entity}-list.css'     // 엔티티 특화 스타일
+import './{entity}.css'         // 엔티티 통합 스타일 (모든 컴포넌트용)
 ```
 
 ### 필수 Import 구조별 가이드:
@@ -299,6 +312,9 @@ export const useDelete{Entity}sMutation = () => {
 - 성능 최적화 (React.memo, useCallback, 구조적 공유)
 
 ### 스타일링 요구사항:
+- **통합 CSS 파일**: 엔티티별 `./{entity}.css` 파일에 모든 컴포넌트 스타일 통합
+- **클래스 네이밍 컨벤션**: `{entity}-{component}-{element}` 패턴 (예: `todos-item-title`, `users-detail-form`)
+- **인라인 스타일 금지**: 모든 스타일을 CSS 클래스로 분리하여 유지보수성 향상
 - **공통 스타일 시스템 사용**: src/styles/pages.css의 클래스 활용
 - **반응형 디자인**: 모바일 퍼스트, 태블릿, 데스크톱 최적화
 - **접근성**: 키보드 내비게이션, 스크린 리더 지원
@@ -314,7 +330,7 @@ export const useDelete{Entity}sMutation = () => {
 - **알림 시스템**: `useNotificationStore`의 `showSuccess/showError` 메서드 사용
 - **상태 관리**: `useCheckedStore`로 체크박스 상태, `useClearChecked`로 초기화
 - **React Query**: QueryKey Factory 패턴, 직접 `queryClient.invalidateQueries()` 사용
-- **스타일링**: 공통 클래스 우선 사용, 인라인 스타일 금지
+- **스타일링**: 통합 CSS 파일 사용, 클래스 네이밍 컨벤션 준수, 인라인 스타일 완전 금지
 - **성능 최적화**: React.memo, useCallback, useMemo 적극 활용
 ```
 
@@ -448,7 +464,7 @@ queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
 3. ✅ **라우팅**: 라우터 설정이 routes.js에 추가되었는지 확인
 4. ✅ **공통 함수**: handleReactQueryError, createQueryOptions 등 프로젝트 공통 함수 사용 확인
 5. ✅ **공통 스토어**: useNotificationStore, useCheckedStore 적절히 활용했는지 확인
-6. ✅ **스타일**: 공통 CSS 클래스 활용하고 인라인 스타일 제거했는지 확인
+6. ✅ **스타일**: 통합 CSS 파일 사용, 클래스 네이밍 컨벤션 준수, 인라인 스타일 완전 제거했는지 확인
 7. ✅ **성능**: React.memo, useCallback 최적화가 적용되었는지 확인
 8. ✅ **에러 처리**: handleReactQueryError로 일관된 에러 처리 구현했는지 확인
 9. ✅ **알림**: showSuccess/showError 메서드로 사용자 피드백 제공하는지 확인
@@ -456,7 +472,10 @@ queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
 
 ## 최신 기능 및 개선사항 (2024)
 
-### 🎨 스타일 시스템 v2.0
+### 🎨 스타일 시스템 v3.0
+- **통합 CSS 파일**: 엔티티별 단일 CSS 파일로 모든 컴포넌트 스타일 관리
+- **클래스 네이밍 컨벤션**: `{entity}-{component}-{element}` 패턴으로 명확한 스코핑
+- **인라인 스타일 완전 금지**: 유지보수성과 일관성을 위한 CSS 클래스 기반 스타일링
 - 공통 스타일 클래스 시스템으로 CSS 중복 90% 감소
 - 반응형 디자인 및 다크 모드 지원
 - 하드웨어 가속 및 성능 최적화

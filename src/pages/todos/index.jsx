@@ -2,6 +2,7 @@ import { Typography, Space, Divider, Button } from 'antd'
 import { ArrowLeftOutlined, CheckSquareOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import TodosList from './TodosList'
+import './todos.css'
 
 const { Title, Paragraph } = Typography
 
@@ -13,18 +14,18 @@ const TodosPage = () => {
   const navigate = useNavigate()
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="todos-page-container">
       <Button 
         icon={<ArrowLeftOutlined />} 
         onClick={() => navigate("/")}
-        style={{ marginBottom: '20px' }}
+        className="todos-page-back-button"
       >
         뒤로 가기
       </Button>
       
-      <Space direction="vertical" size="large" style={{ width: '100%' }}>
-        <div style={{ textAlign: 'center' }}>
-          <CheckSquareOutlined style={{ fontSize: '64px', color: '#52c41a', marginBottom: '20px' }} />
+      <Space direction="vertical" size="large" className="todos-page-space">
+        <div className="todos-page-header">
+          <CheckSquareOutlined className="todos-page-icon" />
           <Title level={2}>Todos 관리 시스템</Title>
           <Paragraph>
             React Query + Zustand를 사용한 Todos CRUD 예제입니다.
