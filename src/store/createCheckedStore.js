@@ -20,11 +20,14 @@ export const createCheckedStore = (entityName = 'Entity') => {
         // 단일 항목 체크/언체크 토글
         toggleCheck: (id) => {
           set((state) => {
+            console.log('🔄 Zustand toggleCheck called for id:', id, 'current has:', state.checkedIds.has(id))
             const newCheckedIds = new Set(state.checkedIds)
             if (newCheckedIds.has(id)) {
               newCheckedIds.delete(id)
+              console.log('➖ Removed id:', id, 'new size:', newCheckedIds.size)
             } else {
               newCheckedIds.add(id)
+              console.log('➕ Added id:', id, 'new size:', newCheckedIds.size)
             }
             return { checkedIds: newCheckedIds }
           })
@@ -62,7 +65,11 @@ export const createCheckedStore = (entityName = 'Entity') => {
         },
         
         // 선택자 헬퍼 함수들 (컴퓨티드 속성)
-        isChecked: (id) => get().checkedIds.has(id),
+        isChecked: (id) => {
+          const result = get().checkedIds.has(id)
+          console.log('❓ isChecked called for id:', id, 'result:', result, 'total checked:', get().checkedIds.size)
+          return result
+        },
         
         isAllChecked: (allIds) => {
           const { checkedIds } = get()

@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { List, Checkbox, Avatar } from 'antd'
 import { UserOutlined, MailOutlined, PhoneOutlined, GlobalOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { useUsersIsChecked, useUsersToggleCheck } from '../../store/useUsersStore'
+import useUsersCheckedStore from '../../store/useUsersStore'
 import './users.css'
 
 /**
@@ -15,18 +15,25 @@ const UsersItem = memo(({ user }) => {
   const navigate = useNavigate()
   
   // Users 전용 Zustand 선택자를 사용하여 필요한 부분만 구독 (리렌더링 최적화)
-  const isChecked = useUsersIsChecked()
-  const toggleCheck = useUsersToggleCheck()
+  const { isChecked, toggleCheck } = useUsersCheckedStore()
   const checked = isChecked(user.id)
 
   // 체크박스 클릭 핸들러 (이벤트 전파 방지) - 메모이제이션
-  const handleCheckboxClick = useCallback((e) => {
+  const handleCheckboxChange = useCallback((e) => {
+    console.log('✅ Checkbox onChange for user:', user.id, 'target checked:', e.target.checked, 'current checked:', checked)
+    
     e.stopPropagation()
     toggleCheck(user.id)
-  }, [user.id, toggleCheck])
+  }, [user.id, toggleCheck, checked])
 
   // 항목 클릭 핸들러 (상세 페이지로 이동) - 메모이제이션
-  const handleItemClick = useCallback(() => {
+  const handleItemClick = useCallback((e) => {
+    // 체크박스 영역을 클릭한 경우 이동하지 않음
+    if (e.target.closest('.checkbox-area')) {
+      console.log('🚫 Item click blocked - checkbox area clicked')
+      return
+    }
+    console.log('🔗 Item clicked, navigating to user detail:', user.id)
     navigate(`/users/user/${user.id}`)
   }, [user.id, navigate])
 
@@ -186,14 +193,41 @@ const UsersItem = memo(({ user }) => {
       </div>
 
       {/* 체크박스 */}
-      <div style={{ 
-        marginLeft: '12px', 
-        flexShrink: 0 
-      }}>
+      <div 
+        className="checkbox-area"
+        style={{ 
+          marginLeft: '12px', 
+          flexShrink: 0,
+          padding: '8px',
+          borderRadius: '4px',
+          transition: 'background-color 0.2s'
+        }}
+        onClick={(e) => {
+          e.stopPropagation()
+          console.log('🎯 Checkbox area clicked for user:', user.id, '(handled by onChange)')
+        }}
+      >
+        {/* 임시로 기본 체크박스로 테스트 */}
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => {
+            console.log('🔲 Native checkbox onChange for user:', user.id, 'checked:', e.target.checked)
+            e.stopPropagation()
+            toggleCheck(user.id)
+          }}
+          style={{ 
+            width: '16px', 
+            height: '16px',
+            cursor: 'pointer'
+          }}
+        />
+        {/* 원래 Ant Design Checkbox 주석 처리
         <Checkbox
           checked={checked}
-          onClick={handleCheckboxClick}
+          onChange={handleCheckboxChange}
         />
+        */}
       </div>
     </List.Item>
   )

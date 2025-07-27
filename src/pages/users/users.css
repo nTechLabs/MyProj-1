@@ -169,6 +169,20 @@
   background-color: rgba(24, 144, 255, 0.1);
 }
 
+/* 체크박스 영역 스타일 */
+.user-item .checkbox-area {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.user-item .checkbox-area:hover {
+  background-color: rgba(24, 144, 255, 0.1) !important;
+}
+
 /* 삭제 버튼 고정 위치 스타일 */
 .fixed-delete-button {
   position: fixed;

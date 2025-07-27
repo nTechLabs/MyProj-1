@@ -31,6 +31,8 @@ const UsersList = React.memo(() => {
     isAllChecked, 
     isIndeterminate 
   } = useUsersCheckedStore()
+  
+  console.log('📋 UsersList checkedIds size:', checkedIds.size, 'ids:', Array.from(checkedIds))
 
   // 검색 필터링된 사용자 목록
   const filteredUsers = useMemo(() => {
@@ -52,7 +54,7 @@ const UsersList = React.memo(() => {
   // 선택된 항목들 삭제 - useCallback으로 최적화
   const handleDeleteSelected = useCallback(() => {
     if (checkedIds.size === 0) return
-    deleteUsersMutation.mutate(Array.from(checkedIds)) // Set을 배열로 변환
+    deleteUsersMutation.mutate(Array.from(checkedIds))
   }, [checkedIds, deleteUsersMutation])
 
   // 새 사용자 추가 페이지로 이동 - useCallback으로 최적화
