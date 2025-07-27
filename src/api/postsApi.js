@@ -59,26 +59,35 @@ export const postsApi = {
     }
   },
 
-  // 게시글 삭제
-  remove: async (id) => {
+  // 게시글 삭제 (단일 또는 다중)
+  delete: async (ids) => {
+    // 단일 ID를 배열로 변환하여 통일된 처리
+    const idsArray = Array.isArray(ids) ? ids : [ids]
+    
     if (isNetworkEnabled('posts')) {
-      const response = await axios.delete(`${POSTS_API_URL}/${id}`)
-      return response.data
+      try {
+        const deletePromises = idsArray.map(id => 
+          axios.delete(`${POSTS_API_URL}/${id}`)
+        )
+        const responses = await Promise.all(deletePromises)
+        
+        // 단일 삭제인 경우 단일 결과 반환, 다중 삭제인 경우 배열 반환
+        if (!Array.isArray(ids)) {
+          return responses[0].data
+        }
+        return idsArray
+      } catch (error) {
+        console.error('❌ [Network Mode] Failed to delete posts:', error)
+        throw error
+      }
     } else {
-      console.log('🗑️ [Local Mode] Deleted post with id:', id)
-      return { success: true, id }
-    }
-  },
-
-  // 다중 게시글 삭제
-  deleteMany: async (ids) => {
-    if (isNetworkEnabled('posts')) {
-      const deletePromises = ids.map(id => postsApi.remove(id))
-      await Promise.all(deletePromises)
-      return ids
-    } else {
-      console.log('🗑️ [Local Mode] Bulk deleted posts with ids:', ids)
-      return ids
+      if (!Array.isArray(ids)) {
+        console.log('🗑️ [Local Mode] Deleted post with id:', ids)
+        return { success: true, id: ids }
+      } else {
+        console.log('🗑️ [Local Mode] Bulk deleted posts with ids:', idsArray)
+        return idsArray
+      }
     }
   }
 }

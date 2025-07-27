@@ -3,9 +3,9 @@ import { List, Alert, Spin, Button, FloatButton } from 'antd'
 import { PlusOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { usePostsQuery, useDeletePostsMutation } from '../../hooks/usePostsQueries'
-import usePostsCheckedStore from '../../store/usePostsCheckedStore'
+import usePostsStore from '../../store/usePostsStore'
 import PostsItem from './PostsItem'
-import './posts-list.css'
+import './posts.css'
 import '../../styles/pages.css'
 
 /**
@@ -16,7 +16,7 @@ const PostsList = memo(() => {
   const navigate = useNavigate()
   const { data: posts, isLoading, error } = usePostsQuery()
   const deletePostsMutation = useDeletePostsMutation()
-  const { checkedIds, clearChecked } = usePostsCheckedStore()
+  const { checkedIds, clearChecked } = usePostsStore()
 
   // 체크된 항목이 있는지 확인
   const hasCheckedItems = checkedIds.size > 0

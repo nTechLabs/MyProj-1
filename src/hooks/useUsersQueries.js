@@ -3,7 +3,7 @@ import { usersApi } from '../api/usersApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import { useUsersClearChecked } from '../store/useUsersCheckedStore'
+import { useUsersClearChecked } from '../store/useUsersStore'
 
 /**
  * Users QueryKey Factory Pattern (최적화)
@@ -58,7 +58,7 @@ export const useDeleteUsersMutation = () => {
   const clearChecked = useUsersClearChecked()
 
   return useMutation({
-    mutationFn: usersApi.deleteMultiple,
+    mutationFn: usersApi.delete,
     ...createMutationOptions({
       onSuccess: (results) => {
         const successCount = results.filter(result => result.success).length

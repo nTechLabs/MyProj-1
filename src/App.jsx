@@ -11,7 +11,7 @@
 
 import { useEffect } from 'react'
 import { Layout, Typography } from 'antd'
-import AppRoutes from './routes/AppRoutes'
+import AppRoutes from './routes'
 import { logDataSourceInfo } from './utils/dataSourceManager'
 import './App.css'
 

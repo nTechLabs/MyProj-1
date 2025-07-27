@@ -7,7 +7,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { commentsApi } from '../api/commentsApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import useNotificationStore from '../store/useNotificationStore'
-import { useCommentsClearChecked } from '../store/useCommentsCheckedStore'
+import { useCommentsClearChecked } from '../store/useCommentsStore'
 import { createQueryOptions, createMutationOptions } from '../config/reactQueryConfig'
 
 /**
@@ -113,12 +113,7 @@ export const useDeleteCommentsMutation = () => {
   const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: async (ids) => {
-      const results = await Promise.all(
-        ids.map(id => commentsApi.remove(id))
-      )
-      return results
-    },
+    mutationFn: commentsApi.delete,
     ...createMutationOptions({
       onSuccess: (data, ids) => {
         showSuccess(`${ids.length}개의 Comment가 성공적으로 삭제되었습니다.`)

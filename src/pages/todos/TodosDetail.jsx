@@ -22,6 +22,7 @@ import {
   FileTextOutlined
 } from '@ant-design/icons'
 import { useTodoQuery, useAddTodoMutation, useUpdateTodoMutation } from '../../hooks/useTodosQueries'
+import './todos.css'
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -107,9 +108,9 @@ const TodosDetail = () => {
   // 로딩 상태
   if (isLoading && !isNewTodo) {
     return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>
+      <div className="todos-detail-loading">
         <Spin size="large" />
-        <p style={{ marginTop: '20px' }}>할일 정보를 불러오는 중...</p>
+        <p className="todos-detail-loading-text">할일 정보를 불러오는 중...</p>
       </div>
     )
   }
@@ -117,8 +118,12 @@ const TodosDetail = () => {
   // 에러 상태
   if (error && !isNewTodo) {
     return (
-      <div style={{ padding: '20px' }}>
-        <Button icon={<ArrowLeftOutlined />} onClick={handleBack} style={{ marginBottom: '20px' }}>
+      <div className="todos-detail-error">
+        <Button 
+          icon={<ArrowLeftOutlined />} 
+          onClick={handleBack} 
+          className="todos-detail-back-button"
+        >
           뒤로 가기
         </Button>
         <Alert
@@ -133,26 +138,29 @@ const TodosDetail = () => {
   }
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
+    <div className="todos-detail-container">
       <Button 
         icon={<ArrowLeftOutlined />} 
         onClick={handleBack}
-        style={{ marginBottom: '20px' }}
+        className="todos-detail-back-button"
       >
         뒤로 가기
       </Button>
 
       <Card>
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
-          <div style={{ textAlign: 'center' }}>
-            <CheckSquareOutlined style={{ fontSize: '48px', color: '#52c41a', marginBottom: '16px' }} />
+        <Space direction="vertical" size="large" className="todos-detail-space">
+          <div className="todos-detail-header">
+            <CheckSquareOutlined className="todos-detail-icon" />
             <Title level={2}>
               {isNewTodo ? '새 할일 추가' : '할일 정보 수정'}
             </Title>
             
             {!isNewTodo && todo && (
-              <div style={{ marginTop: '16px' }}>
-                <Tag color={todo.completed ? 'success' : 'processing'} style={{ fontSize: '14px', padding: '4px 12px' }}>
+              <div className="todos-detail-tag-container">
+                <Tag 
+                  color={todo.completed ? 'success' : 'processing'} 
+                  className="todos-detail-tag"
+                >
                   {todo.completed ? '완료됨' : '진행중'}
                 </Tag>
               </div>
@@ -219,7 +227,7 @@ const TodosDetail = () => {
             >
               <InputNumber
                 placeholder="사용자 ID를 입력하세요"
-                style={{ width: '100%' }}
+                className="todos-detail-userid-input"
                 min={1}
                 max={10}
               />
@@ -233,7 +241,7 @@ const TodosDetail = () => {
             )}
 
             {/* 버튼 그룹 */}
-            <div style={{ textAlign: 'center', marginTop: '32px' }}>
+            <div className="todos-detail-button-group">
               <Space size="middle">
                 <Button 
                   onClick={handleCancel}

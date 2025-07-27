@@ -21,9 +21,9 @@ import {
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { usePhotosQuery, useDeletePhotosMutation } from '../../hooks/usePhotosQueries'
-import usePhotosCheckedStore from '../../store/usePhotosCheckedStore'
+import usePhotosStore from '../../store/usePhotosStore'
 import PhotosItem from './PhotosItem'
-import './photos-list.css'
+import './photos.css'
 
 const { Text } = Typography
 const { Option } = Select
@@ -56,7 +56,7 @@ const PhotosList = React.memo(() => {
     isAllChecked,
     isIndeterminate,
     getCheckedCount
-  } = usePhotosCheckedStore()
+  } = usePhotosStore()
 
   // 필터링된 사진 목록 (최적화)
   const filteredPhotos = useMemo(() => {
@@ -139,7 +139,6 @@ const PhotosList = React.memo(() => {
         type="error"
         showIcon
         className="error-alert"
-        style={{ margin: '20px' }}
       />
     )
   }
@@ -152,14 +151,13 @@ const PhotosList = React.memo(() => {
     <div className={`page-list-container ${hasCheckedItems ? 'has-bottom-action' : ''}`}>
       {/* 검색 및 필터 컨트롤 */}
       <div className="search-filter-container">
-        <Space size="middle" wrap style={{ width: '100%', justifyContent: 'space-between' }}>
+        <Space size="middle" wrap className="search-filter-space">
           <Space wrap>
             <Input
               placeholder="제목 또는 ID로 검색..."
               prefix={<SearchOutlined />}
               value={searchText}
               onChange={(e) => handleSearch(e.target.value)}
-              style={{ width: 250 }}
               className="search-input"
               allowClear
             />
@@ -167,7 +165,6 @@ const PhotosList = React.memo(() => {
             <Select
               value={albumFilter}
               onChange={handleAlbumFilterChange}
-              style={{ width: 140 }}
               className="filter-select"
             >
               <Option value="all">전체 앨범</Option>
@@ -200,7 +197,7 @@ const PhotosList = React.memo(() => {
           
           {hasCheckedItems && (
             <div className="select-stats">
-              <Text strong style={{ color: '#ff9500' }}>
+              <Text strong className="selected-count">
                 {checkedCount}개 선택됨
               </Text>
             </div>
@@ -212,7 +209,7 @@ const PhotosList = React.memo(() => {
       {totalCount === 0 ? (
         <div className="empty-container">
           <Empty
-            image={<InboxOutlined className="empty-icon" style={{ fontSize: 64, color: '#ff9500' }} />}
+            image={<InboxOutlined className="empty-icon" />}
             description={
               <span className="empty-text">
                 {searchText || albumFilter !== 'all' 
@@ -225,7 +222,7 @@ const PhotosList = React.memo(() => {
         </div>
       ) : (
         <List
-          className={`page-list photos-list list-scroll-hide ${hasCheckedItems ? 'has-bottom-action' : ''}`}
+          className={`page-list photos-list list-scroll-hide list-container ${hasCheckedItems ? 'has-bottom-action' : ''}`}
           itemLayout="horizontal"
           dataSource={filteredPhotos}
           renderItem={(photo) => (
@@ -236,11 +233,7 @@ const PhotosList = React.memo(() => {
             showSizeChanger: true,
             showQuickJumper: true,
             showTotal: (total, range) => `${range[0]}-${range[1]} / ${total}개`,
-            pageSizeOptions: ['10', '15', '20', '30', '50'],
-            style: { textAlign: 'center', marginTop: '24px' }
-          }}
-          style={{ 
-            minHeight: '400px' // 최소 높이 보장
+            pageSizeOptions: ['10', '15', '20', '30', '50']
           }}
         />
       )}
@@ -263,14 +256,7 @@ const PhotosList = React.memo(() => {
             icon={<DeleteOutlined />}
             onClick={handleDelete}
             loading={deletePhotosMutation.isPending}
-            style={{
-              borderRadius: '25px',
-              padding: '0 24px',
-              height: '50px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
-            }}
+            className="delete-button"
           >
             선택된 {checkedCount}개 삭제
           </Button>

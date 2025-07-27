@@ -11,9 +11,9 @@ import {
   NumberOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import useCommentsCheckedStore from '../../store/useCommentsCheckedStore'
+import useCommentsStore from '../../store/useCommentsStore'
 import '../../styles/pages.css'
-import './comments-list.css'
+import './comments.css'
 
 const { Text } = Typography
 
@@ -25,7 +25,7 @@ const { Text } = Typography
  */
 const CommentsItem = React.memo(({ comment }) => {
   const navigate = useNavigate()
-  const { checkedIds, toggleCheck, isChecked } = useCommentsCheckedStore()
+  const { checkedIds, toggleCheck, isChecked } = useCommentsStore()
 
   // 체크 상태
   const checked = isChecked(comment.id)
@@ -87,7 +87,6 @@ const CommentsItem = React.memo(({ comment }) => {
     <List.Item
       className={`list-item-base ${checked ? 'checked' : ''} comment-item`}
       onClick={handleItemClick}
-      style={{ cursor: 'pointer' }}
     >
       <div className="checkbox-container">
         <Checkbox
@@ -111,7 +110,7 @@ const CommentsItem = React.memo(({ comment }) => {
             <Text className="item-meta-title" strong>
               {getSummaryTitle(comment.name)}
             </Text>
-            <div style={{ marginTop: '4px' }}>
+            <div className="comment-item-tags">
               <Space size={4}>
                 <Tag 
                   icon={<MailOutlined />} 
@@ -139,7 +138,7 @@ const CommentsItem = React.memo(({ comment }) => {
             </div>
             
             {(comment.body?.length > 150 || comment.id <= 50 || comment.id > 450) && (
-              <div className="comment-tags" style={{ display: 'flex', justifyContent: 'center', marginTop: '12px', gap: '8px' }}>
+              <div className="comment-item-tags-container">
                 {comment.body?.length > 150 && (
                   <Tag className="comment-tag" size="small">긴 댓글</Tag>
                 )}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography } from 'antd'
 import PhotosList from './PhotosList'
+import './photos.css'
 
 const { Title } = Typography
 
@@ -10,10 +11,10 @@ const { Title } = Typography
  */
 const PhotosPage = () => {
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="photos-page">
       {/* 페이지 헤더 */}
-      <div style={{ marginBottom: '24px', textAlign: 'center' }}>
-        <Title level={2} style={{ margin: 0, color: '#ff9500' }}>
+      <div className="page-header">
+        <Title level={2} className="page-title">
           📸 Photos Management
         </Title>
         <Typography.Text type="secondary">

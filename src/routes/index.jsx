@@ -41,27 +41,27 @@ import { Spin } from 'antd'
 const HomePage = lazy(() => import('../pages'))
 
 // Users 엔티티 - 사용자 관리
-const UsersPage = lazy(() => import('../pages/users/UsersPage'))
+const UsersPage = lazy(() => import('../pages/users'))
 const UsersDetail = lazy(() => import('../pages/users/UsersDetail'))
 
 // Todos 엔티티 - 할일 관리 
-const TodosPage = lazy(() => import('../pages/Todos/TodosPage'))
-const TodosDetail = lazy(() => import('../pages/Todos/TodosDetail'))
+const TodosPage = lazy(() => import('../pages/todos'))
+const TodosDetail = lazy(() => import('../pages/todos/TodosDetail'))
 
 // Posts 엔티티 - 게시글 관리
-const PostsPage = lazy(() => import('../pages/Posts/PostsPage'))
+const PostsPage = lazy(() => import('../pages/Posts'))
 const PostsDetail = lazy(() => import('../pages/Posts/PostsDetail'))
 
 // Comments 엔티티 - 댓글 관리
-const CommentsPage = lazy(() => import('../pages/comments/CommentsPage'))
+const CommentsPage = lazy(() => import('../pages/comments'))
 const CommentsDetail = lazy(() => import('../pages/comments/CommentsDetail'))
 
 // Photos 엔티티 - 사진 관리
-const PhotosPage = lazy(() => import('../pages/photos/PhotosPage'))
+const PhotosPage = lazy(() => import('../pages/photos'))
 const PhotosDetail = lazy(() => import('../pages/photos/PhotosDetail'))
 
 // Counter 데모 페이지 - Zustand 상태 관리 예제
-const CounterPage = lazy(() => import('../pages/counter/CounterPage'))
+const CounterPage = lazy(() => import('../pages/counter'))
 
 // ======================================
 // 로딩 폴백 컴포넌트 (사용자 경험 최적화)

@@ -3,9 +3,9 @@ import { List, Button, Alert, Spin, FloatButton, Checkbox, Input, Space, Select 
 import { PlusOutlined, DeleteOutlined, SearchOutlined, FilterOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useTodosQuery, useDeleteTodosMutation } from '../../hooks/useTodosQueries'
-import useTodosCheckedStore from '../../store/useTodosCheckedStore'
+import useTodosStore from '../../store/useTodosStore'
 import TodosItem from './TodosItem'
-import './todos-list.css'
+import './todos.css'
 import '../../styles/pages.css'
 
 const { Option } = Select
@@ -33,7 +33,7 @@ const TodosList = React.memo(() => {
     clearChecked, 
     isAllChecked, 
     isIndeterminate 
-  } = useTodosCheckedStore()
+  } = useTodosStore()
 
   // 검색 및 상태 필터링된 할일 목록
   const filteredTodos = useMemo(() => {
@@ -121,7 +121,7 @@ const TodosList = React.memo(() => {
     <div className="page-list-container">
       {/* 검색 및 필터 컨트롤 */}
       <Space direction="vertical" size="middle" className="search-filter-container">
-        <Space wrap style={{ width: '100%' }}>
+        <Space wrap className="search-filter-space">
           <Input
             placeholder="할일 제목으로 검색..."
             prefix={<SearchOutlined />}

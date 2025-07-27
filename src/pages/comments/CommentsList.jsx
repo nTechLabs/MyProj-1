@@ -27,10 +27,10 @@ import {
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useCommentsQuery, useDeleteCommentsMutation } from '../../hooks/useCommentsQueries'
-import useCommentsCheckedStore from '../../store/useCommentsCheckedStore'
+import useCommentsStore from '../../store/useCommentsStore'
 import CommentsItem from './CommentsItem'
 import '../../styles/pages.css'
-import './comments-list.css'
+import './comments.css'
 
 const { Text } = Typography
 const { Search } = Input
@@ -65,7 +65,7 @@ const CommentsList = () => {
     isAllChecked,
     isIndeterminate,
     getCheckedCount 
-  } = useCommentsCheckedStore()
+  } = useCommentsStore()
 
   /**
    * 검색 및 필터링된 댓글 목록
@@ -209,15 +209,14 @@ const CommentsList = () => {
             onSearch={handleSearchChange}
             onChange={handleSearchInputChange}
             className="search-input"
-            prefix={<CommentOutlined style={{ color: '#ff9500' }} />}
+            prefix={<CommentOutlined />}
           />
           <Select
             mode="multiple"
             value={filterTypes}
             onChange={handleFilterChange}
             size="large"
-            className="filter-select"
-            style={{ minWidth: 200, marginLeft: 8 }}
+            className="filter-select filter-select-custom"
             placeholder="필터 선택 (다중 선택 가능)"
             allowClear
             maxTagCount="responsive"
@@ -242,7 +241,7 @@ const CommentsList = () => {
               전체 선택
             </Checkbox>
             {(searchTerm || filterTypes?.length > 0) && (
-              <Text type="secondary" style={{ marginLeft: '12px', fontSize: '12px' }}>
+              <Text type="secondary" className="filter-info-text">
                 {searchTerm && `"${searchTerm}" 검색 결과`}
                 {searchTerm && filterTypes?.length > 0 && ' | '}
                 {filterTypes?.length > 0 && `${filterTypes.map(type => {
@@ -260,8 +259,7 @@ const CommentsList = () => {
           <div className="select-stats">
             <Space>
               <Badge 
-                count={filteredComments.length} 
-                style={{ backgroundColor: '#ff9500' }} 
+                count={filteredComments.length}
               />
               <Text type="secondary">
                 {comments.length !== filteredComments.length && 

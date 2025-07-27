@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { List, Checkbox, Tag, Avatar } from 'antd'
 import { CheckCircleOutlined, ClockCircleOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import useTodosCheckedStore from '../../store/useTodosCheckedStore'
+import useTodosStore from '../../store/useTodosStore'
 
 /**
  * 개별 할일 항목을 표시하는 컴포넌트 (최적화)
@@ -12,7 +12,7 @@ import useTodosCheckedStore from '../../store/useTodosCheckedStore'
  */
 const TodosItem = memo(({ todo }) => {
   const navigate = useNavigate()
-  const { isChecked, toggleCheck } = useTodosCheckedStore()
+  const { isChecked, toggleCheck } = useTodosStore()
 
   const checked = isChecked(todo.id)
 
@@ -31,22 +31,12 @@ const TodosItem = memo(({ todo }) => {
     <List.Item
       className={`todo-item ${checked ? 'checked' : ''} ${todo.completed ? 'completed' : ''}`}
       onClick={handleItemClick}
-      style={{ 
-        cursor: 'pointer',
-        padding: '16px',
-        backgroundColor: checked ? '#f0f9ff' : (todo.completed ? '#f6ffed' : 'transparent'),
-        borderRadius: '8px',
-        marginBottom: '8px',
-        border: checked ? '2px solid #1890ff' : `1px solid ${todo.completed ? '#b7eb8f' : '#f0f0f0'}`,
-        transition: 'all 0.2s ease',
-        opacity: todo.completed ? 0.8 : 1
-      }}
       actions={[
         <Checkbox
           key="checkbox"
           checked={checked}
           onClick={handleCheckboxClick}
-          style={{ transform: 'scale(1.2)' }}
+          className="todo-item-checkbox"
         />
       ]}
     >
@@ -55,40 +45,30 @@ const TodosItem = memo(({ todo }) => {
           <Avatar 
             size={48} 
             icon={todo.completed ? <CheckCircleOutlined /> : <ClockCircleOutlined />}
-            style={{ 
-              backgroundColor: todo.completed 
-                ? (checked ? '#1890ff' : '#52c41a')
-                : (checked ? '#1890ff' : '#faad14'),
-              fontSize: '20px'
-            }}
+            className={`${todo.completed ? 'todo-item-avatar-completed' : 'todo-item-avatar-pending'} ${checked ? 'checked' : ''}`}
           />
         }
         title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span style={{ 
-              fontSize: '16px', 
-              fontWeight: 'bold',
-              textDecoration: todo.completed ? 'line-through' : 'none',
-              color: todo.completed ? '#999' : '#262626'
-            }}>
+          <div className="todo-item-title-container">
+            <span className={`todo-item-title ${todo.completed ? 'completed' : ''}`}>
               {todo.title}
             </span>
             
             <Tag 
               color={todo.completed ? 'success' : 'processing'}
-              style={{ marginLeft: 'auto' }}
+              className="todo-item-tag"
             >
               {todo.completed ? '완료됨' : '진행중'}
             </Tag>
           </div>
         }
         description={
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-            <UserOutlined style={{ color: '#999', fontSize: '12px' }} />
-            <span style={{ color: '#999', fontSize: '12px' }}>
+          <div className="todo-item-description">
+            <UserOutlined className="todo-item-description-icon" />
+            <span className="todo-item-description-text">
               사용자 ID: {todo.userId}
             </span>
-            <span style={{ color: '#999', fontSize: '12px' }}>
+            <span className="todo-item-description-text">
               • ID: {todo.id}
             </span>
           </div>

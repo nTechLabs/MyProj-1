@@ -3,7 +3,7 @@ import { postsApi } from '../api/postsApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import { usePostsClearChecked } from '../store/usePostsCheckedStore'
+import { usePostsClearChecked } from '../store/usePostsStore'
 
 /**
  * Posts QueryKey Factory Pattern (최적화)
@@ -57,7 +57,7 @@ export const useDeletePostsMutation = () => {
   const clearChecked = usePostsClearChecked()
   
   return useMutation({
-    mutationFn: postsApi.deleteMany,
+    mutationFn: postsApi.delete,
     ...createMutationOptions({
       onSuccess: (deletedIds) => {
         showSuccess(`${deletedIds.length}개의 게시글이 삭제되었습니다.`)
