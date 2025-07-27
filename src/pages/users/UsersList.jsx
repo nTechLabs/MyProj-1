@@ -107,12 +107,11 @@ const UsersList = React.memo(() => {
           className="search-input"
         />
         
-        <div className="select-all-container" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="select-all-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
           <Checkbox
             indeterminate={isIndeterminate(userIds)}
             checked={isAllChecked(userIds)}
             onChange={handleSelectAll}
-            style={{ flex: 1 }}
           >
             전체 선택 ({checkedIds.size}/{filteredUsers.length})
           </Checkbox>
