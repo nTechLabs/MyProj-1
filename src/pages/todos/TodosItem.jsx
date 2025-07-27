@@ -95,9 +95,6 @@ const TodosItem = memo(({ todo }) => {
               </>
             )}
           </div>
-          <div className="todo-item-status-sub">
-            {todo.completed ? '✓ 작업 완료' : '⏳ 작업 중'}
-          </div>
         </div>
 
         {/* 체크박스 (우측 끝) */}
