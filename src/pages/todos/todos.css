@@ -479,14 +479,19 @@
 
 .search-filter-space {
   width: 100%;
+  display: flex;
+  gap: 8px;
 }
 
 .search-input {
-  min-width: 250px;
+  flex: 4;
+  min-width: 300px;
 }
 
 .filter-select {
-  min-width: 120px;
+  width: 100px;
+  min-width: 100px;
+  flex-shrink: 0;
 }
 
 /* 전체 선택 컨테이너 */
