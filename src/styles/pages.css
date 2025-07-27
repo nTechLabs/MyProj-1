@@ -110,15 +110,18 @@
 /* 하단 고정 액션 버튼 */
 .fixed-delete-button {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   padding: 16px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-top: 1px solid #f0f0f0;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
   z-index: 1000;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  max-width: 320px;
+  width: 90%;
 }
 
 /* 검색 및 필터 컨트롤 공통 스타일 */
@@ -219,7 +222,10 @@
   }
   
   .fixed-delete-button {
+    bottom: 16px;
     padding: 12px;
+    max-width: 280px;
+    width: 92%;
   }
 }
 

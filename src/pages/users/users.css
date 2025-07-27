@@ -176,23 +176,14 @@
   background-color: rgba(24, 144, 255, 0.1) !important;
 }
 
-/* 삭제 버튼 고정 위치 스타일 */
-.fixed-delete-button {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  max-width: 300px;
-  width: 90%;
-}
-
+/* 삭제 버튼 고정 위치 스타일 - pages.css와 일관성 유지 */
 .fixed-delete-button .ant-btn {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border: none;
   height: 48px;
   font-size: 16px;
   font-weight: bold;
+  border-radius: 8px;
 }
 
 /* 상세 페이지 스타일 */
@@ -307,14 +298,10 @@
     word-break: break-all;
   }
   
-  .fixed-delete-button {
-    bottom: 16px;
-    width: 95%;
-  }
-  
   .fixed-delete-button .ant-btn {
     height: 44px;
     font-size: 14px;
+    border-radius: 8px;
   }
 }
 
