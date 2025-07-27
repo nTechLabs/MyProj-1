@@ -24,6 +24,7 @@ import {
   useUpdatePostMutation 
 } from '../../hooks/usePostsQueries'
 import useNotificationStore from '../../store/useNotificationStore'
+import './posts.css'
 
 const { Title, Text } = Typography
 const { TextArea } = Input
@@ -137,7 +138,7 @@ const PostsDetail = () => {
   // 로딩 상태
   if (isLoadingPost) {
     return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>
+      <div className="posts-detail-loading">
         <Spin size="large" tip="게시글 정보를 불러오는 중..." />
       </div>
     )
@@ -146,13 +147,13 @@ const PostsDetail = () => {
   // 에러 상태
   if (postError && !isNewPost) {
     return (
-      <div style={{ padding: '20px' }}>
+      <div className="posts-detail-error">
         <Alert
           message="데이터 로딩 오류"
           description="게시글 정보를 불러오는 중 오류가 발생했습니다."
           type="error"
           showIcon
-          style={{ marginBottom: '20px' }}
+          className="posts-detail-error-alert"
         />
         <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/posts')}>
           목록으로 돌아가기
@@ -162,9 +163,9 @@ const PostsDetail = () => {
   }
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+    <div className="posts-detail-container">
       {/* 헤더 */}
-      <Space style={{ marginBottom: '20px' }}>
+      <Space className="posts-detail-header">
         <Button 
           icon={<ArrowLeftOutlined />} 
           onClick={handleCancel}
@@ -176,11 +177,11 @@ const PostsDetail = () => {
       {/* 메인 카드 */}
       <Card
         title={
-          <Title level={3} style={{ margin: 0 }}>
+          <Title level={3} className="posts-detail-card-title">
             {isNewPost ? '새 게시글 작성' : '게시글 편집'}
           </Title>
         }
-        style={{ boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}
+        className="posts-detail-card"
       >
         <Form
           form={form}
@@ -254,7 +255,7 @@ const PostsDetail = () => {
           <Divider />
 
           {/* 버튼 영역 */}
-          <div style={{ textAlign: 'center' }}>
+          <div className="posts-detail-buttons">
             <Space size="middle">
               <Button 
                 onClick={handleCancel}
@@ -282,7 +283,7 @@ const PostsDetail = () => {
           message="저장되지 않은 변경사항이 있습니다."
           type="warning"
           showIcon
-          style={{ marginTop: '16px' }}
+          className="posts-detail-unsaved-alert"
         />
       )}
     </div>

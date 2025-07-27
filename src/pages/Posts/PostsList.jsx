@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { usePostsQuery, useDeletePostsMutation } from '../../hooks/usePostsQueries'
 import usePostsStore from '../../store/usePostsStore'
 import PostsItem from './PostsItem'
-import './posts-list.css'
+import './posts.css'
 import '../../styles/pages.css'
 
 /**
