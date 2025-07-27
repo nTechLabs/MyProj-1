@@ -32,7 +32,7 @@ import {
   useUpdateCommentMutation 
 } from '../../hooks/useCommentsQueries'
 import '../../styles/pages.css'
-import './comments-list.css'
+import './comments.css'
 
 const { Title, Text } = Typography
 const { TextArea } = Input
@@ -199,8 +199,8 @@ const CommentsDetail = () => {
               onClick={handleBack}
               type="text"
             />
-            <CommentOutlined style={{ color: '#ff9500' }} />
-            <Title level={3} style={{ margin: 0 }}>
+            <CommentOutlined />
+            <Title level={3}>
               {isNewMode ? '새 댓글 추가' : `댓글 #${comment?.id} 편집`}
             </Title>
           </Space>
@@ -234,7 +234,6 @@ const CommentsDetail = () => {
             <InputNumber
               min={1}
               max={100}
-              style={{ width: '100%' }}
               placeholder="연결할 게시물 ID를 입력하세요"
             />
           </Form.Item>
@@ -311,7 +310,6 @@ const CommentsDetail = () => {
               description="저장하지 않으면 변경사항이 사라집니다."
               type="warning"
               showIcon
-              style={{ marginTop: 16 }}
             />
           )}
         </Form>

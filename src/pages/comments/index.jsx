@@ -7,7 +7,7 @@ import React from 'react'
 import { Typography } from 'antd'
 import CommentsList from './CommentsList'
 import '../../styles/pages.css'
-import './comments-list.css'
+import './comments.css'
 
 const { Title } = Typography
 
