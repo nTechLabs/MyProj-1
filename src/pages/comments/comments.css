@@ -28,7 +28,12 @@
 .search-filter-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  width: 100%;
+}
+
+.search-filter-group {
+  display: flex;
+  align-items: center;
   width: 100%;
 }
 
@@ -39,24 +44,26 @@
 }
 
 .search-input .ant-input-search {
-  border-radius: 6px;
+  border-radius: 6px 0 0 6px;
 }
 
 .search-input .ant-input-search .ant-input {
   border-color: var(--comments-border);
   border-radius: 6px 0 0 6px;
+  border-right: none;
 }
 
 .search-input .ant-input-search .ant-input:focus,
 .search-input .ant-input-search .ant-input-focused {
   border-color: var(--comments-primary);
-  box-shadow: 0 0 0 2px rgba(255, 149, 0, 0.1);
+  box-shadow: none;
 }
 
 .search-input .ant-input-search-button {
   background: var(--comments-primary);
   border-color: var(--comments-primary);
-  border-radius: 0 6px 6px 0;
+  border-radius: 0;
+  border-right: none;
 }
 
 .search-input .ant-input-search-button:hover {
@@ -80,7 +87,8 @@
 
 .filter-select .ant-select-selector {
   border-color: var(--comments-border);
-  border-radius: 6px;
+  border-radius: 0 6px 6px 0;
+  border-left: none;
 }
 
 .filter-select:hover .ant-select-selector {
@@ -96,6 +104,107 @@
   background: var(--comments-bg-light);
   border-color: var(--comments-primary);
   color: var(--comments-primary);
+}
+
+/* =========================
+   반응형 디자인 - 모바일 및 태블릿
+   ========================= */
+
+/* 태블릿 (768px 이하) */
+@media (max-width: 768px) {
+  .search-filter-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .search-filter-group {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .search-input .ant-input-search {
+    border-radius: 6px;
+  }
+  
+  .search-input .ant-input-search .ant-input {
+    border-radius: 6px 0 0 6px;
+    border-right: 1px solid var(--comments-border);
+  }
+  
+  .search-input .ant-input-search-button {
+    border-radius: 0 6px 6px 0;
+    border-right: 1px solid var(--comments-primary);
+  }
+  
+  .filter-select {
+    width: 100%;
+    min-width: auto;
+    max-width: none;
+  }
+  
+  .filter-select .ant-select-selector {
+    border-radius: 6px;
+    border-left: 1px solid var(--comments-border);
+  }
+}
+
+/* 모바일 (480px 이하) */
+@media (max-width: 480px) {
+  .search-filter-container {
+    margin-bottom: 12px;
+  }
+  
+  .search-filter-group {
+    gap: 8px;
+  }
+  
+  .search-input .ant-input-search,
+  .filter-select .ant-select-selector {
+    font-size: 14px;
+  }
+  
+  .filter-select .ant-select-selection-placeholder {
+    font-size: 13px;
+  }
+  
+  /* 작은 화면에서 전체 선택 섹션도 조정 */
+  .select-all-container {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 10px 12px;
+  }
+  
+  .select-all-left {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .select-stats {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+/* 매우 작은 화면 (360px 이하) */
+@media (max-width: 360px) {
+  .search-input .ant-input-search .ant-input {
+    font-size: 13px;
+  }
+  
+  .search-input .ant-input-search .ant-input::placeholder {
+    font-size: 12px;
+  }
+  
+  .filter-select .ant-select-selection-placeholder {
+    font-size: 12px;
+  }
 }
 
 /* =========================

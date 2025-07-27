@@ -200,32 +200,34 @@ const CommentsList = () => {
       {/* 검색 및 필터 */}
       <div className="search-filter-container">
         <div className="search-filter-row">
-          <Search
-            placeholder="댓글 제목, 이메일, 내용으로 검색..."
-            allowClear
-            enterButton={<SearchOutlined />}
-            size="large"
-            value={searchTerm}
-            onSearch={handleSearchChange}
-            onChange={handleSearchInputChange}
-            className="search-input"
-            prefix={<CommentOutlined />}
-          />
-          <Select
-            mode="multiple"
-            value={filterTypes}
-            onChange={handleFilterChange}
-            size="large"
-            className="filter-select filter-select-custom"
-            placeholder="필터 선택 (다중 선택 가능)"
-            allowClear
-            maxTagCount="responsive"
-          >
-            <Option value="recent">최신 (ID 400+)</Option>
-            <Option value="popular">인기 (ID 1-100)</Option>
-            <Option value="long">긴 댓글 (200자+)</Option>
-            <Option value="short">짧은 댓글 (100자-)</Option>
-          </Select>
+          <div className="search-filter-group">
+            <Search
+              placeholder="댓글 제목, 이메일, 내용으로 검색..."
+              allowClear
+              enterButton={<SearchOutlined />}
+              size="large"
+              value={searchTerm}
+              onSearch={handleSearchChange}
+              onChange={handleSearchInputChange}
+              className="search-input"
+              prefix={<CommentOutlined />}
+            />
+            <Select
+              mode="multiple"
+              value={filterTypes}
+              onChange={handleFilterChange}
+              size="large"
+              className="filter-select filter-select-custom"
+              placeholder="필터 선택 (다중 선택 가능)"
+              allowClear
+              maxTagCount="responsive"
+            >
+              <Option value="recent">최신 (ID 400+)</Option>
+              <Option value="popular">인기 (ID 1-100)</Option>
+              <Option value="long">긴 댓글 (200자+)</Option>
+              <Option value="short">짧은 댓글 (100자-)</Option>
+            </Select>
+          </div>
         </div>
       </div>
 
