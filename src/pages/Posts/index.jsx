@@ -16,18 +16,6 @@ const PostsPage = () => {
   return (
     <div className="posts-container">
       <Space direction="vertical" size="large" className="posts-content">
-        <div className="posts-header">
-          <BookOutlined className="posts-icon" />
-          <Title level={2}>Posts 관리 시스템</Title>
-          <Paragraph>
-            React Query와 Zustand를 활용한 Posts CRUD 예제입니다.
-            <br />
-            게시글을 조회, 추가, 수정, 삭제할 수 있습니다.
-          </Paragraph>
-        </div>
-        
-        <Divider />
-        
         {/* Posts 리스트 컴포넌트 */}
         <PostsList />
       </Space>

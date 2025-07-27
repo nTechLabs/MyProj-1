@@ -18,15 +18,6 @@ const { Title } = Typography
 const CommentsPage = () => {
   return (
     <div className="comments-page">
-      <div className="page-header">
-        <Title level={2} className="page-title">
-          📝 Comments Management
-        </Title>
-        <Typography.Text type="secondary" className="page-subtitle">
-          React Query + Zustand 기반 댓글 관리 시스템
-        </Typography.Text>
-      </div>
-      
       <CommentsList />
     </div>
   )

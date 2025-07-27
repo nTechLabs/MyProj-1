@@ -26,18 +26,9 @@ const UsersPage = () => {
 
   return (
     <div className="users-page-container">
+
+      
       <Space direction="vertical" size="large" className="users-page-content">
-        <div className="users-page-header">
-          <UserOutlined className="users-page-icon" />
-          <Title level={2}>Users 관리 시스템</Title>
-          <Paragraph>
-            React Query + Zustand를 사용한 Users CRUD 예제입니다.
-            <br />
-            JSONPlaceholder API를 통해 사용자를 관리할 수 있습니다.
-          </Paragraph>
-        </div>
-        
-        <Divider>React Query + Zustand 상태 관리</Divider>
         <UsersList />
       </Space>
     </div>
