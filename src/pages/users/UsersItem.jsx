@@ -68,7 +68,6 @@ const UsersItem = memo(({ user }) => {
       }}>
         <Avatar 
           size={48} 
-          icon={<UserOutlined />}
           style={{ 
             backgroundColor: checked ? '#1890ff' : '#87d068',
             fontSize: '18px'
