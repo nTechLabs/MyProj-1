@@ -16,6 +16,12 @@ const TodosItem = memo(({ todo }) => {
 
   const checked = isChecked(todo.id)
 
+  // UserId의 첫 글자를 아바타로 사용 (메모이제이션)
+  const avatarText = React.useMemo(() => 
+    todo.userId ? todo.userId.toString().charAt(0).toUpperCase() : 'U', 
+    [todo.userId]
+  )
+
   // 체크박스 클릭 핸들러 (이벤트 전파 방지) - useCallback으로 최적화
   const handleCheckboxChange = useCallback((e) => {
     console.log('✅ Checkbox onChange for todo:', todo.id, 'target checked:', e.target.checked, 'current checked:', checked)
@@ -45,9 +51,10 @@ const TodosItem = memo(({ todo }) => {
         <div className="todo-item-avatar">
           <Avatar 
             size={48} 
-            icon={todo.completed ? <CheckCircleOutlined /> : <ClockCircleOutlined />}
             className={`${todo.completed ? 'todo-item-avatar-completed' : 'todo-item-avatar-pending'} ${checked ? 'checked' : ''}`}
-          />
+          >
+            {avatarText}
+          </Avatar>
         </div>
 
         {/* 메인 콘텐츠 */}
