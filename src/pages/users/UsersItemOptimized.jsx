@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { List, Checkbox, Avatar } from 'antd'
 import { UserOutlined, MailOutlined, PhoneOutlined, GlobalOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { useUsersIsChecked, useUsersToggleCheck } from '../../store/useUsersCheckedStore'
+import { useUsersIsChecked, useUsersToggleCheck } from '../../store/useUsersStore'
 import './users-list.css'
 
 /**
