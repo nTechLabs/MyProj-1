@@ -69,7 +69,7 @@ const NavBar = () => {
       justifyContent: 'space-between',
       width: '100%',
       height: '100%',
-      padding: '0 8px' // 전체 패딩 추가
+      padding: '0 4px' // 전체 패딩 줄임 (8px -> 4px)
     }}>
       {/* 이전 페이지 버튼 */}
       <Button
@@ -79,9 +79,9 @@ const NavBar = () => {
         style={{ 
           color: 'white',
           border: 'none',
-          height: '40px',
-          minWidth: '40px',
-          width: '40px', // 고정 너비 설정
+          height: '36px', // 높이 줄임 (40px -> 36px)
+          minWidth: '36px', // 최소 너비 줄임 (40px -> 36px)
+          width: '36px', // 고정 너비 줄임 (40px -> 36px)
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -94,20 +94,22 @@ const NavBar = () => {
       <div style={{ 
         flex: 1, 
         textAlign: 'center',
-        margin: '0 24px', // 좌우 마진 증가 (16px -> 24px)
+        margin: '0 8px', // 좌우 마진 더 줄임 (16px -> 8px)
         minWidth: 0, // flex 아이템의 최소 너비를 0으로 설정하여 축소 허용
-        overflow: 'hidden' // 오버플로우 숨김
+        overflow: 'hidden', // 오버플로우 숨김
+        maxWidth: 'calc(100% - 80px)' // 최대 너비 제한으로 버튼 영역 확보
       }}>
         <Title 
           level={2} 
           style={{ 
             color: 'white', 
             margin: 0,
-            fontSize: '20px',
+            fontSize: '16px', // 폰트 크기 더 줄임 (18px -> 16px)
             fontWeight: 'bold',
             whiteSpace: 'nowrap', // 텍스트 줄바꿈 방지
             overflow: 'hidden',
-            textOverflow: 'ellipsis' // 긴 텍스트는 ... 처리
+            textOverflow: 'ellipsis', // 긴 텍스트는 ... 처리
+            lineHeight: '1.1' // 라인 높이 더 조정 (1.2 -> 1.1)
           }}
         >
           {currentPage.displayTitle}
@@ -116,8 +118,8 @@ const NavBar = () => {
         {/* 부제목 - 현재 경로 표시 */}
         <div style={{
           color: 'rgba(255, 255, 255, 0.7)',
-          fontSize: '12px',
-          marginTop: '2px',
+          fontSize: '10px', // 폰트 크기 더 줄임 (11px -> 10px)
+          marginTop: '0px', // 마진 제거 (1px -> 0px)
           whiteSpace: 'nowrap', // 경로도 줄바꿈 방지
           overflow: 'hidden',
           textOverflow: 'ellipsis'
@@ -134,9 +136,9 @@ const NavBar = () => {
         style={{ 
           color: 'white',
           border: 'none',
-          height: '40px',
-          minWidth: '40px',
-          width: '40px', // 고정 너비 설정
+          height: '36px', // 높이 줄임 (40px -> 36px)
+          minWidth: '36px', // 최소 너비 줄임 (40px -> 36px)
+          width: '36px', // 고정 너비 줄임 (40px -> 36px)
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
