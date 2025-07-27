@@ -3,7 +3,7 @@
  * @description React Query를 사용한 댓글 데이터 조회 및 관리
  */
 
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { 
   List, 
   Button, 
@@ -48,10 +48,6 @@ const { Option } = Select
 const CommentsList = () => {
   const navigate = useNavigate()
   
-  // 로컬 상태
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filterTypes, setFilterTypes] = useState([]) // 배열로 변경
-  
   // React Query
   const { 
     data: comments = [], 
@@ -62,14 +58,19 @@ const CommentsList = () => {
   
   const deleteCommentsMutation = useDeleteCommentsMutation()
   
-  // Zustand 상태
+  // Zustand 상태 (체크 상태 + 필터 상태)
   const { 
     checkedIds, 
     toggleAllCheck, 
     clearChecked,
     isAllChecked,
     isIndeterminate,
-    getCheckedCount 
+    getCheckedCount,
+    searchTerm,
+    filterTypes,
+    setSearchTerm,
+    setFilterTypes,
+    toggleFilterType
   } = useCommentsStore()
 
   /**
@@ -126,7 +127,7 @@ const CommentsList = () => {
   const handleSearchChange = useCallback((value) => {
     setSearchTerm(value)
     clearChecked()
-  }, [clearChecked])
+  }, [setSearchTerm, clearChecked])
 
   /**
    * 검색 입력 변경 핸들러 (onChange)
@@ -138,29 +139,16 @@ const CommentsList = () => {
     if (value === '') {
       clearChecked()
     }
-  }, [clearChecked])
+  }, [setSearchTerm, clearChecked])
 
   /**
    * 퀵 필터 토글 핸들러
    * @param {string} filterType - 필터 타입
    */
   const handleQuickFilterToggle = useCallback((filterType) => {
-    setFilterTypes(prev => {
-      const newTypes = [...prev]
-      const index = newTypes.indexOf(filterType)
-      
-      if (index > -1) {
-        // 이미 선택된 필터면 제거
-        newTypes.splice(index, 1)
-      } else {
-        // 선택되지 않은 필터면 추가
-        newTypes.push(filterType)
-      }
-      
-      clearChecked()
-      return newTypes
-    })
-  }, [clearChecked])
+    toggleFilterType(filterType)
+    clearChecked()
+  }, [toggleFilterType, clearChecked])
 
   /**
    * 필터 타입 변경 핸들러
@@ -169,7 +157,7 @@ const CommentsList = () => {
   const handleFilterChange = useCallback((values) => {
     setFilterTypes(values || [])
     clearChecked()
-  }, [clearChecked])
+  }, [setFilterTypes, clearChecked])
 
   /**
    * 전체 선택 토글 핸들러

@@ -7,7 +7,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { commentsApi } from '../api/commentsApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import useNotificationStore from '../store/useNotificationStore'
-import { useCommentsClearChecked } from '../store/useCommentsStore'
+import useCommentsStore from '../store/useCommentsStore'
 import { createQueryOptions, createMutationOptions } from '../config/reactQueryConfig'
 
 /**
@@ -109,7 +109,7 @@ export const useUpdateCommentMutation = () => {
  */
 export const useDeleteCommentsMutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const clearChecked = useCommentsClearChecked()
+  const { clearChecked } = useCommentsStore()
   const queryClient = useQueryClient()
   
   return useMutation({
