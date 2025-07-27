@@ -107,11 +107,12 @@ const UsersList = React.memo(() => {
           className="search-input"
         />
         
-        <div className="select-all-container">
+        <div className="select-all-container" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Checkbox
             indeterminate={isIndeterminate(userIds)}
             checked={isAllChecked(userIds)}
             onChange={handleSelectAll}
+            style={{ flex: 1 }}
           >
             전체 선택 ({checkedIds.size}/{filteredUsers.length})
           </Checkbox>
@@ -120,11 +121,12 @@ const UsersList = React.memo(() => {
             <Button
               type="primary"
               danger
+              size="small"
               icon={<DeleteOutlined />}
               onClick={handleDeleteSelected}
               loading={deleteUsersMutation.isPending}
             >
-              선택된 항목 삭제 ({checkedIds.size})
+              삭제 ({checkedIds.size})
             </Button>
           )}
         </div>
