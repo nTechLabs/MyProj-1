@@ -1,5 +1,244 @@
 /* Todos 리스트 특화 스타일 */
 
+/* ========================================
+   TodosItem 레이아웃 스타일 (UsersItem과 동일한 구조)
+   ======================================== */
+
+/* 할일 아이템 기본 레이아웃 */
+.todo-item-container {
+  cursor: pointer;
+  padding: 16px;
+  background-color: transparent;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 80px;
+}
+
+.todo-item-container.checked {
+  background-color: #f0f9ff;
+  border: 2px solid #1890ff;
+}
+
+/* 아바타 컨테이너 */
+.todo-item-avatar {
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.todo-item-avatar .ant-avatar {
+  font-size: 18px;
+}
+
+.todo-item-avatar .ant-avatar.checked {
+  background-color: #1890ff;
+}
+
+.todo-item-avatar-completed {
+  background-color: #52c41a !important;
+}
+
+.todo-item-avatar-pending {
+  background-color: #fa8c16 !important;
+}
+
+/* 메인 콘텐츠 */
+.todo-item-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 제목 줄 */
+.todo-item-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.todo-item-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #262626;
+}
+
+.todo-item-name.completed {
+  color: #8c8c8c;
+  text-decoration: line-through;
+}
+
+.todo-item-tag {
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+}
+
+/* 할일 세부 정보 */
+.todo-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: #595959;
+}
+
+.todo-item-detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.todo-item-detail .anticon {
+  font-size: 12px;
+  color: #1890ff;
+}
+
+.todo-item-detail span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 상태 정보 (UsersItem의 회사 정보와 같은 위치) */
+.todo-item-status {
+  margin-left: 16px;
+  font-size: 12px;
+  color: #8c8c8c;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 100px;
+  text-align: right;
+}
+
+.todo-item-status-main {
+  font-weight: 500;
+  color: #595959;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.todo-item-status-sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  font-size: 11px;
+}
+
+/* 체크박스 영역 */
+.todo-item-checkbox {
+  margin-left: 12px;
+  flex-shrink: 0;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.todo-item-checkbox .ant-checkbox-wrapper {
+  margin: 0;
+}
+
+.todo-item-checkbox:hover {
+  background-color: rgba(24, 144, 255, 0.1);
+}
+
+/* List Item 전체 레이아웃 개선 */
+.todo-item {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-height: 80px !important;
+  padding: 0 !important;
+  border: none !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  background: white !important;
+}
+
+.todo-item:hover {
+  background-color: #fafafa !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.todo-item.checked {
+  background-color: #f0f9ff !important;
+  border-left: 4px solid #1890ff !important;
+}
+
+.todo-item.checked:hover {
+  background-color: #e6f7ff !important;
+}
+
+.todo-item.completed {
+  background-color: #f6ffed !important;
+  border-color: #b7eb8f !important;
+}
+
+.todo-item.completed:hover {
+  background-color: #f0f9ff !important;
+}
+
+.todo-item.completed.checked {
+  background-color: #e6f7ff !important;
+  border-color: #1890ff !important;
+}
+
+/* Ant Design List Item 기본 스타일 재정의 */
+.page-list .ant-list-item {
+  display: flex !important;
+  padding: 0 !important;
+  border: none !important;
+  width: 100% !important;
+}
+
+/* 반응형 레이아웃 조정 - 기본 설정 */
+@media (max-width: 768px) {
+  .todo-item {
+    padding: 12px !important;
+    margin-bottom: 4px !important;
+    min-height: auto !important;
+    /* flex 방향은 row로 유지하여 아바타와 체크박스가 나란히 배치 */
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+  
+  /* 상태 정보를 숨기거나 작게 표시 */
+  .todo-item-status {
+    display: none !important;
+  }
+  
+  /* 메인 콘텐츠 영역 조정 */
+  .todo-item-content {
+    flex: 1;
+    min-width: 0;
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .todo-item {
+    padding: 10px !important;
+  }
+}
+
+/* ========================================
+   기존 스타일 (호환성 유지)
+   ======================================== */
+
 /* Todos 완료 상태별 색상 테마 */
 .todo-item.completed {
   background-color: #f6ffed !important;

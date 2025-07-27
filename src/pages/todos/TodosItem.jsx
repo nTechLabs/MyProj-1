@@ -17,43 +17,46 @@ const TodosItem = memo(({ todo }) => {
   const checked = isChecked(todo.id)
 
   // 체크박스 클릭 핸들러 (이벤트 전파 방지) - useCallback으로 최적화
-  const handleCheckboxClick = useCallback((e) => {
+  const handleCheckboxChange = useCallback((e) => {
+    console.log('✅ Checkbox onChange for todo:', todo.id, 'target checked:', e.target.checked, 'current checked:', checked)
+    
     e.stopPropagation()
     toggleCheck(todo.id)
-  }, [todo.id, toggleCheck])
+  }, [todo.id, toggleCheck, checked])
 
   // 항목 클릭 핸들러 (상세 페이지로 이동) - useCallback으로 최적화
-  const handleItemClick = useCallback(() => {
+  const handleItemClick = useCallback((e) => {
+    // 체크박스 영역을 클릭한 경우 이동하지 않음
+    if (e.target.closest('.checkbox-area')) {
+      console.log('🚫 Item click blocked - checkbox area clicked')
+      return
+    }
+    console.log('🔗 Item clicked, navigating to todo detail:', todo.id)
     navigate(`/todos/todo/${todo.id}`)
-  }, [navigate, todo.id])
+  }, [todo.id, navigate])
 
   return (
     <List.Item
       className={`todo-item ${checked ? 'checked' : ''} ${todo.completed ? 'completed' : ''}`}
       onClick={handleItemClick}
-      actions={[
-        <Checkbox
-          key="checkbox"
-          checked={checked}
-          onClick={handleCheckboxClick}
-          className="todo-item-checkbox"
-        />
-      ]}
     >
-      <List.Item.Meta
-        avatar={
+      <div className={`todo-item-container ${checked ? 'checked' : ''}`}>
+        {/* 아바타 */}
+        <div className="todo-item-avatar">
           <Avatar 
             size={48} 
             icon={todo.completed ? <CheckCircleOutlined /> : <ClockCircleOutlined />}
             className={`${todo.completed ? 'todo-item-avatar-completed' : 'todo-item-avatar-pending'} ${checked ? 'checked' : ''}`}
           />
-        }
-        title={
-          <div className="todo-item-title-container">
-            <span className={`todo-item-title ${todo.completed ? 'completed' : ''}`}>
+        </div>
+
+        {/* 메인 콘텐츠 */}
+        <div className="todo-item-content">
+          {/* 제목 줄 */}
+          <div className="todo-item-title">
+            <span className={`todo-item-name ${todo.completed ? 'completed' : ''}`}>
               {todo.title}
             </span>
-            
             <Tag 
               color={todo.completed ? 'success' : 'processing'}
               className="todo-item-tag"
@@ -61,19 +64,45 @@ const TodosItem = memo(({ todo }) => {
               {todo.completed ? '완료됨' : '진행중'}
             </Tag>
           </div>
-        }
-        description={
-          <div className="todo-item-description">
-            <UserOutlined className="todo-item-description-icon" />
-            <span className="todo-item-description-text">
-              사용자 ID: {todo.userId}
-            </span>
-            <span className="todo-item-description-text">
-              • ID: {todo.id}
-            </span>
+
+          {/* 할일 정보 */}
+          <div className="todo-item-details">
+            <div className="todo-item-detail">
+              <UserOutlined />
+              <span>
+                사용자 ID: {todo.userId}
+              </span>
+            </div>
+            <div className="todo-item-detail">
+              <span>ID: {todo.id}</span>
+            </div>
           </div>
-        }
-      />
+        </div>
+
+        {/* 상태 정보 (UsersItem의 회사 정보와 같은 위치) */}
+        <div className="todo-item-status">
+          <div className="todo-item-status-main">
+            {todo.completed ? '완료됨' : '진행중'}
+          </div>
+          <div className="todo-item-status-sub">
+            {todo.completed ? '✓ 작업 완료' : '⏳ 작업 중'}
+          </div>
+        </div>
+
+        {/* 체크박스 (우측 끝) */}
+        <div 
+          className="checkbox-area todo-item-checkbox"
+          onClick={(e) => {
+            e.stopPropagation()
+            console.log('🎯 Checkbox area clicked for todo:', todo.id, '(handled by onChange)')
+          }}
+        >
+          <Checkbox
+            checked={checked}
+            onChange={handleCheckboxChange}
+          />
+        </div>
+      </div>
     </List.Item>
   )
 })
