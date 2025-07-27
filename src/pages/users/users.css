@@ -83,14 +83,80 @@
 /* List Item 전체 레이아웃 개선 */
 .user-item {
   display: flex !important;
-  align-items: stretch !important;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  align-items: center !important;
+  width: 100% !important;
+  min-height: 80px !important;
+  padding: 16px !important;
+  border: none !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  background: white !important;
 }
 
-.user-item .ant-list-item-action {
-  flex-shrink: 0;
-  margin-left: auto;
+.user-item:hover {
+  background-color: #fafafa !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.user-item.checked {
+  background-color: #f0f9ff !important;
+  border-left: 4px solid #1890ff !important;
+}
+
+.user-item.checked:hover {
+  background-color: #e6f7ff !important;
+}
+
+/* Ant Design List Item 기본 스타일 재정의 */
+.page-list .ant-list-item {
+  display: flex !important;
+  padding: 0 !important;
+  border: none !important;
+  width: 100% !important;
+}
+
+.page-list .ant-list-item-main {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* 반응형 레이아웃 조정 */
+@media (max-width: 768px) {
+  .user-item {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 12px !important;
+    min-height: auto !important;
+  }
+  
+  .user-item > div:first-child {
+    margin-right: 0 !important;
+    margin-bottom: 12px !important;
+    align-self: center !important;
+  }
+  
+  .user-item .company-info {
+    align-items: flex-start !important;
+    text-align: left !important;
+    min-width: auto !important;
+    margin-left: 0 !important;
+    margin-top: 8px !important;
+    order: 2;
+  }
+  
+  .user-item > div:last-child {
+    align-self: flex-end !important;
+    margin-top: 12px !important;
+    order: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-item {
+    padding: 10px !important;
+  }
 }
 
 /* 체크박스 스타일 */

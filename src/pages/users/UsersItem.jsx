@@ -47,71 +47,153 @@ const UsersItem = memo(({ user }) => {
         borderRadius: '8px',
         marginBottom: '8px',
         border: checked ? '2px solid #1890ff' : '1px solid #f0f0f0',
-        transition: 'all 0.2s ease'
+        transition: 'all 0.2s ease',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        minHeight: '80px'
       }}
-      actions={[
+    >
+      {/* 아바타 */}
+      <div style={{ 
+        marginRight: '16px', 
+        flexShrink: 0 
+      }}>
+        <Avatar 
+          size={48} 
+          icon={<UserOutlined />}
+          style={{ 
+            backgroundColor: checked ? '#1890ff' : '#87d068',
+            fontSize: '18px'
+          }}
+        >
+          {avatarText}
+        </Avatar>
+      </div>
+
+      {/* 메인 콘텐츠 */}
+      <div style={{ 
+        flex: 1, 
+        minWidth: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '4px'
+      }}>
+        {/* 제목 줄 */}
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '8px',
+          marginBottom: '4px'
+        }}>
+          <span style={{ 
+            fontSize: '16px', 
+            fontWeight: 'bold',
+            color: '#262626'
+          }}>
+            {user.name}
+          </span>
+          <span style={{ 
+            color: '#8c8c8c', 
+            fontSize: '14px'
+          }}>
+            @{user.username}
+          </span>
+        </div>
+
+        {/* 연락처 정보 */}
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '2px',
+          fontSize: '13px',
+          color: '#595959'
+        }}>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '6px'
+          }}>
+            <MailOutlined style={{ color: '#1890ff', fontSize: '12px' }} />
+            <span style={{ 
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}>
+              {user.email}
+            </span>
+          </div>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '6px'
+          }}>
+            <PhoneOutlined style={{ color: '#52c41a', fontSize: '12px' }} />
+            <span>{user.phone}</span>
+          </div>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '6px'
+          }}>
+            <GlobalOutlined style={{ color: '#fa8c16', fontSize: '12px' }} />
+            <span style={{ 
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}>
+              {user.website}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 회사 정보 */}
+      <div 
+        className="company-info"
+        style={{ 
+          marginLeft: '16px', 
+          fontSize: '12px', 
+          color: '#8c8c8c',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+          flexShrink: 0,
+          minWidth: '100px',
+          textAlign: 'right'
+        }}
+      >
+        <div style={{ 
+          fontWeight: '500', 
+          color: '#595959',
+          marginBottom: '2px',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          width: '100%'
+        }}>
+          {user.company?.name}
+        </div>
+        <div style={{ 
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          width: '100%'
+        }}>
+          {user.address?.city}
+        </div>
+      </div>
+
+      {/* 체크박스 */}
+      <div style={{ 
+        marginLeft: '12px', 
+        flexShrink: 0 
+      }}>
         <Checkbox
-          key="checkbox"
           checked={checked}
           onClick={handleCheckboxClick}
         />
-      ]}
-    >
-      <List.Item.Meta
-        avatar={
-          <Avatar 
-            size={48} 
-            icon={<UserOutlined />}
-            style={{ 
-              backgroundColor: checked ? '#1890ff' : '#87d068',
-              fontSize: '18px'
-            }}
-          >
-            {avatarText}
-          </Avatar>
-        }
-        title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '16px', fontWeight: 'bold' }}>
-              {user.name}
-            </span>
-            <span style={{ color: '#666', fontSize: '14px' }}>
-              @{user.username}
-            </span>
-          </div>
-        }
-        description={
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MailOutlined style={{ color: '#1890ff' }} />
-              <span>{user.email}</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <PhoneOutlined style={{ color: '#52c41a' }} />
-              <span>{user.phone}</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <GlobalOutlined style={{ color: '#fa8c16' }} />
-              <span>{user.website}</span>
-            </div>
-          </div>
-        }
-      />
-      
-      {/* 회사 정보 */}
-      <div style={{ 
-        marginLeft: '16px', 
-        fontSize: '12px', 
-        color: '#999',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-        justifyContent: 'center'
-      }}>
-        <div style={{ fontWeight: 'bold', color: '#666' }}>
-          {user.company?.name}
-        </div>
-        <div>{user.address?.city}</div>
       </div>
     </List.Item>
   )
