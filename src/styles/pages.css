@@ -15,13 +15,18 @@
 .page-list-container {
   position: relative;
   width: 100%;
+  padding: 16px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 공통 리스트 스타일 */
 .page-list {
-  max-height: calc(100vh - 350px);
+  flex: 1;
   overflow-y: auto;
   padding-bottom: 20px;
+  min-height: 0;
 }
 
 .page-list .ant-list-item {
@@ -127,7 +132,7 @@
 /* 검색 및 필터 컨트롤 공통 스타일 */
 .search-filter-container {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .search-input {

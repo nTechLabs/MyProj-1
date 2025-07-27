@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import { List, Button, Alert, Spin, FloatButton, Checkbox, Input, Space } from 'antd'
-import { PlusOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons'
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { useUsersQuery, useDeleteUsersMutation } from '../../hooks/useUsersQueries'
+import { useUsersQuery } from '../../hooks/useUsersQueries'
 import useUsersCheckedStore from '../../store/useUsersStore'
 import UsersItem from './UsersItem'
 import './users.css'
@@ -20,9 +20,6 @@ const UsersList = React.memo(() => {
   // React Query로 사용자 목록 조회
   const { data: users = [], isLoading, error, refetch } = useUsersQuery()
   
-  // 삭제 뮤테이션
-  const deleteUsersMutation = useDeleteUsersMutation()
-
   // Users 전용 체크된 항목들 관리
   const { 
     checkedIds, 
@@ -50,12 +47,6 @@ const UsersList = React.memo(() => {
   const handleSelectAll = useCallback(() => {
     toggleAllCheck(userIds)
   }, [toggleAllCheck, userIds])
-
-  // 선택된 항목들 삭제 - useCallback으로 최적화
-  const handleDeleteSelected = useCallback(() => {
-    if (checkedIds.size === 0) return
-    deleteUsersMutation.mutate(Array.from(checkedIds))
-  }, [checkedIds, deleteUsersMutation])
 
   // 새 사용자 추가 페이지로 이동 - useCallback으로 최적화
   const handleAddNew = useCallback(() => {
@@ -118,16 +109,9 @@ const UsersList = React.memo(() => {
           </Checkbox>
           
           {checkedIds.size > 0 && (
-            <Button
-              type="primary"
-              danger
-              size="small"
-              icon={<DeleteOutlined />}
-              onClick={handleDeleteSelected}
-              loading={deleteUsersMutation.isPending}
-            >
-              삭제 ({checkedIds.size})
-            </Button>
+            <span className="selected-count">
+              {checkedIds.size}개 선택됨
+            </span>
           )}
         </div>
       </Space>
@@ -155,23 +139,6 @@ const UsersList = React.memo(() => {
         tooltip="새 사용자 추가"
         className={checkedIds.size > 0 ? 'float-button-with-action' : 'float-button-default'}
       />
-
-      {/* 삭제 버튼 고정 배치 */}
-      {checkedIds.size > 0 && (
-        <div className="fixed-delete-button">
-          <Button
-            type="primary"
-            danger
-            size="large"
-            icon={<DeleteOutlined />}
-            onClick={handleDeleteSelected}
-            loading={deleteUsersMutation.isPending}
-            block
-          >
-            {checkedIds.size}개 항목 삭제
-          </Button>
-        </div>
-      )}
     </div>
   )
 })
