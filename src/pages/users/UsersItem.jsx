@@ -3,7 +3,7 @@ import { List, Checkbox, Avatar } from 'antd'
 import { UserOutlined, MailOutlined, PhoneOutlined, GlobalOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useUsersIsChecked, useUsersToggleCheck } from '../../store/useUsersStore'
-import './users-list.css'
+import './users.css'
 
 /**
  * 개별 사용자 항목을 표시하는 컴포넌트 (최적화)

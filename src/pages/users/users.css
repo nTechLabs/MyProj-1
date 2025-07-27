@@ -1,4 +1,44 @@
-/* Users 리스트 특화 스타일 */
+/**
+ * Users 모듈 통합 스타일시트
+ * users-page.css + users-list.css 통합
+ * 페이지, 리스트, 아이템 컴포넌트 모든 스타일 포함
+ */
+
+/* ========================================
+   페이지 레벨 스타일 (기존 users-page.css)
+   ======================================== */
+
+/* 페이지 컨테이너 */
+.users-page-container {
+  padding: 20px;
+}
+
+/* 뒤로가기 버튼 */
+.users-page-back-button {
+  margin-bottom: 20px;
+}
+
+/* 메인 컨텐츠 영역 */
+.users-page-content {
+  width: 100%;
+}
+
+/* 헤더 섹션 (아이콘, 제목, 설명) */
+.users-page-header {
+  text-align: center;
+}
+
+/* Users 아이콘 스타일 */
+.users-page-icon {
+  font-size: 64px;
+  color: #1890ff;
+  margin-bottom: 20px;
+  display: block;
+}
+
+/* ========================================
+   리스트 레벨 스타일 (기존 users-list.css)
+   ======================================== */
 
 /* Users 특화 색상 테마 - 기본 파란색 */
 .users-list-container .list-item-base.checked {
@@ -82,8 +122,82 @@
   font-weight: bold;
 }
 
-/* 반응형 스타일 */
+/* 상세 페이지 스타일 */
+.user-detail-form .ant-form-item-label > label {
+  font-weight: 600;
+  color: #262626;
+}
+
+.user-detail-form .ant-input,
+.user-detail-form .ant-input-affix-wrapper {
+  border-radius: 6px;
+  border-color: #d9d9d9;
+  transition: all 0.2s ease;
+}
+
+.user-detail-form .ant-input:focus,
+.user-detail-form .ant-input-affix-wrapper:focus,
+.user-detail-form .ant-input-affix-wrapper-focused {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.user-detail-form .ant-form-item-has-error .ant-input,
+.user-detail-form .ant-form-item-has-error .ant-input-affix-wrapper {
+  border-color: #ff4d4f;
+}
+
+.user-detail-form .ant-divider-horizontal.ant-divider-with-text {
+  margin: 24px 0 16px 0;
+  font-weight: 600;
+  color: #595959;
+}
+
+/* 부드러운 스크롤 애니메이션 */
+.userslist-scroll-hide {
+  scroll-behavior: smooth;
+}
+
+/* 로딩 스피너 개선 */
+.ant-spin-container {
+  transition: opacity 0.3s;
+}
+
+.ant-spin-blur {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* FloatButton 스타일 개선 */
+.ant-float-btn-primary {
+  box-shadow: 0 4px 16px rgba(24, 144, 255, 0.4);
+}
+
+.ant-float-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(24, 144, 255, 0.5);
+}
+
+/* ========================================
+   반응형 디자인 - 모바일 최적화
+   ======================================== */
+
 @media (max-width: 768px) {
+  /* 페이지 레벨 반응형 */
+  .users-page-container {
+    padding: 16px;
+  }
+  
+  .users-page-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .users-page-back-button {
+    margin-bottom: 16px;
+  }
+
+  /* 리스트 레벨 반응형 */
   .user-item {
     padding: 12px !important;
     margin-bottom: 4px !important;
@@ -143,58 +257,12 @@
   }
 }
 
-/* 상세 페이지 스타일 */
-.user-detail-form .ant-form-item-label > label {
-  font-weight: 600;
-  color: #262626;
-}
+/* ========================================
+   다크 모드 지원
+   ======================================== */
 
-.user-detail-form .ant-input,
-.user-detail-form .ant-input-affix-wrapper {
-  border-radius: 6px;
-  border-color: #d9d9d9;
-  transition: all 0.2s ease;
-}
-
-.user-detail-form .ant-input:focus,
-.user-detail-form .ant-input-affix-wrapper:focus,
-.user-detail-form .ant-input-affix-wrapper-focused {
-  border-color: #40a9ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-}
-
-.user-detail-form .ant-form-item-has-error .ant-input,
-.user-detail-form .ant-form-item-has-error .ant-input-affix-wrapper {
-  border-color: #ff4d4f;
-}
-
-.user-detail-form .ant-divider-horizontal.ant-divider-with-text {
-  margin: 24px 0 16px 0;
-  font-weight: 600;
-  color: #595959;
-}
-
-/* 부드러운 스크롤 애니메이션 */
-.userslist-scroll-hide {
-  scroll-behavior: smooth;
-}
-
-/* 로딩 스피너 개선 */
-.ant-spin-container {
-  transition: opacity 0.3s;
-}
-
-.ant-spin-blur {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-/* FloatButton 스타일 개선 */
-.ant-float-btn-primary {
-  box-shadow: 0 4px 16px rgba(24, 144, 255, 0.4);
-}
-
-.ant-float-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(24, 144, 255, 0.5);
+@media (prefers-color-scheme: dark) {
+  .users-page-icon {
+    color: #4096ff;
+  }
 }

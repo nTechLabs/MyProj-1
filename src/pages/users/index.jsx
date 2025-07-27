@@ -18,7 +18,7 @@ import { Typography, Space, Divider, Button } from 'antd'
 import { ArrowLeftOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import UsersList from './UsersList'
-import './users-page.css' // 스타일 분리
+import './users.css' // 통합 스타일시트
 
 const { Title, Paragraph } = Typography
 const UsersPage = () => {
