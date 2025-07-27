@@ -68,7 +68,8 @@ const NavBar = () => {
       alignItems: 'center', 
       justifyContent: 'space-between',
       width: '100%',
-      height: '100%'
+      height: '100%',
+      padding: '0 8px' // 전체 패딩 추가
     }}>
       {/* 이전 페이지 버튼 */}
       <Button
@@ -80,9 +81,11 @@ const NavBar = () => {
           border: 'none',
           height: '40px',
           minWidth: '40px',
+          width: '40px', // 고정 너비 설정
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          flexShrink: 0 // 버튼 크기 고정
         }}
         disabled={!hasPreviousPage() && false} // 순환 네비게이션이므로 비활성화하지 않음
       />
@@ -91,7 +94,9 @@ const NavBar = () => {
       <div style={{ 
         flex: 1, 
         textAlign: 'center',
-        margin: '0 16px'
+        margin: '0 24px', // 좌우 마진 증가 (16px -> 24px)
+        minWidth: 0, // flex 아이템의 최소 너비를 0으로 설정하여 축소 허용
+        overflow: 'hidden' // 오버플로우 숨김
       }}>
         <Title 
           level={2} 
@@ -99,7 +104,10 @@ const NavBar = () => {
             color: 'white', 
             margin: 0,
             fontSize: '20px',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            whiteSpace: 'nowrap', // 텍스트 줄바꿈 방지
+            overflow: 'hidden',
+            textOverflow: 'ellipsis' // 긴 텍스트는 ... 처리
           }}
         >
           {currentPage.displayTitle}
@@ -109,7 +117,10 @@ const NavBar = () => {
         <div style={{
           color: 'rgba(255, 255, 255, 0.7)',
           fontSize: '12px',
-          marginTop: '2px'
+          marginTop: '2px',
+          whiteSpace: 'nowrap', // 경로도 줄바꿈 방지
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
         }}>
           {currentPage.path}
         </div>
@@ -125,9 +136,11 @@ const NavBar = () => {
           border: 'none',
           height: '40px',
           minWidth: '40px',
+          width: '40px', // 고정 너비 설정
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          flexShrink: 0 // 버튼 크기 고정
         }}
         disabled={!hasNextPage() && false} // 순환 네비게이션이므로 비활성화하지 않음
       />
