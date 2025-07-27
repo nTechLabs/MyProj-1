@@ -122,34 +122,27 @@
   min-width: 0 !important;
 }
 
-/* 반응형 레이아웃 조정 */
+/* 반응형 레이아웃 조정 - 기본 설정 */
 @media (max-width: 768px) {
   .user-item {
-    flex-direction: column !important;
-    align-items: stretch !important;
     padding: 12px !important;
+    margin-bottom: 4px !important;
     min-height: auto !important;
+    /* flex 방향은 row로 유지하여 아바타와 체크박스가 나란히 배치 */
+    flex-direction: row !important;
+    align-items: center !important;
   }
   
-  .user-item > div:first-child {
-    margin-right: 0 !important;
-    margin-bottom: 12px !important;
-    align-self: center !important;
-  }
-  
+  /* 회사 정보를 숨기거나 작게 표시 */
   .user-item .company-info {
-    align-items: flex-start !important;
-    text-align: left !important;
-    min-width: auto !important;
-    margin-left: 0 !important;
-    margin-top: 8px !important;
-    order: 2;
+    display: none !important;
   }
   
-  .user-item > div:last-child {
-    align-self: flex-end !important;
-    margin-top: 12px !important;
-    order: 3;
+  /* 메인 콘텐츠 영역 조정 */
+  .user-item > div:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+    margin-right: 8px;
   }
 }
 
@@ -281,29 +274,37 @@
   .user-item {
     padding: 12px !important;
     margin-bottom: 4px !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+  
+  /* 아바타 크기 조정 */
+  .user-item .ant-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 16px !important;
+  }
+  
+  /* 회사 정보 숨김 */
+  .user-item .company-info {
+    display: none !important;
   }
   
   .user-item .ant-list-item-meta {
-    margin-bottom: 8px;
-    width: 100%;
+    margin-bottom: 0;
+    width: auto;
+    flex: 1;
   }
   
   .user-item .ant-list-item-meta-title {
     font-size: 14px;
     word-break: break-all;
+    margin-bottom: 4px;
   }
   
   .user-item .ant-list-item-meta-description {
     font-size: 12px;
     word-break: break-all;
-  }
-  
-  .user-item .ant-avatar {
-    width: 40px !important;
-    height: 40px !important;
-    font-size: 16px !important;
   }
   
   .fixed-delete-button {

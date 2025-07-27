@@ -64,7 +64,7 @@ const UsersItem = memo(({ user }) => {
       {/* 아바타 */}
       <div style={{ 
         marginRight: '16px', 
-        flexShrink: 0 
+        flexShrink: 0
       }}>
         <Avatar 
           size={48} 
@@ -191,7 +191,7 @@ const UsersItem = memo(({ user }) => {
         </div>
       </div>
 
-      {/* 체크박스 */}
+      {/* 체크박스 (우측 끝) */}
       <div 
         className="checkbox-area"
         style={{ 
