@@ -16,14 +16,19 @@ import {
   Checkbox, 
   Typography,
   Empty,
-  Badge
+  Badge,
+  Tag
 } from 'antd'
 import { 
   PlusOutlined, 
   DeleteOutlined, 
   SearchOutlined,
   CommentOutlined,
-  MailOutlined
+  MailOutlined,
+  ClockCircleOutlined,
+  FireOutlined,
+  AlignLeftOutlined,
+  MinusCircleOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useCommentsQuery, useDeleteCommentsMutation } from '../../hooks/useCommentsQueries'
@@ -136,6 +141,28 @@ const CommentsList = () => {
   }, [clearChecked])
 
   /**
+   * 퀵 필터 토글 핸들러
+   * @param {string} filterType - 필터 타입
+   */
+  const handleQuickFilterToggle = useCallback((filterType) => {
+    setFilterTypes(prev => {
+      const newTypes = [...prev]
+      const index = newTypes.indexOf(filterType)
+      
+      if (index > -1) {
+        // 이미 선택된 필터면 제거
+        newTypes.splice(index, 1)
+      } else {
+        // 선택되지 않은 필터면 추가
+        newTypes.push(filterType)
+      }
+      
+      clearChecked()
+      return newTypes
+    })
+  }, [clearChecked])
+
+  /**
    * 필터 타입 변경 핸들러
    * @param {Array} values - 필터 타입 배열
    */
@@ -227,6 +254,40 @@ const CommentsList = () => {
               <Option value="long">긴 댓글 (200자+)</Option>
               <Option value="short">짧은 댓글 (100자-)</Option>
             </Select>
+          </div>
+        </div>
+        
+        {/* 퀵 필터 버튼 */}
+        <div className="quick-filter-row">
+          <div className="quick-filter-group">
+            <Tag.CheckableTag
+              checked={filterTypes.includes('recent')}
+              onChange={() => handleQuickFilterToggle('recent')}
+              className="quick-filter-tag"
+            >
+              <ClockCircleOutlined /> 최신
+            </Tag.CheckableTag>
+            <Tag.CheckableTag
+              checked={filterTypes.includes('popular')}
+              onChange={() => handleQuickFilterToggle('popular')}
+              className="quick-filter-tag"
+            >
+              <FireOutlined /> 인기
+            </Tag.CheckableTag>
+            <Tag.CheckableTag
+              checked={filterTypes.includes('long')}
+              onChange={() => handleQuickFilterToggle('long')}
+              className="quick-filter-tag"
+            >
+              <AlignLeftOutlined /> 긴 댓글
+            </Tag.CheckableTag>
+            <Tag.CheckableTag
+              checked={filterTypes.includes('short')}
+              onChange={() => handleQuickFilterToggle('short')}
+              className="quick-filter-tag"
+            >
+              <MinusCircleOutlined /> 짧은 댓글
+            </Tag.CheckableTag>
           </div>
         </div>
       </div>

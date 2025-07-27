@@ -37,6 +37,68 @@
   width: 100%;
 }
 
+/* 퀵 필터 행 */
+.quick-filter-row {
+  margin-top: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.quick-filter-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.quick-filter-label {
+  color: var(--comments-text-secondary);
+  font-weight: 500;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.quick-filter-tag {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 16px !important;
+  border-radius: 16px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid #d9d9d9 !important;
+  background: #fff !important;
+  color: var(--comments-text-secondary) !important;
+  user-select: none;
+  min-width: 90px;
+  flex: 1;
+  max-width: 120px;
+}
+
+.quick-filter-tag:hover {
+  border-color: var(--comments-primary) !important;
+  color: var(--comments-primary) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(255, 149, 0, 0.2);
+}
+
+.quick-filter-tag.ant-tag-checkable-checked {
+  background: var(--comments-primary) !important;
+  border-color: var(--comments-primary) !important;
+  color: #fff !important;
+}
+
+.quick-filter-tag.ant-tag-checkable-checked:hover {
+  background: var(--comments-primary-hover) !important;
+  border-color: var(--comments-primary-hover) !important;
+  color: #fff !important;
+}
+
 /* 검색 입력 필드 */
 .search-input {
   flex: 1;
@@ -1213,6 +1275,48 @@
 /* 댓글 태그 컨테이너 - 기존 .comment-tags 스타일을 덮어쓰지 않도록 별도 클래스 */
 .comment-item-tags-container {
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* =========================
+   반응형 디자인 - 퀵 필터
+   ========================= */
+@media (max-width: 768px) {
+  .quick-filter-group {
+    gap: 8px;
+  }
+  
+  .quick-filter-tag {
+    font-size: 12px !important;
+    padding: 6px 12px !important;
+    min-width: 80px;
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-filter-row {
+    padding: 8px 0;
+  }
+  
+  .quick-filter-group {
+    gap: 6px;
+  }
+  
+  .quick-filter-tag {
+    font-size: 11px !important;
+    padding: 5px 8px !important;
+    min-width: 70px;
+    max-width: 85px;
+  }
+}
+
+/* 댓글 태그 컨테이너 기본 스타일 */
+.comment-item-tags-container {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   margin-top: 12px;
   gap: 8px;
