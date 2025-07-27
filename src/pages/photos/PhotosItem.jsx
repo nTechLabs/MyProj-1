@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { List, Checkbox, Typography, Tag, Image } from 'antd'
 import { CameraOutlined, PictureOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import usePhotosCheckedStore from '../../store/usePhotosCheckedStore'
+import usePhotosStore from '../../store/usePhotosStore'
 
 const { Text } = Typography
 
@@ -12,7 +12,7 @@ const { Text } = Typography
  */
 const PhotosItem = React.memo(({ photo }) => {
   const navigate = useNavigate()
-  const { checkedIds, toggleCheck } = usePhotosCheckedStore()
+  const { checkedIds, toggleCheck } = usePhotosStore()
 
   // 체크 상태
   const isChecked = checkedIds.has(photo.id) // Set 객체이므로 has() 메서드 사용

@@ -6,12 +6,12 @@ import { createCheckedStore, createCheckedSelectors } from './createCheckedStore
  * 
  * 공통 createCheckedStore 팩토리를 사용하여 중복 코드 제거 및 성능 최적화
  */
-const useTodosCheckedStore = createCheckedStore('Todos')
+const useTodosStore = createCheckedStore('Todos')
 
 // 성능 최적화를 위한 선택자 헬퍼들
-const selectors = createCheckedSelectors(useTodosCheckedStore, 'todos')
+const selectors = createCheckedSelectors(useTodosStore, 'todos')
 
-export default useTodosCheckedStore
+export default useTodosStore
 
 // 개별 선택자들 export (리렌더링 최적화)
 export const useTodosCheckedIds = selectors.useTodosCheckedIds

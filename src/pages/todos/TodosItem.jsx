@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { List, Checkbox, Tag, Avatar } from 'antd'
 import { CheckCircleOutlined, ClockCircleOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import useTodosCheckedStore from '../../store/useTodosCheckedStore'
+import useTodosStore from '../../store/useTodosStore'
 
 /**
  * 개별 할일 항목을 표시하는 컴포넌트 (최적화)
@@ -12,7 +12,7 @@ import useTodosCheckedStore from '../../store/useTodosCheckedStore'
  */
 const TodosItem = memo(({ todo }) => {
   const navigate = useNavigate()
-  const { isChecked, toggleCheck } = useTodosCheckedStore()
+  const { isChecked, toggleCheck } = useTodosStore()
 
   const checked = isChecked(todo.id)
 

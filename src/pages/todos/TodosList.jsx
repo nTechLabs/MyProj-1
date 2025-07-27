@@ -3,7 +3,7 @@ import { List, Button, Alert, Spin, FloatButton, Checkbox, Input, Space, Select 
 import { PlusOutlined, DeleteOutlined, SearchOutlined, FilterOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useTodosQuery, useDeleteTodosMutation } from '../../hooks/useTodosQueries'
-import useTodosCheckedStore from '../../store/useTodosCheckedStore'
+import useTodosStore from '../../store/useTodosStore'
 import TodosItem from './TodosItem'
 import './todos-list.css'
 import '../../styles/pages.css'
@@ -33,7 +33,7 @@ const TodosList = React.memo(() => {
     clearChecked, 
     isAllChecked, 
     isIndeterminate 
-  } = useTodosCheckedStore()
+  } = useTodosStore()
 
   // 검색 및 상태 필터링된 할일 목록
   const filteredTodos = useMemo(() => {

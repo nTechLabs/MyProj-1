@@ -3,7 +3,7 @@ import { photosApi } from '../api/photosApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
 import useNotificationStore from '../store/useNotificationStore'
-import { usePhotosClearChecked } from '../store/usePhotosCheckedStore'
+import { usePhotosClearChecked } from '../store/usePhotosStore'
 
 /**
  * Photos QueryKey Factory Pattern (최적화)

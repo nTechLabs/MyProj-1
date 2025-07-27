@@ -132,10 +132,10 @@ src/
 │   ├── useCountStore.js
 │   ├── useNotificationStore.js
 │   ├── useUsersCheckedStore.js
-│   ├── useCommentsCheckedStore.js
-│   ├── usePhotosCheckedStore.js
-│   ├── useTodosCheckedStore.js
-│   └── usePostsCheckedStore.js
+│   ├── useCommentsStore.js
+│   ├── usePhotosStore.js
+│   ├── useTodosStore.js
+│   └── usePostsStore.js
 ├── styles/        # CSS 스타일 파일들
 │   ├── common.css
 │   └── pages.css

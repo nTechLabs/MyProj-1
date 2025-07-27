@@ -6,12 +6,12 @@ import { createCheckedStore, createCheckedSelectors } from './createCheckedStore
  * 
  * 공통 createCheckedStore 팩토리를 사용하여 중복 코드 제거 및 성능 최적화
  */
-const usePhotosCheckedStore = createCheckedStore('Photos')
+const usePhotosStore = createCheckedStore('Photos')
 
 // 성능 최적화를 위한 선택자 헬퍼들
-const selectors = createCheckedSelectors(usePhotosCheckedStore, 'photos')
+const selectors = createCheckedSelectors(usePhotosStore, 'photos')
 
-export default usePhotosCheckedStore
+export default usePhotosStore
 
 // 개별 선택자들 export (리렌더링 최적화)
 export const usePhotosCheckedIds = selectors.usePhotosCheckedIds

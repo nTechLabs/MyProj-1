@@ -21,7 +21,7 @@ import {
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { usePhotosQuery, useDeletePhotosMutation } from '../../hooks/usePhotosQueries'
-import usePhotosCheckedStore from '../../store/usePhotosCheckedStore'
+import usePhotosStore from '../../store/usePhotosStore'
 import PhotosItem from './PhotosItem'
 import './photos-list.css'
 
@@ -56,7 +56,7 @@ const PhotosList = React.memo(() => {
     isAllChecked,
     isIndeterminate,
     getCheckedCount
-  } = usePhotosCheckedStore()
+  } = usePhotosStore()
 
   // 필터링된 사진 목록 (최적화)
   const filteredPhotos = useMemo(() => {

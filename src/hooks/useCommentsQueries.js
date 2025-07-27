@@ -7,7 +7,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { commentsApi } from '../api/commentsApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import useNotificationStore from '../store/useNotificationStore'
-import { useCommentsClearChecked } from '../store/useCommentsCheckedStore'
+import { useCommentsClearChecked } from '../store/useCommentsStore'
 import { createQueryOptions, createMutationOptions } from '../config/reactQueryConfig'
 
 /**

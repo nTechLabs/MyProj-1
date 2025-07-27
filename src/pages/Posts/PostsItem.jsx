@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { List, Checkbox, Typography, Tag, Avatar } from 'antd'
 import { BookOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import usePostsCheckedStore from '../../store/usePostsCheckedStore'
+import usePostsStore from '../../store/usePostsStore'
 import './posts-list.css'
 import '../../styles/pages.css'
 
@@ -16,7 +16,7 @@ const PostsItem = memo(({ post }) => {
   const navigate = useNavigate()
   
   // Posts 전용 Zustand store에서 필요한 상태와 함수들을 가져오기
-  const { checkedIds, toggleCheck } = usePostsCheckedStore()
+  const { checkedIds, toggleCheck } = usePostsStore()
   const checked = checkedIds.has(post.id) // Set 객체이므로 has() 메서드 사용
 
   // 체크박스 상태 변경

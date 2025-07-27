@@ -11,7 +11,7 @@ import {
   NumberOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import useCommentsCheckedStore from '../../store/useCommentsCheckedStore'
+import useCommentsStore from '../../store/useCommentsStore'
 import '../../styles/pages.css'
 import './comments-list.css'
 
@@ -25,7 +25,7 @@ const { Text } = Typography
  */
 const CommentsItem = React.memo(({ comment }) => {
   const navigate = useNavigate()
-  const { checkedIds, toggleCheck, isChecked } = useCommentsCheckedStore()
+  const { checkedIds, toggleCheck, isChecked } = useCommentsStore()
 
   // 체크 상태
   const checked = isChecked(comment.id)
