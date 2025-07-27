@@ -15,14 +15,6 @@ const PostsPage = () => {
 
   return (
     <div className="posts-container">
-      <Button 
-        icon={<ArrowLeftOutlined />} 
-        onClick={() => navigate("/")}
-        className="back-button"
-      >
-        뒤로 가기
-      </Button>
-      
       <Space direction="vertical" size="large" className="posts-content">
         <div className="posts-header">
           <BookOutlined className="posts-icon" />

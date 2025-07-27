@@ -26,14 +26,6 @@ const UsersPage = () => {
 
   return (
     <div className="users-page-container">
-      <Button 
-        icon={<ArrowLeftOutlined />} 
-        onClick={() => navigate("/")}
-        className="users-page-back-button"
-      >
-        뒤로 가기
-      </Button>
-      
       <Space direction="vertical" size="large" className="users-page-content">
         <div className="users-page-header">
           <UserOutlined className="users-page-icon" />

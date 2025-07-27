@@ -15,14 +15,6 @@ const TodosPage = () => {
 
   return (
     <div className="todos-page-container">
-      <Button 
-        icon={<ArrowLeftOutlined />} 
-        onClick={() => navigate("/")}
-        className="todos-page-back-button"
-      >
-        뒤로 가기
-      </Button>
-      
       <Space direction="vertical" size="large" className="todos-page-space">
         <div className="todos-page-header">
           <CheckSquareOutlined className="todos-page-icon" />

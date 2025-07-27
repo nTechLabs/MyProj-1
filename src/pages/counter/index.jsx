@@ -11,14 +11,6 @@ const CounterPage = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <Button 
-        icon={<ArrowLeftOutlined />} 
-        onClick={() => navigate("/")}
-        style={{ marginBottom: '20px' }}
-      >
-        뒤로 가기
-      </Button>
-      
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <div style={{ textAlign: 'center' }}>
           <NumberOutlined style={{ fontSize: '64px', color: '#52c41a', marginBottom: '20px' }} />
