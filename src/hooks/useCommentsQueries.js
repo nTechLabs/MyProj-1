@@ -113,12 +113,7 @@ export const useDeleteCommentsMutation = () => {
   const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: async (ids) => {
-      const results = await Promise.all(
-        ids.map(id => commentsApi.remove(id))
-      )
-      return results
-    },
+    mutationFn: commentsApi.delete,
     ...createMutationOptions({
       onSuccess: (data, ids) => {
         showSuccess(`${ids.length}개의 Comment가 성공적으로 삭제되었습니다.`)

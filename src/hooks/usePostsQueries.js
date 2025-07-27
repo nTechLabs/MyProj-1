@@ -57,7 +57,7 @@ export const useDeletePostsMutation = () => {
   const clearChecked = usePostsClearChecked()
   
   return useMutation({
-    mutationFn: postsApi.deleteMany,
+    mutationFn: postsApi.delete,
     ...createMutationOptions({
       onSuccess: (deletedIds) => {
         showSuccess(`${deletedIds.length}개의 게시글이 삭제되었습니다.`)

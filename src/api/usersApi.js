@@ -60,37 +60,45 @@ export const usersApi = {
     }
   },
 
-  // 사용자 삭제
-  remove: async (id) => {
+  // 사용자 삭제 (단일 또는 다중)
+  delete: async (ids) => {
+    // 단일 ID를 배열로 변환하여 통일된 처리
+    const idsArray = Array.isArray(ids) ? ids : [ids]
+    
     if (isNetworkEnabled('users')) {
-      const response = await axios.delete(`${USERS_API_URL}/${id}`)
-      return response.data
-    } else {
-      console.log('🗑️ [Local Mode] Deleted user with id:', id)
-      return { success: true, id }
-    }
-  },
-
-  // 여러 사용자 삭제 (실제 API에서는 지원하지 않으므로 개별 삭제)
-  deleteMultiple: async (ids) => {
-    if (isNetworkEnabled('users')) {
-      const deletePromises = ids.map(async id => {
-        try {
-          await axios.delete(`${USERS_API_URL}/${id}`)
-          return { id, success: true }
-        } catch (error) {
-          return { 
-            id, 
-            success: false, 
-            error: error.response?.statusText || error.message 
+      try {
+        const deletePromises = idsArray.map(async id => {
+          try {
+            await axios.delete(`${USERS_API_URL}/${id}`)
+            return { id, success: true }
+          } catch (error) {
+            return { 
+              id, 
+              success: false, 
+              error: error.response?.statusText || error.message 
+            }
           }
+        })
+        
+        const results = await Promise.all(deletePromises)
+        
+        // 단일 삭제인 경우 단일 결과 반환, 다중 삭제인 경우 배열 반환
+        if (!Array.isArray(ids)) {
+          return results[0]
         }
-      })
-      
-      return Promise.all(deletePromises)
+        return results
+      } catch (error) {
+        console.error('❌ [Network Mode] Failed to delete users:', error)
+        throw error
+      }
     } else {
-      console.log('🗑️ [Local Mode] Bulk deleted users with ids:', ids)
-      return ids.map(id => ({ id, success: true }))
+      if (!Array.isArray(ids)) {
+        console.log('🗑️ [Local Mode] Deleted user with id:', ids)
+        return { success: true, id: ids }
+      } else {
+        console.log('🗑️ [Local Mode] Bulk deleted users with ids:', idsArray)
+        return idsArray.map(id => ({ id, success: true }))
+      }
     }
   }
 }

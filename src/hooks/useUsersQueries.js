@@ -58,7 +58,7 @@ export const useDeleteUsersMutation = () => {
   const clearChecked = useUsersClearChecked()
 
   return useMutation({
-    mutationFn: usersApi.deleteMultiple,
+    mutationFn: usersApi.delete,
     ...createMutationOptions({
       onSuccess: (results) => {
         const successCount = results.filter(result => result.success).length
