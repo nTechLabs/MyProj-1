@@ -14,7 +14,6 @@ import {
   Divider
 } from 'antd'
 import { 
-  ArrowLeftOutlined, 
   SaveOutlined, 
   UserOutlined,
   MailOutlined,
@@ -115,11 +114,6 @@ const UsersDetail = () => {
     }
   }
 
-  // 뒤로 가기
-  const handleBack = () => {
-    navigate('/users')
-  }
-
   // 로딩 상태
   if (isLoading && !isNewUser) {
     return (
@@ -134,9 +128,6 @@ const UsersDetail = () => {
   if (error && !isNewUser) {
     return (
       <div style={{ padding: '20px' }}>
-        <Button icon={<ArrowLeftOutlined />} onClick={handleBack} style={{ marginBottom: '20px' }}>
-          뒤로 가기ㅇㅇㅇ
-        </Button>
         <Alert
           message="오류 발생"
           description="사용자 정보를 불러오는데 실패했습니다."
@@ -150,14 +141,6 @@ const UsersDetail = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <Button 
-        icon={<ArrowLeftOutlined />} 
-        onClick={handleBack}
-        style={{ marginBottom: '20px' }}
-      >
-        뒤로 가기
-      </Button>
-
       <Card>
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
           <div style={{ textAlign: 'center' }}>

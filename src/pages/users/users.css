@@ -13,11 +13,6 @@
   padding: 20px;
 }
 
-/* 뒤로가기 버튼 */
-.users-page-back-button {
-  margin-bottom: 20px;
-}
-
 /* 메인 컨텐츠 영역 */
 .users-page-content {
   width: 100%;
@@ -256,10 +251,6 @@
     font-size: 48px;
     margin-bottom: 16px;
   }
-  
-  .users-page-back-button {
-    margin-bottom: 16px;
-  }
 
   /* 리스트 레벨 반응형 */
   .user-item {
@@ -476,6 +467,17 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
+}
+
+/* ========================================
+   검색 및 선택 컨트롤 스타일 (UsersList 컴포넌트)
+   ======================================== */
+
+/* 전체 선택 컨테이너 - flexbox 레이아웃 */
+.select-all-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* ========================================
