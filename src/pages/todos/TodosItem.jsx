@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react'
-import { List, Checkbox, Tag, Avatar } from 'antd'
+import { List, Checkbox, Avatar } from 'antd'
 import { CheckCircleOutlined, ClockCircleOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import useTodosStore from '../../store/useTodosStore'
@@ -57,12 +57,6 @@ const TodosItem = memo(({ todo }) => {
             <span className={`todo-item-name ${todo.completed ? 'completed' : ''}`}>
               {todo.title}
             </span>
-            <Tag 
-              color={todo.completed ? 'success' : 'processing'}
-              className="todo-item-tag"
-            >
-              {todo.completed ? '완료됨' : '진행중'}
-            </Tag>
           </div>
 
           {/* 할일 정보 */}
@@ -82,7 +76,17 @@ const TodosItem = memo(({ todo }) => {
         {/* 상태 정보 (UsersItem의 회사 정보와 같은 위치) */}
         <div className="todo-item-status">
           <div className="todo-item-status-main">
-            {todo.completed ? '완료됨' : '진행중'}
+            {todo.completed ? (
+              <>
+                <CheckCircleOutlined style={{ marginRight: '4px', color: '#52c41a' }} />
+                완료됨
+              </>
+            ) : (
+              <>
+                <ClockCircleOutlined style={{ marginRight: '4px', color: '#fa8c16' }} />
+                진행중
+              </>
+            )}
           </div>
           <div className="todo-item-status-sub">
             {todo.completed ? '✓ 작업 완료' : '⏳ 작업 중'}
