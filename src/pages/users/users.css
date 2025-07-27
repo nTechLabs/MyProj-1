@@ -326,6 +326,159 @@
 }
 
 /* ========================================
+   UsersItem 컴포넌트 스타일
+   ======================================== */
+
+/* 사용자 아이템 기본 레이아웃 */
+.user-item-container {
+  cursor: pointer;
+  padding: 16px;
+  background-color: transparent;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 80px;
+}
+
+.user-item-container.checked {
+  background-color: #f0f9ff;
+  border: 2px solid #1890ff;
+}
+
+/* 아바타 컨테이너 */
+.user-item-avatar {
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.user-item-avatar .ant-avatar {
+  font-size: 18px;
+}
+
+.user-item-avatar .ant-avatar.checked {
+  background-color: #1890ff;
+}
+
+.user-item-avatar .ant-avatar:not(.checked) {
+  background-color: #87d068;
+}
+
+/* 메인 콘텐츠 */
+.user-item-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 제목 줄 */
+.user-item-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.user-item-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #262626;
+}
+
+.user-item-username {
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+/* 연락처 정보 */
+.user-item-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: #595959;
+}
+
+.user-item-contact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-item-contact .anticon {
+  font-size: 12px;
+}
+
+.user-item-contact .anticon-mail {
+  color: #1890ff;
+}
+
+.user-item-contact .anticon-phone {
+  color: #52c41a;
+}
+
+.user-item-contact .anticon-global {
+  color: #fa8c16;
+}
+
+.user-item-contact span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 회사 정보 */
+.user-item-company {
+  margin-left: 16px;
+  font-size: 12px;
+  color: #8c8c8c;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 100px;
+  text-align: right;
+}
+
+.user-item-company-name {
+  font-weight: 500;
+  color: #595959;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.user-item-company-city {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* 체크박스 영역 */
+.user-item-checkbox {
+  margin-left: 12px;
+  flex-shrink: 0;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.user-item-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* ========================================
    다크 모드 지원
    ======================================== */
 

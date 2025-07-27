@@ -135,7 +135,7 @@ const UsersDetail = () => {
     return (
       <div style={{ padding: '20px' }}>
         <Button icon={<ArrowLeftOutlined />} onClick={handleBack} style={{ marginBottom: '20px' }}>
-          뒤로 가기
+          뒤로 가기ㅇㅇㅇ
         </Button>
         <Alert
           message="오류 발생"
