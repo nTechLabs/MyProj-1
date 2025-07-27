@@ -107,7 +107,7 @@ const UsersList = React.memo(() => {
           className="search-input"
         />
         
-        <div className="select-all-container">
+        <div className="select-all-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Checkbox
             indeterminate={isIndeterminate(userIds)}
             checked={isAllChecked(userIds)}
