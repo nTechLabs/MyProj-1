@@ -105,6 +105,7 @@ const UsersList = React.memo(() => {
           onChange={handleSearchChange}
           allowClear
           className="search-input"
+          style={{ width: '100%' }}
         />
         
         <div className="select-all-container">
