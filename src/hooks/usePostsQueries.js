@@ -1,7 +1,8 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { postsApi } from '../api/postsApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
-import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
+import { invalidateQueries } from '../config/reactQueryConfig'
+import { queryClient } from '../main'
 import useNotificationStore from '../store/useNotificationStore'
 import { usePostsClearChecked } from '../store/usePostsStore'
 
@@ -23,11 +24,9 @@ export const usePostsQuery = () => {
   return useQuery({
     queryKey: postsKeys.list(),
     queryFn: postsApi.getAll,
-    ...createQueryOptions({
-      onError: (error) => {
-        showError(handleReactQueryError(error, '게시글 목록 조회'))
-      }
-    })
+    onError: (error) => {
+      showError(handleReactQueryError(error, '게시글 목록 조회'))
+    }
   })
 }
 
@@ -41,11 +40,9 @@ export const usePostQuery = (id) => {
     queryKey: postsKeys.detail(id),
     queryFn: () => postsApi.getById(id),
     enabled: !!id && id !== 'new',
-    ...createQueryOptions({
-      onError: (error) => {
-        showError(handleReactQueryError(error, '게시글 조회'))
-      }
-    })
+    onError: (error) => {
+      showError(handleReactQueryError(error, '게시글 조회'))
+    }
   })
 }
 
@@ -58,16 +55,14 @@ export const useDeletePostsMutation = () => {
   
   return useMutation({
     mutationFn: postsApi.delete,
-    ...createMutationOptions({
-      onSuccess: (deletedIds) => {
-        showSuccess(`${deletedIds.length}개의 게시글이 삭제되었습니다.`)
-        clearChecked()
-        invalidateQueries.listByEntity('posts')
-      },
-      onError: (error) => {
-        showError(handleReactQueryError(error, '게시글 삭제'))
-      }
-    })
+    onSuccess: (deletedIds) => {
+      showSuccess(`${deletedIds.length}개의 게시글이 삭제되었습니다.`)
+      clearChecked()
+      invalidateQueries.listByEntity('posts')
+    },
+    onError: (error) => {
+      showError(handleReactQueryError(error, '게시글 삭제'))
+    }
   })
 }
 
@@ -79,15 +74,13 @@ export const useAddPostMutation = () => {
   
   return useMutation({
     mutationFn: postsApi.create,
-    ...createMutationOptions({
-      onSuccess: (newPost) => {
-        showSuccess('새 게시글이 추가되었습니다.')
-        invalidateQueries.listByEntity('posts')
-      },
-      onError: (error) => {
-        showError(handleReactQueryError(error, '게시글 추가'))
-      }
-    })
+    onSuccess: (newPost) => {
+      showSuccess('새 게시글이 추가되었습니다.')
+      invalidateQueries.listByEntity('posts')
+    },
+    onError: (error) => {
+      showError(handleReactQueryError(error, '게시글 추가'))
+    }
   })
 }
 
@@ -99,15 +92,13 @@ export const useUpdatePostMutation = () => {
   
   return useMutation({
     mutationFn: ({ id, ...postData }) => postsApi.update(id, postData),
-    ...createMutationOptions({
-      onSuccess: (updatedPost) => {
-        showSuccess('게시글이 수정되었습니다.')
-        invalidateQueries.listByEntity('posts')
-        invalidateQueries.detailByEntity('posts', updatedPost.id)
-      },
-      onError: (error) => {
-        showError(handleReactQueryError(error, '게시글 수정'))
-      }
-    })
+    onSuccess: (updatedPost) => {
+      showSuccess('게시글이 수정되었습니다.')
+      invalidateQueries.listByEntity('posts')
+      invalidateQueries.detailByEntity('posts', updatedPost.id)
+    },
+    onError: (error) => {
+      showError(handleReactQueryError(error, '게시글 수정'))
+    }
   })
 }

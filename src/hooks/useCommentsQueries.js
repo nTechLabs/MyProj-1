@@ -8,7 +8,8 @@ import { commentsApi } from '../api/commentsApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
 import useNotificationStore from '../store/useNotificationStore'
 import useCommentsStore from '../store/useCommentsStore'
-import { createQueryOptions, createMutationOptions } from '../config/reactQueryConfig'
+
+import { queryClient } from '../main'
 
 /**
  * QueryKey Factory 패턴 - Comments 쿼리 키 관리
@@ -30,11 +31,9 @@ export const useCommentsQuery = () => {
   return useQuery({
     queryKey: commentsKeys.list(),
     queryFn: commentsApi.getAll,
-    ...createQueryOptions({
-      onError: (error) => {
-        showError(handleReactQueryError(error, 'Comments 목록 조회'))
-      }
-    })
+    onError: (error) => {
+      showError(handleReactQueryError(error, 'Comments 목록 조회'))
+    }
   })
 }
 
@@ -50,11 +49,9 @@ export const useCommentQuery = (id) => {
     queryKey: commentsKeys.detail(id),
     queryFn: () => commentsApi.getById(id),
     enabled: !!id && id !== 'new',
-    ...createQueryOptions({
-      onError: (error) => {
-        showError(handleReactQueryError(error, 'Comment 조회'))
-      }
-    })
+    onError: (error) => {
+      showError(handleReactQueryError(error, 'Comment 조회'))
+    }
   })
 }
 
@@ -64,19 +61,16 @@ export const useCommentQuery = (id) => {
  */
 export const useAddCommentMutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const queryClient = useQueryClient()
   
   return useMutation({
     mutationFn: commentsApi.create,
-    ...createMutationOptions({
-      onSuccess: (data) => {
-        showSuccess('Comment가 성공적으로 추가되었습니다.')
-        queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
-      },
-      onError: (error) => {
-        showError(handleReactQueryError(error, 'Comment 추가'))
-      }
-    })
+    onSuccess: (data) => {
+      showSuccess('Comment가 성공적으로 추가되었습니다.')
+      queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
+    },
+    onError: (error) => {
+      showError(handleReactQueryError(error, 'Comment 추가'))
+    }
   })
 }
 
@@ -90,16 +84,14 @@ export const useUpdateCommentMutation = () => {
   
   return useMutation({
     mutationFn: ({ id, data }) => commentsApi.update(id, data),
-    ...createMutationOptions({
-      onSuccess: (data, { id }) => {
-        showSuccess('Comment가 성공적으로 수정되었습니다.')
-        queryClient.invalidateQueries({ queryKey: commentsKeys.detail(id) })
-        queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
-      },
-      onError: (error) => {
-        showError(handleReactQueryError(error, 'Comment 수정'))
-      }
-    })
+    onSuccess: (data, { id }) => {
+      showSuccess('Comment가 성공적으로 수정되었습니다.')
+      queryClient.invalidateQueries({ queryKey: commentsKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
+    },
+    onError: (error) => {
+      showError(handleReactQueryError(error, 'Comment 수정'))
+    }
   })
 }
 
@@ -114,15 +106,13 @@ export const useDeleteCommentsMutation = () => {
   
   return useMutation({
     mutationFn: commentsApi.delete,
-    ...createMutationOptions({
-      onSuccess: (data, ids) => {
-        showSuccess(`${ids.length}개의 Comment가 성공적으로 삭제되었습니다.`)
-        clearChecked()
-        queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
-      },
-      onError: (error) => {
-        showError(handleReactQueryError(error, 'Comment 삭제'))
-      }
-    })
+    onSuccess: (data, ids) => {
+      showSuccess(`${ids.length}개의 Comment가 성공적으로 삭제되었습니다.`)
+      clearChecked()
+      queryClient.invalidateQueries({ queryKey: commentsKeys.all() })
+    },
+    onError: (error) => {
+      showError(handleReactQueryError(error, 'Comment 삭제'))
+    }
   })
 }

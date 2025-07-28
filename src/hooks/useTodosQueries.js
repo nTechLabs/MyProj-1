@@ -1,7 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { todosApi } from '../api/todosApi'
 import { handleReactQueryError } from '../utils/handleAxiosError'
-import { createQueryOptions, createMutationOptions, invalidateQueries } from '../config/reactQueryConfig'
+import { invalidateQueries } from '../config/reactQueryConfig'
+import { queryClient } from '../main'
 import useNotificationStore from '../store/useNotificationStore'
 import { useTodosClearChecked } from '../store/useTodosStore'
 
@@ -23,11 +24,9 @@ export const useTodosQuery = () => {
   return useQuery({
     queryKey: todosKeys.list(),
     queryFn: todosApi.getAll,
-    ...createQueryOptions({
-      onError: (error) => {
-        showError(handleReactQueryError(error, '할일 목록 조회'))
-      }
-    })
+    onError: (error) => {
+      showError(handleReactQueryError(error, '할일 목록 조회'))
+    }
   })
 }
 
@@ -41,11 +40,9 @@ export const useTodoQuery = (id) => {
     queryKey: todosKeys.detail(id),
     queryFn: () => todosApi.getById(id),
     enabled: !!id && id !== 'new',
-    ...createQueryOptions({
-      onError: (error) => {
-        showError(handleReactQueryError(error, '할일 조회'))
-      }
-    })
+    onError: (error) => {
+      showError(handleReactQueryError(error, '할일 조회'))
+    }
   })
 }
 
@@ -53,31 +50,28 @@ export const useTodoQuery = (id) => {
  * 다중 Todos 삭제 뮤테이션 훅 (최적화)
  */
 export const useDeleteTodosMutation = () => {
-  const queryClient = useQueryClient()
   const { showSuccess, showError } = useNotificationStore()
   const clearChecked = useTodosClearChecked()
 
   return useMutation({
     mutationFn: todosApi.delete,
-    ...createMutationOptions({
-      onSuccess: (results) => {
-        const successCount = results.filter(result => result.success).length
-        const failCount = results.length - successCount
-        
-        if (successCount > 0) {
-          showSuccess(`${successCount}개의 할일이 삭제되었습니다.`)
-          invalidateQueries.listByEntity('todos')
-          clearChecked()
-        }
-        
-        if (failCount > 0) {
-          showError(`${failCount}개의 할일 삭제에 실패했습니다.`)
-        }
-      },
-      onError: (error) => {
-        showError(handleReactQueryError(error, '할일 삭제'))
+    onSuccess: (results) => {
+      const successCount = results.filter(result => result.success).length
+      const failCount = results.length - successCount
+      
+      if (successCount > 0) {
+        showSuccess(`${successCount}개의 할일이 삭제되었습니다.`)
+        invalidateQueries.listByEntity('todos')
+        clearChecked()
       }
-    })
+      
+      if (failCount > 0) {
+        showError(`${failCount}개의 할일 삭제에 실패했습니다.`)
+      }
+    },
+    onError: (error) => {
+      showError(handleReactQueryError(error, '할일 삭제'))
+    }
   })
 }
 
@@ -85,21 +79,18 @@ export const useDeleteTodosMutation = () => {
  * Todo 추가 뮤테이션 훅 (최적화)
  */
 export const useAddTodoMutation = () => {
-  const queryClient = useQueryClient()
   const { showSuccess, showError } = useNotificationStore()
 
   return useMutation({
     mutationFn: todosApi.create,
-    ...createMutationOptions({
-      onSuccess: (data) => {
-        showSuccess('새 할일이 추가되었습니다.')
-        invalidateQueries.listByEntity('todos')
-        queryClient.setQueryData(todosKeys.detail(data.id), data)
-      },
-      onError: (error) => {
-        showError(handleReactQueryError(error, '할일 추가'))
-      }
-    })
+    onSuccess: (data) => {
+      showSuccess('새 할일이 추가되었습니다.')
+      invalidateQueries.listByEntity('todos')
+      queryClient.setQueryData(todosKeys.detail(data.id), data)
+    },
+    onError: (error) => {
+      showError(handleReactQueryError(error, '할일 추가'))
+    }
   })
 }
 
@@ -107,21 +98,18 @@ export const useAddTodoMutation = () => {
  * Todo 수정 뮤테이션 훅 (최적화)
  */
 export const useUpdateTodoMutation = () => {
-  const queryClient = useQueryClient()
   const { showSuccess, showError } = useNotificationStore()
 
   return useMutation({
     mutationFn: ({ id, data }) => todosApi.update(id, data),
-    ...createMutationOptions({
-      onSuccess: (data, variables) => {
-        showSuccess('할일이 수정되었습니다.')
-        invalidateQueries.listByEntity('todos')
-        invalidateQueries.detailByEntity('todos', variables.id)
-        queryClient.setQueryData(todosKeys.detail(variables.id), data)
-      },
-      onError: (error) => {
-        showError(handleReactQueryError(error, '할일 수정'))
-      }
-    })
+    onSuccess: (data, variables) => {
+      showSuccess('할일이 수정되었습니다.')
+      invalidateQueries.listByEntity('todos')
+      invalidateQueries.detailByEntity('todos', variables.id)
+      queryClient.setQueryData(todosKeys.detail(variables.id), data)
+    },
+    onError: (error) => {
+      showError(handleReactQueryError(error, '할일 수정'))
+    }
   })
 }

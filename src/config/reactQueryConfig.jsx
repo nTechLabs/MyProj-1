@@ -47,59 +47,8 @@ export const QUERY_CONFIG = {
 }
 
 // ======================================
-// 뮤테이션 기본 설정 (성능 최적화)
-// ======================================
-/**
- * React Query 뮤테이션에 대한 최적화된 기본 설정
- * 
- * 뮤테이션은 쿼리와 달리 사용자 액션에 의해 발생하므로
- * 더 적극적인 재시도와 빠른 피드백을 제공
- */
-export const MUTATION_CONFIG = {
-  retry: 2,                        // 실패 시 2번 재시도 (쿼리보다 적게)
-  retryDelay: 1500,               // 재시도 간격 1.5초 (고정 간격)
-  networkMode: 'online',           // 온라인일 때만 뮤테이션 실행
-  throwOnError: false,            // 에러 발생 시 throw하지 않음 (onError 핸들러 사용)
-}
-
-// ======================================
 // 헬퍼 함수들 (설정 생성 및 유틸리티)
 // ======================================
-
-/**
- * 공통 쿼리 옵션을 생성하는 헬퍼 함수
- * 기본 설정에 추가 옵션을 병합하여 반환
- * 
- * @param {Object} additionalOptions - 추가로 적용할 옵션들
- * @returns {Object} 최종 쿼리 옵션 객체
- */
-export const createQueryOptions = (additionalOptions = {}) => ({
-  staleTime: QUERY_CONFIG.staleTime,
-  gcTime: QUERY_CONFIG.gcTime,
-  retry: QUERY_CONFIG.retry,
-  retryDelay: QUERY_CONFIG.retryDelay,
-  refetchOnWindowFocus: QUERY_CONFIG.refetchOnWindowFocus,
-  refetchOnReconnect: QUERY_CONFIG.refetchOnReconnect,
-  refetchOnMount: QUERY_CONFIG.refetchOnMount,
-  networkMode: QUERY_CONFIG.networkMode,
-  structuralSharing: QUERY_CONFIG.structuralSharing,
-  ...additionalOptions, // 추가 옵션으로 기본값 오버라이드 가능
-});
-
-/**
- * 공통 뮤테이션 옵션을 생성하는 헬퍼 함수
- * 기본 설정에 추가 옵션을 병합하여 반환
- * 
- * @param {Object} additionalOptions - 추가로 적용할 옵션들
- * @returns {Object} 최종 뮤테이션 옵션 객체
- */
-export const createMutationOptions = (additionalOptions = {}) => ({
-  retry: MUTATION_CONFIG.retry,
-  retryDelay: MUTATION_CONFIG.retryDelay,
-  networkMode: MUTATION_CONFIG.networkMode,
-  throwOnError: MUTATION_CONFIG.throwOnError,
-  ...additionalOptions, // 추가 옵션으로 기본값 오버라이드 가능
-});
 
 // 환경별 설정 함수
 export const getQueryConfig = (environment = 'production') => {
@@ -110,19 +59,6 @@ export const getQueryConfig = (environment = 'production') => {
       ...baseConfig,
       staleTime: 30 * 1000,        // 개발 환경에서는 30초로 단축
       refetchOnWindowFocus: true,   // 개발 시에는 포커스 시 재요청 활성화
-    };
-  }
-  
-  return baseConfig;
-};
-
-export const getMutationConfig = (environment = 'production') => {
-  const baseConfig = { ...MUTATION_CONFIG };
-  
-  if (environment === 'development') {
-    return {
-      ...baseConfig,
-      retry: 1,                    // 개발 환경에서는 재시도 1번으로 단축
     };
   }
   
@@ -142,9 +78,10 @@ export const queryClient = new QueryClient({
       refetchIntervalInBackground: false,
     },
     mutations: {
-      ...MUTATION_CONFIG,
       // 뮤테이션 실패 시 기본 동작
       useErrorBoundary: false,
+      retry: 2,
+      networkMode: 'online',
     },
   },
   

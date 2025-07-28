@@ -41,7 +41,7 @@ import { logDataSourceInfo } from './utils/dataSourceManager.js'
  * - structuralSharing: 객체 참조 최적화로 불필요한 리렌더링 방지
  * - refetchOnWindowFocus: 개발 환경에서는 활성화로 Rewind 디버깅 지원
  */
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: process.env.NODE_ENV === 'development' ? 1000 : 5 * 60 * 1000, // 개발: 1초, 프로덕션: 5분 (Rewind 관찰용)
