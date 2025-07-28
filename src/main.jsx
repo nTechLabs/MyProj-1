@@ -28,6 +28,38 @@ import { initPerformanceMonitoring, measurePageLoad } from './utils/performanceU
 import { logDataSourceInfo } from './utils/dataSourceManager.js'
 
 // ======================================
+// React Query 클라이언트 설정 (최적화 완료)
+// ======================================
+/**
+ * React Query 클라이언트 인스턴스 생성
+ * 서버 상태 관리와 캐싱을 위한 중앙 집중식 설정
+ * React Query Rewind 지원을 위한 최적화 포함
+ * 
+ * 최적화 포인트:
+ * - staleTime: 5분간 캐시 데이터를 신선한 것으로 간주
+ * - gcTime: 10분간 메모리에 캐시 보관 (이전 cacheTime)
+ * - structuralSharing: 객체 참조 최적화로 불필요한 리렌더링 방지
+ * - refetchOnWindowFocus: 개발 환경에서는 활성화로 Rewind 디버깅 지원
+ */
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: process.env.NODE_ENV === 'development' ? 1000 : 5 * 60 * 1000, // 개발: 1초, 프로덕션: 5분 (Rewind 관찰용)
+      gcTime: 10 * 60 * 1000,   // 10분간 가비지 컬렉션 방지 (메모리 보관)
+      retry: process.env.NODE_ENV === 'development' ? 1 : 3, // 개발: 1번, 프로덕션: 3번 재시도
+      refetchOnWindowFocus: process.env.NODE_ENV === 'development', // 개발 환경에서는 포커스 시 재요청 활성화
+      structuralSharing: true,   // 객체 구조 공유로 메모리 최적화
+      refetchOnMount: true,      // 마운트 시 재요청
+      refetchOnReconnect: true,  // 재연결 시 재요청
+    },
+    mutations: {
+      retry: 1,                  // 뮤테이션 실패 시 1번만 재시도
+      throwOnError: false,       // 에러를 컴포넌트로 전파하지 않고 내부에서 처리
+    },
+  },
+})
+
+// ======================================
 // 성능 모니터링 초기화 (개발 환경 전용)
 // ======================================
 // 개발 환경에서만 성능 측정 도구를 활성화하여
@@ -36,36 +68,42 @@ if (process.env.NODE_ENV === 'development') {
   initPerformanceMonitoring() // 실시간 성능 모니터링 시작
   measurePageLoad()           // 페이지 로드 시간 측정
   logDataSourceInfo()         // 데이터 소스 설정 정보 출력
+  
+  // React Query Rewind를 위한 전역 객체 노출
+  window.__REACT_QUERY_CLIENT__ = queryClient
+  window.__REACT_QUERY_DEVTOOLS_GLOBAL_HOOK__ = queryClient
+  
+  // 추가 디버깅을 위한 전역 함수들
+  window.__DEBUG_REACT_QUERY__ = {
+    client: queryClient,
+    getQueryCache: () => queryClient.getQueryCache(),
+    getMutationCache: () => queryClient.getMutationCache(),
+    invalidateQueries: (filters) => queryClient.invalidateQueries(filters),
+    refetchQueries: (filters) => queryClient.refetchQueries(filters),
+    clear: () => queryClient.clear(),
+    // 테스트용 함수들
+    testQuery: () => {
+      console.log('🧪 테스트 쿼리 실행 중...')
+      console.log('📊 현재 쿼리 캐시:', queryClient.getQueryCache().getAll())
+      console.log('🔄 현재 뮤테이션 캐시:', queryClient.getMutationCache().getAll())
+    }
+  }
+  
+  // 5초 후 자동으로 테스트 실행 (Rewind 확인용)
+  setTimeout(() => {
+    window.__DEBUG_REACT_QUERY__.testQuery()
+  }, 5000)
+  
+  // 추가적인 디버깅 정보 제공
+  console.log('🔧 React Query DevTools & Rewind 설정 완료')
+  console.log('📌 QueryClient 인스턴스:', queryClient)
+  console.log('🎯 Global Hook 설정 완료')
+  console.log('🛠️  Debug 객체:', window.__DEBUG_REACT_QUERY__)
+  console.log('📦 React Query Rewind 브라우저 확장 프로그램:')
+  console.log('   1. Chrome 웹스토어에서 "React Query Rewind" 검색')
+  console.log('   2. 또는 직접 검색: https://chrome.google.com/webstore/search/react%20query%20rewind')
+  console.log('   3. 설치 후 개발자 도구(F12) > React Query Rewind 탭 확인')
 }
-
-// ======================================
-// React Query 클라이언트 설정 (최적화 완료)
-// ======================================
-/**
- * React Query 클라이언트 인스턴스 생성
- * 서버 상태 관리와 캐싱을 위한 중앙 집중식 설정
- * 
- * 최적화 포인트:
- * - staleTime: 5분간 캐시 데이터를 신선한 것으로 간주
- * - gcTime: 10분간 메모리에 캐시 보관 (이전 cacheTime)
- * - structuralSharing: 객체 참조 최적화로 불필요한 리렌더링 방지
- * - refetchOnWindowFocus: 윈도우 포커스 시 재요청 비활성화로 성능 향상
- */
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5분간 데이터를 신선한 것으로 간주
-      gcTime: 10 * 60 * 1000,   // 10분간 가비지 컬렉션 방지 (메모리 보관)
-      retry: 3,                  // 실패 시 최대 3번 재시도
-      refetchOnWindowFocus: false, // 윈도우 포커스 시 자동 재요청 비활성화
-      structuralSharing: true,   // 객체 구조 공유로 메모리 최적화
-    },
-    mutations: {
-      retry: 1,                  // 뮤테이션 실패 시 1번만 재시도
-      throwOnError: false,       // 에러를 컴포넌트로 전파하지 않고 내부에서 처리
-    },
-  },
-})
 
 // ======================================
 // 전역 에러 바운더리 (Error Boundary)
@@ -214,11 +252,25 @@ createRoot(document.getElementById('root')).render(
             }}
           >
             <App />
-            {/* 개발 환경에서만 React Query Devtools 표시 */}
+            {/* React Query Devtools - React Query Rewind 지원 */}
             {process.env.NODE_ENV === 'development' && (
               <ReactQueryDevtools 
-                initialIsOpen={true} 
+                initialIsOpen={false}
                 position="bottom-right"
+                buttonPosition="bottom-right"
+                client={queryClient}
+                toggleButtonProps={{
+                  style: {
+                    marginLeft: '5px',
+                    transform: 'none',
+                    zIndex: 99999,
+                  }
+                }}
+                panelProps={{
+                  style: {
+                    zIndex: 99998,
+                  }
+                }}
               />
             )}
           </ConfigProvider>
