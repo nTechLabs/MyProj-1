@@ -1,7 +1,7 @@
-# React Query + Zustand 기반 CRUD 애플리케이션 생성 프롬프트 (v2024)
+# React Query + Zustand 기반 CRUD 애플리케이션 생성 프롬프트 (v2025.01.29)
 
-이 프롬프트를 사용하여 Users, Posts, Todos 디렉토리와 동일한 패턴으로 완전한 CRUD 애플리케이션을 생성할 수 있습니다. 
-최적화된 공통 스타일 시스템과 현대적인 React 패턴을 적용합니다.
+이 프롬프트를 사용하여 Users, Posts, Todos, Comments, Photos 디렉토리와 동일한 패턴으로 완전한 CRUD 애플리케이션을 생성할 수 있습니다. 
+최적화된 공통 스타일 시스템, createCheckedStore 팩토리 패턴, axios HTTP 클라이언트를 적용합니다.
 
 ## 사용법
 
@@ -33,7 +33,7 @@
    - Ant Design List 컴포넌트 사용
    - 공통 스타일 클래스 적용: `page-list-container`, `list-scroll-hide`, `page-list`
    - 엔티티별 클래스: `{entity}-list-*` 패턴 사용
-   - 체크박스를 이용한 개별 선택 기능 (useCheckedStore 사용)
+   - createCheckedStore 팩토리를 통한 체크박스 상태 관리
    - 선택된 항목들 삭제 기능 (useMutation 사용)
    - FloatButton으로 새 항목 추가 버튼 (동적 위치 조정)
    - 삭제 버튼은 `fixed-delete-button` 클래스로 하단에 고정 배치
@@ -48,7 +48,7 @@
    - 개별 항목을 표시하는 컴포넌트
    - 공통 스타일 클래스 적용: `list-item-base`, `checkbox-container`
    - 엔티티별 클래스: `{entity}-item`, `{entity}-item-*` 패턴 사용
-   - 체크박스와 항목 내용으로 구성
+   - createCheckedStore 팩토리의 toggleCheck 액션 사용
    - 항목 클릭 시 상세 페이지로 이동
    - List.Item.Meta를 사용한 정보 표시
    - 아바타: `{entity}-item-avatar-*` 클래스, 메타 정보: `{entity}-item-title`, `{entity}-item-description`
@@ -79,23 +79,32 @@
 
 6. **src/api/{ENTITY_NAME.toLowerCase()}Api.js**
    - 엔티티별 API 함수들 모음
-   - axios 기반 HTTP 클라이언트 사용
+   - **axios 기반 HTTP 클라이언트** 사용 (fetch 대신 axios)
    - 기본 구조: `{entity}Api = { getAll, getById, create, update, delete }`
+   - **dataSourceManager** 통합: 네트워크/로컬 데이터 자동 전환
    - HTTP 상태 코드 검사 및 에러 처리
    - JSON 데이터 변환 처리
 
 7. **src/hooks/use{ENTITY_NAME}Queries.js**
    - React Query 커스텀 훅 모음
    - QueryKey Factory 패턴: `{entity}Keys = { all: () => [...], list: (filters) => [...], detail: (id) => [...] }`
-   - use{ENTITY_NAME}Query: 단일 항목 조회
    - use{ENTITY_NAME}sQuery: 목록 조회  
+   - use{ENTITY_NAME}Query: 단일 항목 조회
    - useAdd{ENTITY_NAME}Mutation: 추가
    - useUpdate{ENTITY_NAME}Mutation: 수정
    - useDelete{ENTITY_NAME}sMutation: 다중 삭제
-   - **필수 import**: `useQuery, useMutation, useQueryClient`, `handleReactQueryError`
+   - **필수 import**: `useQuery, useMutation`, `handleReactQueryError`
    - `useNotificationStore`를 통한 성공/실패 알림 (showSuccess, showError)
-   - `useClearChecked`를 통한 체크박스 상태 초기화
-   - `queryClient.invalidateQueries()` 직접 사용으로 캐시 무효화
+   - **createCheckedStore 팩토리 사용**: `use{Entity}ClearChecked` 선택자 사용
+   - **queryClient 직접 import**: `main.jsx`에서 import하여 사용
+   - **invalidateQueries 헬퍼**: `reactQueryConfig.js`의 `invalidateQueries` 사용
+
+8. **src/store/use{ENTITY_NAME}Store.js** 
+   - **createCheckedStore 팩토리 패턴** 사용
+   - 엔티티별 체크박스 상태 관리를 위한 Zustand 스토어
+   - **createCheckedSelectors** 를 통한 성능 최적화된 선택자들
+   - 주요 export: `use{Entity}ClearChecked`, `use{Entity}ToggleCheck` 등
+   - 개별 선택자 export로 리렌더링 최적화
 
 ### 스타일 시스템:
 - **공통 스타일**: `src/styles/pages.css` 자동 임포트 (main.jsx에서 전역 로드)
@@ -110,12 +119,14 @@
 import { {entity}Api } from '../api/{entity}Api'
 
 // React Query 및 에러 처리
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { handleReactQueryError } from '../utils/handleAxiosError'
+import { invalidateQueries } from '../config/reactQueryConfig'
+import { queryClient } from '../main'
 
-// 전역 상태 관리 (Zustand)
+// 전역 상태 관리 (Zustand) - createCheckedStore 팩토리 패턴
 import useNotificationStore from '../store/useNotificationStore'
-import useCheckedStore, { useClearChecked } from '../store/useCheckedStore'
+import { use{Entity}ClearChecked, use{Entity}ToggleCheck } from '../store/use{Entity}Store'
 
 // 공통 스타일
 import '../../styles/pages.css'  // 전역에서 자동 로드됨 (main.jsx)
@@ -126,46 +137,88 @@ import './{entity}.css'         // 엔티티 통합 스타일 (모든 컴포넌�
 
 #### **API 파일 (src/api/{entity}Api.js)**:
 ```javascript
-// axios import 추가
+// axios와 dataSourceManager import 추가
 import axios from 'axios'
-// 기본 구조 예시
+import { isNetworkEnabled, loadLocalData, findLocalDataById } from '../utils/dataSourceManager'
+
+// API URL 설정
 const API_URL = 'https://api.example.com/{entities}'
 
 export const {entity}Api = {
   getAll: async () => {
-    const response = await axios.get(API_URL)
-    return response.data
+    if (isNetworkEnabled('{entities}')) {
+      const response = await axios.get(API_URL)
+      return response.data
+    } else {
+      return await loadLocalData('{entities}')
+    }
   },
   
   getById: async (id) => {
-    const response = await axios.get(`${API_URL}/${id}`)
-    return response.data
+    if (isNetworkEnabled('{entities}')) {
+      const response = await axios.get(`${API_URL}/${id}`)
+      return response.data
+    } else {
+      return await findLocalDataById('{entities}', id)
+    }
   },
   
   create: async (data) => {
-    const response = await axios.post(API_URL, data)
-    return response.data
+    if (isNetworkEnabled('{entities}')) {
+      const response = await axios.post(API_URL, data)
+      return response.data
+    } else {
+      const newItem = { id: Date.now(), ...data }
+      console.log('📝 [Local Mode] Created {entity}:', newItem)
+      return newItem
+    }
   },
   
   update: async (id, data) => {
-    const response = await axios.put(`${API_URL}/${id}`, data)
-    return response.data
+    if (isNetworkEnabled('{entities}')) {
+      const response = await axios.put(`${API_URL}/${id}`, data)
+      return response.data
+    } else {
+      const updatedItem = { id, ...data }
+      console.log('✏️ [Local Mode] Updated {entity}:', updatedItem)
+      return updatedItem
+    }
   },
   
-  remove: async (id) => {
-    const response = await axios.delete(`${API_URL}/${id}`)
-    return response.data
+  delete: async (ids) => {
+    const idsArray = Array.isArray(ids) ? ids : [ids]
+    
+    if (isNetworkEnabled('{entities}')) {
+      const results = await Promise.allSettled(
+        idsArray.map(async (id) => {
+          try {
+            await axios.delete(`${API_URL}/${id}`)
+            return { id, success: true }
+          } catch (error) {
+            return { id, success: false, error }
+          }
+        })
+      )
+      return results.map(result => 
+        result.status === 'fulfilled' ? result.value : { id: null, success: false, error: result.reason }
+      )
+    } else {
+      console.log('🗑️ [Local Mode] Deleted {entities}:', idsArray)
+      return idsArray.map(id => ({ id, success: true }))
+    }
   }
 }
 ```
 
 #### **React Query 훅 파일 (src/hooks/use{Entity}Queries.js)**:
 ```javascript
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { {entity}Api } from '../api/{entity}Api'
 import { handleReactQueryError } from '../utils/handleAxiosError'
+import { invalidateQueries } from '../config/reactQueryConfig'
+import { queryClient } from '../main'
 import useNotificationStore from '../store/useNotificationStore'
-import { useClearChecked } from '../store/useCheckedStore'
+import { use{Entity}ClearChecked } from '../store/use{Entity}Store'
 
 // QueryKey Factory 패턴
 export const {entity}Keys = {
@@ -175,50 +228,42 @@ export const {entity}Keys = {
 }
 
 // 목록 조회 훅
-export const use{Entity}sQuery = (options = {}) => {
+export const use{Entity}sQuery = () => {
   const { showError } = useNotificationStore()
   
   return useQuery({
     queryKey: {entity}Keys.list(),
     queryFn: {entity}Api.getAll,
-    staleTime: 5 * 60 * 1000, // 5분
-    gcTime: 10 * 60 * 1000,   // 10분
-    retry: 3,
     onError: (error) => {
       showError(handleReactQueryError(error, '{Entity} 목록 조회'))
-    },
-    ...options
+    }
   })
 }
 
 // 단일 조회 훅
-export const use{Entity}Query = (id, options = {}) => {
+export const use{Entity}Query = (id) => {
   const { showError } = useNotificationStore()
   
   return useQuery({
     queryKey: {entity}Keys.detail(id),
     queryFn: () => {entity}Api.getById(id),
     enabled: !!id && id !== 'new',
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    retry: 3,
     onError: (error) => {
       showError(handleReactQueryError(error, '{Entity} 조회'))
-    },
-    ...options
+    }
   })
 }
 
 // 추가 뮤테이션
 export const useAdd{Entity}Mutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const queryClient = useQueryClient()
   
   return useMutation({
     mutationFn: {entity}Api.create,
     onSuccess: (data) => {
-      showSuccess('{Entity}가 성공적으로 추가되었습니다.')
-      queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
+      showSuccess('새 {Entity}가 추가되었습니다.')
+      invalidateQueries.listByEntity('{entities}')
+      queryClient.setQueryData({entity}Keys.detail(data.id), data)
     },
     onError: (error) => {
       showError(handleReactQueryError(error, '{Entity} 추가'))
@@ -226,17 +271,17 @@ export const useAdd{Entity}Mutation = () => {
   })
 }
 
-// 수정 뮤테이션  
+// 수정 뮤테이션
 export const useUpdate{Entity}Mutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const queryClient = useQueryClient()
   
   return useMutation({
     mutationFn: ({ id, data }) => {entity}Api.update(id, data),
-    onSuccess: (data, { id }) => {
+    onSuccess: (data, variables) => {
       showSuccess('{Entity}가 성공적으로 수정되었습니다.')
-      queryClient.invalidateQueries({ queryKey: {entity}Keys.detail(id) })
-      queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
+      invalidateQueries.listByEntity('{entities}')
+      invalidateQueries.detailByEntity('{entities}', variables.id)
+      queryClient.setQueryData({entity}Keys.detail(variables.id), data)
     },
     onError: (error) => {
       showError(handleReactQueryError(error, '{Entity} 수정'))
@@ -247,26 +292,61 @@ export const useUpdate{Entity}Mutation = () => {
 // 다중 삭제 뮤테이션
 export const useDelete{Entity}sMutation = () => {
   const { showSuccess, showError } = useNotificationStore()
-  const clearChecked = useClearChecked()
-  const queryClient = useQueryClient()
+  const clearChecked = use{Entity}ClearChecked()
   
   return useMutation({
-    mutationFn: async (ids) => {
-      const results = await Promise.all(
-        ids.map(id => {entity}Api.delete(id))
-      )
-      return results
-    },
-    onSuccess: (data, ids) => {
-      showSuccess(`${ids.length}개의 {Entity}가 성공적으로 삭제되었습니다.`)
-      clearChecked()
-      queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
+    mutationFn: {entity}Api.delete,
+    onSuccess: (results) => {
+      const successCount = results.filter(result => result.success).length
+      const failCount = results.length - successCount
+      
+      if (successCount > 0) {
+        showSuccess(`${successCount}개의 {Entity}가 삭제되었습니다.`)
+        invalidateQueries.listByEntity('{entities}')
+        clearChecked()
+      }
+      
+      if (failCount > 0) {
+        showError(`${failCount}개의 {Entity} 삭제에 실패했습니다.`)
+      }
     },
     onError: (error) => {
       showError(handleReactQueryError(error, '{Entity} 삭제'))
     }
   })
 }
+```
+
+#### **Zustand 스토어 파일 (src/store/use{Entity}Store.js)**:
+```javascript
+import { createCheckedStore, createCheckedSelectors } from './createCheckedStore'
+
+/**
+ * {Entity} 체크된 항목들을 관리하는 Zustand 스토어 (최적화)
+ * {Entity} 리스트에서 다중 선택 기능을 위한 상태 관리
+ * 
+ * 공통 createCheckedStore 팩토리를 사용하여 중복 코드 제거 및 성능 최적화
+ */
+const use{Entity}Store = createCheckedStore('{Entity}')
+
+// 성능 최적화를 위한 선택자 헬퍼들
+const selectors = createCheckedSelectors(use{Entity}Store, '{entity}')
+
+export default use{Entity}Store
+
+// 개별 선택자들 export (리렌더링 최적화)
+export const use{Entity}CheckedIds = selectors['use{Entity}CheckedIds']
+export const use{Entity}ToggleCheck = selectors['use{Entity}ToggleCheck']
+export const use{Entity}ToggleAllCheck = selectors['use{Entity}ToggleAllCheck']
+export const use{Entity}ClearChecked = selectors['use{Entity}ClearChecked']
+export const use{Entity}SetCheckedIds = selectors['use{Entity}SetCheckedIds']
+export const use{Entity}IsChecked = selectors['use{Entity}IsChecked']
+export const use{Entity}IsAllChecked = selectors['use{Entity}IsAllChecked']
+export const use{Entity}IsIndeterminate = selectors['use{Entity}IsIndeterminate']
+export const use{Entity}CheckedCount = selectors['use{Entity}CheckedCount']
+
+// 컴포지트 선택자 (계산된 상태를 한 번에 반환)
+export const use{Entity}CheckedState = selectors['use{Entity}CheckedState']
 ```
 
 ### 기술 스택 및 라이브러리:
@@ -282,9 +362,11 @@ export const useDelete{Entity}sMutation = () => {
 ### 프로젝트 공통 유틸리티:
 - **handleReactQueryError** (src/utils/handleAxiosError.js) - React Query 에러 처리
 - **handleErrorWithLogging** - 개발 환경 에러 로깅
-- **useQueryClient** - React Query 캐시 무효화 및 관리
+- **invalidateQueries** (src/config/reactQueryConfig.js) - React Query 캐시 무효화 헬퍼
+- **queryClient** (src/main.jsx) - React Query 클라이언트 인스턴스
 - **useNotificationStore** - showSuccess, showError, showWarning, showInfo 메서드
-- **useCheckedStore** - checkedIds, toggleCheck, clearChecked, isAllChecked 등
+- **createCheckedStore** - 체크박스 상태 관리를 위한 Zustand 팩토리
+- **dataSourceManager** - 네트워크/로컬 데이터 소스 관리
 
 ### API 엔드포인트:
 - GET {API_URL} - 목록 조회
@@ -346,25 +428,27 @@ export const handleReactQueryError = (error, context) => { ... }  // React Query
 export const handleErrorWithLogging = (error, operation) => { ... } // 개발환경 로깅
 ```
 
-### 🏪 **Zustand 스토어**
+### 🏪 **Zustand 스토어 - createCheckedStore 팩토리 패턴**
 ```javascript
-// src/store/useNotificationStore.js
-const { showSuccess, showError, showWarning, showInfo } = useNotificationStore()
+// src/store/createCheckedStore.js
+import { createCheckedStore, createCheckedSelectors } from './createCheckedStore'
 
-// src/store/useCheckedStore.js  
+// 팩토리를 사용한 스토어 생성
+const use{Entity}Store = createCheckedStore('{Entity}')
+const selectors = createCheckedSelectors(use{Entity}Store, '{entity}')
+
+// 사용 가능한 선택자들:
 const { 
-  checkedIds, 
-  toggleCheck, 
-  toggleAllCheck,
-  clearChecked,
-  isChecked,
-  isAllChecked,
-  isIndeterminate,
-  getCheckedCount
-} = useCheckedStore()
-
-// 선택자 헬퍼 (성능 최적화용)
-import { useClearChecked, useCheckedIds, useToggleCheck } from '../store/useCheckedStore'
+  use{Entity}CheckedIds,      // 체크된 ID Set
+  use{Entity}ToggleCheck,     // 단일 항목 토글
+  use{Entity}ToggleAllCheck,  // 전체 선택/해제
+  use{Entity}ClearChecked,    // 체크 상태 초기화
+  use{Entity}IsChecked,       // 특정 항목 체크 여부
+  use{Entity}IsAllChecked,    // 전체 선택 여부
+  use{Entity}IsIndeterminate, // 부분 선택 여부
+  use{Entity}CheckedCount,    // 체크된 항목 수
+  use{Entity}CheckedState     // 모든 상태를 한 번에 반환
+} = selectors
 ```
 
 ### ⚙️ **React Query 최적화 패턴**
@@ -376,17 +460,14 @@ export const {entity}Keys = {
   detail: (id) => [...{entity}Keys.all(), "detail", id]
 }
 
-// 기본 쿼리 옵션 (직접 설정)
-const defaultQueryOptions = {
-  staleTime: 5 * 60 * 1000,  // 5분
-  gcTime: 10 * 60 * 1000,    // 10분 (구 cacheTime)
-  retry: 3,
-  refetchOnWindowFocus: false
-}
+// invalidateQueries 헬퍼 사용
+import { invalidateQueries } from '../config/reactQueryConfig'
+import { queryClient } from '../main'
 
-// 캐시 무효화 (useQueryClient 직접 사용)
-const queryClient = useQueryClient()
-queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
+// 캐시 무효화
+invalidateQueries.listByEntity('{entities}')
+invalidateQueries.detailByEntity('{entities}', id)
+queryClient.setQueryData({entity}Keys.detail(id), data)
 ```
 
 ---
@@ -472,7 +553,7 @@ queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
 
 ## 최신 기능 및 개선사항 (2024)
 
-### 🎨 스타일 시스템 v3.0
+### 🎨 스타일 시스템 v3.1 (2025)
 - **통합 CSS 파일**: 엔티티별 단일 CSS 파일로 모든 컴포넌트 스타일 관리
 - **클래스 네이밍 컨벤션**: `{entity}-{component}-{element}` 패턴으로 명확한 스코핑
 - **인라인 스타일 완전 금지**: 유지보수성과 일관성을 위한 CSS 클래스 기반 스타일링
@@ -482,22 +563,28 @@ queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
 
 ### ⚡ React 성능 최적화
 - React.memo + useCallback 패턴으로 불필요한 리렌더링 방지
+- createCheckedSelectors를 통한 개별 선택자 최적화
 - 구조적 공유(Structural Sharing) 활용
 - useMemo를 통한 필터링 최적화
 
 ### 🔄 React Query v5 패턴
 - QueryKey Factory 패턴: `{entity}Keys = { all, list, detail }`
 - `handleReactQueryError` 통합 에러 처리
-- `useQueryClient` 직접 사용으로 캐시 무효화 
-- 기본 쿼리 옵션 직접 설정 (staleTime, gcTime, retry)
+- `invalidateQueries` 헬퍼를 통한 캐시 무효화 
+- `queryClient` 직접 import 사용
+- onError 콜백을 통한 에러 처리
 
-### 🏪 Zustand 스토어 통합
-- `useNotificationStore`: showSuccess, showError, showWarning, showInfo
-- `useCheckedStore`: checkedIds, toggleCheck, clearChecked, 체크박스 상태 관리
-- 선택자 헬퍼: useClearChecked, useCheckedIds 성능 최적화
+### 🏪 Zustand 스토어 - createCheckedStore 팩토리 v2.0
+- **createCheckedStore**: 엔티티별 체크박스 상태 관리 스토어 생성
+- **createCheckedSelectors**: 성능 최적화된 개별 선택자 생성
+- **useNotificationStore**: showSuccess, showError, showWarning, showInfo
+- 선택자 패턴: `use{Entity}ClearChecked`, `use{Entity}ToggleCheck` 등
+- 리렌더링 최적화를 위한 개별 export
 
-### 🌐 Axios HTTP Client 패턴
-- axios를 사용한 HTTP 클라이언트로 자동 JSON 파싱과 향상된 에러 처리
+### 🌐 Axios HTTP Client + DataSourceManager
+- **axios 기반 HTTP 클라이언트**로 자동 JSON 파싱과 향상된 에러 처리
+- **dataSourceManager**: 네트워크/로컬 데이터 자동 전환 (`isNetworkEnabled`)
+- Promise.allSettled를 사용한 안전한 다중 삭제
 - HTTP 상태 코드 검사 및 JSON 변환 처리
 - 일관된 에러 처리 패턴
 
@@ -507,4 +594,11 @@ queryClient.invalidateQueries({ queryKey: {entity}Keys.all() })
 - 향상된 로딩 및 빈 상태 표시
 - 실시간 알림 시스템 (Ant Design message API 연동)
 
-이 프롬프트를 사용하여 어떤 엔티티든 현재 프로젝트와 **완전히 동일한 아키텍처, 공통 함수, 스타일 시스템**을 가진 고품질 CRUD 애플리케이션을 생성할 수 있습니다.
+이 프롬프트를 사용하여 어떤 엔티티든 현재 프로젝트와 **완전히 동일한 아키텍처, createCheckedStore 팩토리 패턴, axios + dataSourceManager, invalidateQueries 헬퍼**를 가진 고품질 CRUD 애플리케이션을 생성할 수 있습니다.
+
+---
+
+## 📄 프롬프트 파일 현행화 히스토리
+
+- **v2025.01.29**: createCheckedStore 팩토리 패턴, axios + dataSourceManager, invalidateQueries 헬퍼 반영
+- **v2024**: 초기 버전 (useCheckedStore 직접 사용, fetch API, queryClient 직접 사용)
