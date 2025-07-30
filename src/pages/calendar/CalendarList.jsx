@@ -69,8 +69,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
 
     return (
       <div className="calendar-date-cell">
-        {/* 일정 개수 뱃지 (빨간색) - 3개 이상일 때만 표시 */}
-        {dayEvents.length >= 3 && (
+        {/* 일정 개수 뱃지 (빨간색) - 4개 이상일 때만 표시 */}
+        {dayEvents.length >= 4 && (
           <div className="calendar-event-count-badge">
             <Badge 
               count={dayEvents.length} 
@@ -110,13 +110,6 @@ const CalendarList = ({ viewType = 'monthly' }) => {
               </div>
             )
           })}
-          
-          {/* 더 많은 일정이 있을 때 표시 */}
-          {dayEvents.length > 2 && (
-            <div className="calendar-more-events">
-              +{dayEvents.length - 2}개 더
-            </div>
-          )}
         </div>
       </div>
     )
@@ -179,6 +172,19 @@ const CalendarList = ({ viewType = 'monthly' }) => {
         )
       
       case '2weekly':
+        return (
+          <div className="calendar-weekly-container">
+            <Card className="calendar-view-card">
+              <Calendar
+                mode="month"
+                dateCellRender={dateCellRender}
+                onSelect={setSelectedDate}
+                className="calendar-2weekly"
+              />
+            </Card>
+          </div>
+        )
+      
       case 'weekly':
         return (
           <div className="calendar-weekly-container">

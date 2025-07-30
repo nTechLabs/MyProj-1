@@ -252,6 +252,25 @@
   overflow: hidden;
 }
 
+/* 2Weekly Calendar - 2개 주만 표시 */
+.calendar-2weekly {
+  border: none;
+}
+
+/* 2주간 뷰: 3번째 주부터 숨김 (3, 4, 5, 6번째 주 숨김) */
+.calendar-2weekly .ant-picker-calendar tbody tr:nth-child(n+3),
+.calendar-2weekly .ant-picker-calendar-date tbody tr:nth-child(n+3),
+.calendar-2weekly .ant-picker-calendar-date-panel tbody tr:nth-child(n+3),
+.calendar-2weekly tbody tr:nth-child(n+3) {
+  display: none !important;
+}
+
+/* Ant Design 2주간 캘린더 테이블 높이 제한 */
+.calendar-2weekly .ant-picker-calendar table {
+  max-height: calc(2 * 60px);
+  overflow: hidden;
+}
+
 /* Daily Calendar */
 .calendar-daily-container {
   display: flex;
@@ -713,6 +732,13 @@
   display: none !important;
 }
 
+/* 2주간 캘린더: 3번째 주부터 숨김 */
+.calendar-2weekly .ant-picker-calendar tbody tr:nth-child(n+3),
+.calendar-2weekly .ant-picker-calendar-date tbody tr:nth-child(n+3),
+.calendar-2weekly .ant-picker-calendar-date-panel tbody tr:nth-child(n+3) {
+  display: none !important;
+}
+
 /* 캘린더 본체 높이 제한 */
 .ant-picker-calendar .ant-picker-calendar-date {
   max-height: calc(5 * 60px + 40px);
@@ -721,5 +747,16 @@
 
 .ant-picker-calendar table {
   max-height: calc(5 * 60px);
+  overflow: hidden;
+}
+
+/* 2주간 캘린더 높이 제한 */
+.calendar-2weekly .ant-picker-calendar .ant-picker-calendar-date {
+  max-height: calc(2 * 60px + 40px);
+  overflow: hidden;
+}
+
+.calendar-2weekly .ant-picker-calendar table {
+  max-height: calc(2 * 60px);
   overflow: hidden;
 }
