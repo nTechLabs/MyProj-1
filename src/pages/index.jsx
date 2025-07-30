@@ -1,5 +1,5 @@
 import { Typography, Space, Button } from 'antd'
-import { UserOutlined, NumberOutlined, CheckSquareOutlined, BookOutlined, CommentOutlined, CameraOutlined } from '@ant-design/icons'
+import { UserOutlined, NumberOutlined, CheckSquareOutlined, BookOutlined, CommentOutlined, CameraOutlined, CalendarOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
 const { Title, Paragraph } = Typography
@@ -72,6 +72,16 @@ const HomePage = () => {
                 style={{ borderColor: '#ff9500', color: '#ff9500' }}
               >
                 Photos 페이지
+              </Button>
+            </Link>
+            <Link to="/calendar">
+              <Button 
+                type="default" 
+                icon={<CalendarOutlined />}
+                size="large"
+                style={{ borderColor: '#722ed1', color: '#722ed1' }}
+              >
+                Calendar 페이지
               </Button>
             </Link>
           </Space>

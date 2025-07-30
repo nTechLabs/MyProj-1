@@ -9,6 +9,7 @@ const USE_NETWORK_COMMENTS = import.meta.env.VITE_USE_NETWORK_COMMENTS === 'true
 const USE_NETWORK_PHOTOS = import.meta.env.VITE_USE_NETWORK_PHOTOS === 'true'
 const USE_NETWORK_TODOS = import.meta.env.VITE_USE_NETWORK_TODOS === 'true'
 const USE_NETWORK_POSTS = import.meta.env.VITE_USE_NETWORK_POSTS === 'true'
+const USE_NETWORK_CALENDARS = import.meta.env.VITE_USE_NETWORK_CALENDARS === 'true'
 
 // API별 네트워크 설정 맵
 const API_NETWORK_SETTINGS = {
@@ -16,7 +17,8 @@ const API_NETWORK_SETTINGS = {
   comments: USE_NETWORK_COMMENTS,
   photos: USE_NETWORK_PHOTOS,
   todos: USE_NETWORK_TODOS,
-  posts: USE_NETWORK_POSTS
+  posts: USE_NETWORK_POSTS,
+  calendars: USE_NETWORK_CALENDARS
 }
 
 // 로컬 JSON 파일 경로 매핑 (public 폴더 기준)
@@ -25,7 +27,8 @@ const LOCAL_DATA_PATHS = {
   photos: '/src/apidata/photos_data.json',
   posts: '/src/apidata/posts_data.json',
   todos: '/src/apidata/todos_data.json',
-  users: '/src/apidata/users_data.json'
+  users: '/src/apidata/users_data.json',
+  calendars: '/src/apidata/calendars_data.json'
 }
 
 /**
@@ -53,6 +56,9 @@ export const loadLocalData = async (dataType) => {
         break
       case 'users':
         data = (await import('../apidata/users_data.json')).default
+        break
+      case 'calendars':
+        data = (await import('../apidata/calendars_data.json')).default
         break
       default:
         throw new Error(`Unknown data type: ${dataType}`)
@@ -84,12 +90,12 @@ export const findLocalDataById = async (dataType, id) => {
 
 /**
  * 특정 API의 네트워크 사용 설정을 반환합니다
- * @param {string} apiType - API 타입 (users, comments, photos, todos, posts)
+ * @param {string} apiType - API 타입 (users, comments, photos, todos, posts, calendars)
  * @returns {boolean} 네트워크 사용 여부
  */
 export const isNetworkEnabled = (apiType) => {
   if (!apiType) {
-    throw new Error('API 타입은 필수입니다. (users, comments, photos, todos, posts 중 하나)')
+    throw new Error('API 타입은 필수입니다. (users, comments, photos, todos, posts, calendars 중 하나)')
   }
   
   // 특정 API의 네트워크 설정 반환
@@ -116,4 +122,5 @@ export const logDataSourceInfo = () => {
   console.log(`  Photos: ${USE_NETWORK_PHOTOS ? 'Network API' : 'Local JSON'}`)
   console.log(`  Todos: ${USE_NETWORK_TODOS ? 'Network API' : 'Local JSON'}`)
   console.log(`  Posts: ${USE_NETWORK_POSTS ? 'Network API' : 'Local JSON'}`)
+  console.log(`  Calendars: ${USE_NETWORK_CALENDARS ? 'Network API' : 'Local JSON'}`)
 }

@@ -1,0 +1,167 @@
+[
+    {
+        "id": 1,
+        "title": "팀 회의",
+        "description": "월간 팀 회의 및 프로젝트 진행 상황 점검",
+        "type": "meeting",
+        "date": "2025-08-01T09:00:00.000Z",
+        "location": "회의실 A",
+        "priority": "high",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 2,
+        "title": "프로젝트 기획서 작성",
+        "description": "새로운 웹 애플리케이션 프로젝트 기획서 작성 및 검토",
+        "type": "task",
+        "date": "2025-08-01T14:30:00.000Z",
+        "location": "사무실",
+        "priority": "medium",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 3,
+        "title": "병원 진료",
+        "description": "정기 건강검진 및 진료",
+        "type": "personal",
+        "date": "2025-08-02T15:00:00.000Z",
+        "location": "서울대병원",
+        "priority": "high",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 4,
+        "title": "회사 워크샵",
+        "description": "2025년 하반기 회사 워크샵 및 팀빌딩",
+        "type": "event",
+        "date": "2025-08-05T10:00:00.000Z",
+        "location": "제주도",
+        "priority": "medium",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 5,
+        "title": "약 복용",
+        "description": "감기약 복용 알림",
+        "type": "reminder",
+        "date": "2025-08-01T08:00:00.000Z",
+        "location": "",
+        "priority": "low",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 6,
+        "title": "클라이언트 미팅",
+        "description": "신규 프로젝트 관련 클라이언트 미팅",
+        "type": "meeting",
+        "date": "2025-08-03T11:00:00.000Z",
+        "location": "강남역 스타벅스",
+        "priority": "high",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 7,
+        "title": "코드 리뷰",
+        "description": "캘린더 애플리케이션 코드 리뷰 및 개선사항 논의",
+        "type": "task",
+        "date": "2025-08-04T16:00:00.000Z",
+        "location": "사무실",
+        "priority": "medium",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 8,
+        "title": "친구 만남",
+        "description": "대학교 동기들과의 월례 모임",
+        "type": "personal",
+        "date": "2025-08-06T19:00:00.000Z",
+        "location": "홍대 맛집",
+        "priority": "low",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 9,
+        "title": "컨퍼런스 참석",
+        "description": "React Korea 2025 컨퍼런스 참석",
+        "type": "event",
+        "date": "2025-08-07T09:30:00.000Z",
+        "location": "코엑스 컨벤션센터",
+        "priority": "high",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 10,
+        "title": "운동 알림",
+        "description": "주 3회 헬스장 운동 스케줄",
+        "type": "reminder",
+        "date": "2025-08-08T18:00:00.000Z",
+        "location": "헬스장",
+        "priority": "medium",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 11,
+        "title": "API 개발",
+        "description": "캘린더 백엔드 API 개발 및 테스트",
+        "type": "task",
+        "date": "2025-08-09T10:00:00.000Z",
+        "location": "재택근무",
+        "priority": "high",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 12,
+        "title": "가족 식사",
+        "description": "부모님과 함께하는 주말 식사",
+        "type": "personal",
+        "date": "2025-08-10T12:00:00.000Z",
+        "location": "집",
+        "priority": "medium",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 13,
+        "title": "제품 런칭 이벤트",
+        "description": "새로운 제품 출시 기념 이벤트",
+        "type": "event",
+        "date": "2025-08-12T14:00:00.000Z",
+        "location": "잠실 롯데타워",
+        "priority": "high",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 14,
+        "title": "정기 검진 예약",
+        "description": "6개월마다 받는 정기 건강검진 예약 알림",
+        "type": "reminder",
+        "date": "2025-08-15T09:00:00.000Z",
+        "location": "",
+        "priority": "medium",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    },
+    {
+        "id": 15,
+        "title": "기술 세미나",
+        "description": "최신 웹 기술 트렌드 세미나 참석",
+        "type": "meeting",
+        "date": "2025-08-20T14:00:00.000Z",
+        "location": "강남 교육센터",
+        "priority": "medium",
+        "createdAt": "2025-07-30T00:00:00.000Z",
+        "updatedAt": "2025-07-30T00:00:00.000Z"
+    }
+]

@@ -60,6 +60,10 @@ const CommentsDetail = lazy(() => import('../pages/comments/CommentsDetail'))
 const PhotosPage = lazy(() => import('../pages/photos'))
 const PhotosDetail = lazy(() => import('../pages/photos/PhotosDetail'))
 
+// Calendar 엔티티 - 캘린더 관리
+const CalendarPage = lazy(() => import('../pages/calendar'))
+const CalendarDetail = lazy(() => import('../pages/calendar/CalendarDetail'))
+
 // Counter 데모 페이지 - Zustand 상태 관리 예제
 const CounterPage = lazy(() => import('../pages/counter'))
 
@@ -143,6 +147,10 @@ const AppRoutes = () => {
         {/* Photos 엔티티 라우트 */}
         <Route path="/photos" element={<PhotosPage />} />
         <Route path="/photos/photo/:id" element={<PhotosDetail />} />
+        
+        {/* Calendar 엔티티 라우트 */}
+        <Route path="/calendar" element={<CalendarPage />} />
+        <Route path="/calendar/calendar/:id" element={<CalendarDetail />} />
         
         {/* 데모 페이지 - Zustand 카운터 예제 */}
         <Route path="/counter" element={<CounterPage />} />

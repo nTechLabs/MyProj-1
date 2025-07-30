@@ -1,0 +1,301 @@
+import React, { useState, useMemo, useCallback } from 'react'
+import { Calendar, Badge, Card, Button, FloatButton, List, Typography, Space, Alert, Spin } from 'antd'
+import { PlusOutlined, DeleteOutlined, CalendarOutlined, ClockCircleOutlined, TeamOutlined, BookOutlined, HeartOutlined, TrophyOutlined } from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
+import dayjs from 'dayjs'
+import { useCalendarsQuery, useDeleteCalendarsMutation } from '../../hooks/useCalendarsQueries'
+import { useCalendarCheckedIds, useCalendarToggleAllCheck, useCalendarClearChecked, useCalendarIsAllChecked, useCalendarIsIndeterminate, useCalendarCheckedCount } from '../../store/useCalendarStore'
+import CalendarItem from './CalendarItem'
+import '../../styles/pages.css'
+import './calendar.css'
+
+const { Text } = Typography
+
+/**
+ * 캘린더 리스트 컴포넌트
+ * 4가지 뷰 타입을 지원: monthly, 2weekly, weekly, daily
+ * Task 타입별 색상과 아이콘으로 구별
+ */
+const CalendarList = ({ viewType = 'monthly' }) => {
+  const navigate = useNavigate()
+  const [selectedDate, setSelectedDate] = useState(dayjs())
+  
+  // React Query 데이터 조회
+  const { data: calendars = [], isLoading, error } = useCalendarsQuery()
+  
+  // Zustand 체크박스 상태 관리
+  const checkedIds = useCalendarCheckedIds()
+  const toggleAllCheck = useCalendarToggleAllCheck()
+  const clearChecked = useCalendarClearChecked()
+  const isAllChecked = useCalendarIsAllChecked()
+  const isIndeterminate = useCalendarIsIndeterminate()
+  const checkedCount = useCalendarCheckedCount()
+  
+  // 삭제 뮤테이션
+  const deleteCalendarsMutation = useDeleteCalendarsMutation()
+
+  // 태스크 타입별 설정
+  const taskTypeConfig = {
+    meeting: { color: '#1890ff', icon: <TeamOutlined />, label: '회의' },
+    task: { color: '#52c41a', icon: <BookOutlined />, label: '업무' },
+    personal: { color: '#fa8c16', icon: <HeartOutlined />, label: '개인' },
+    event: { color: '#722ed1', icon: <TrophyOutlined />, label: '이벤트' },
+    reminder: { color: '#eb2f96', icon: <ClockCircleOutlined />, label: '알림' }
+  }
+
+  // 선택된 날짜의 이벤트 필터링
+  const selectedDateEvents = useMemo(() => {
+    if (!calendars.length) return []
+    
+    const selectedDateStr = selectedDate.format('YYYY-MM-DD')
+    return calendars.filter(calendar => {
+      const eventDate = new Date(calendar.date).toISOString().split('T')[0]
+      return eventDate === selectedDateStr
+    })
+  }, [calendars, selectedDate])
+
+  // 캘린더 셀 렌더링 (월간 뷰용)
+  const dateCellRender = useCallback((value) => {
+    const dateStr = value.format('YYYY-MM-DD')
+    const dayEvents = calendars.filter(calendar => {
+      const eventDate = new Date(calendar.date).toISOString().split('T')[0]
+      return eventDate === dateStr
+    })
+
+    // 일정이 없으면 빈 div 반환
+    if (dayEvents.length === 0) {
+      return <div className="calendar-date-cell"></div>
+    }
+
+    return (
+      <div className="calendar-date-cell">
+        {/* 일정 개수 뱃지 (빨간색) - 3개 이상일 때만 표시 */}
+        {dayEvents.length >= 3 && (
+          <div className="calendar-event-count-badge">
+            <Badge 
+              count={dayEvents.length} 
+              style={{ 
+                backgroundColor: '#ff4d4f',
+                fontSize: '10px',
+                height: '18px',
+                minWidth: '18px',
+                lineHeight: '18px',
+                borderRadius: '9px'
+              }}
+              className="calendar-count-badge"
+            />
+          </div>
+        )}
+        
+        {/* 일정 미리보기 (최대 2개) */}
+        <div className="calendar-events-preview">
+          {dayEvents.slice(0, 2).map(event => {
+            const config = taskTypeConfig[event.type] || taskTypeConfig.task
+            return (
+              <div
+                key={event.id}
+                className="calendar-event-preview"
+                style={{ 
+                  backgroundColor: config.color + '20',
+                  borderLeft: `3px solid ${config.color}`,
+                  color: config.color
+                }}
+              >
+                <span className="calendar-event-preview-icon">
+                  {config.icon}
+                </span>
+                <span className="calendar-event-preview-title">
+                  {event.title.length > 8 ? event.title.substring(0, 8) + '...' : event.title}
+                </span>
+              </div>
+            )
+          })}
+          
+          {/* 더 많은 일정이 있을 때 표시 */}
+          {dayEvents.length > 2 && (
+            <div className="calendar-more-events">
+              +{dayEvents.length - 2}개 더
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }, [calendars, taskTypeConfig])
+
+  // 삭제 핸들러
+  const handleDelete = useCallback(() => {
+    if (checkedIds.size === 0) return
+    
+    const idsToDelete = Array.from(checkedIds)
+    deleteCalendarsMutation.mutate(idsToDelete)
+  }, [checkedIds, deleteCalendarsMutation])
+
+  // 새 일정 추가
+  const handleAddNew = useCallback(() => {
+    navigate('/calendar/calendar/new')
+  }, [navigate])
+
+  // 전체 선택/해제
+  const handleToggleAll = useCallback(() => {
+    const allIds = calendars.map(calendar => calendar.id)
+    toggleAllCheck(allIds)
+  }, [calendars, toggleAllCheck])
+
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className="calendar-list-loading">
+        <Spin size="large" />
+        <Text className="calendar-list-loading-text">캘린더 데이터를 불러오는 중...</Text>
+      </div>
+    )
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <Alert
+        message="캘린더 데이터 로드 실패"
+        description={error.message}
+        type="error"
+        showIcon
+        className="calendar-list-error"
+      />
+    )
+  }
+
+  // 뷰 타입별 렌더링
+  const renderCalendarView = () => {
+    switch (viewType) {
+      case 'monthly':
+        return (
+          <Card className="calendar-view-card">
+            <Calendar
+              dateCellRender={dateCellRender}
+              onSelect={setSelectedDate}
+              className="calendar-monthly"
+            />
+          </Card>
+        )
+      
+      case '2weekly':
+      case 'weekly':
+        return (
+          <div className="calendar-weekly-container">
+            <Card className="calendar-view-card">
+              <Calendar
+                mode="month"
+                dateCellRender={dateCellRender}
+                onSelect={setSelectedDate}
+                className="calendar-weekly"
+              />
+            </Card>
+          </div>
+        )
+      
+      case 'daily':
+        return (
+          <div className="calendar-daily-container">
+            <Card className="calendar-date-selector">
+              <Calendar
+                mode="month"
+                fullscreen={false}
+                onSelect={setSelectedDate}
+                className="calendar-daily-picker"
+              />
+            </Card>
+            
+            <Card className="calendar-daily-events" title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}>
+              {selectedDateEvents.length === 0 ? (
+                <div className="empty-container">
+                  <CalendarOutlined className="empty-icon" />
+                  <Text className="empty-text">선택한 날짜에 일정이 없습니다.</Text>
+                </div>
+              ) : (
+                <List
+                  dataSource={selectedDateEvents}
+                  renderItem={(calendar) => (
+                    <CalendarItem key={calendar.id} calendar={calendar} />
+                  )}
+                  className="calendar-daily-list"
+                />
+              )}
+            </Card>
+          </div>
+        )
+      
+      default:
+        return null
+    }
+  }
+
+  return (
+    <div className="page-list-container calendar-list-container">
+      {/* 검색 및 필터 */}
+      <div className="search-filter-container">
+        <Space className="search-filter-space">
+          <Text strong>{viewType === 'monthly' ? '월간' : viewType === '2weekly' ? '2주간' : viewType === 'weekly' ? '주간' : '일간'} 캘린더</Text>
+        </Space>
+      </div>
+
+      {/* 전체 선택 및 통계 */}
+      {calendars.length > 0 && (viewType === 'daily' || selectedDateEvents.length > 0) && (
+        <div className="select-all-container">
+          <div className="select-all-left">
+            <Button
+              type="text"
+              onClick={handleToggleAll}
+              className="select-all-button"
+            >
+              {isAllChecked ? '전체 해제' : '전체 선택'}
+            </Button>
+          </div>
+          <div className="select-stats">
+            <Text type="secondary">
+              {checkedCount > 0 ? `${checkedCount}개 선택됨` : `총 ${viewType === 'daily' ? selectedDateEvents.length : calendars.length}개`}
+            </Text>
+          </div>
+        </div>
+      )}
+
+      {/* 캘린더 뷰 렌더링 */}
+      {renderCalendarView()}
+
+      {/* 빈 상태 (전체가 비어있을 때) */}
+      {calendars.length === 0 && (
+        <div className="empty-container">
+          <CalendarOutlined className="empty-icon" />
+          <Text className="empty-text">등록된 일정이 없습니다.</Text>
+        </div>
+      )}
+
+      {/* FloatButton - 새 일정 추가 */}
+      <FloatButton
+        icon={<PlusOutlined />}
+        type="primary"
+        onClick={handleAddNew}
+        tooltip="새 일정 추가"
+        className={checkedCount > 0 ? "float-button-with-action" : "float-button-default"}
+      />
+
+      {/* 하단 삭제 버튼 */}
+      {checkedCount > 0 && (
+        <div className="fixed-delete-button">
+          <Button
+            type="primary"
+            danger
+            icon={<DeleteOutlined />}
+            size="large"
+            onClick={handleDelete}
+            loading={deleteCalendarsMutation.isPending}
+            block
+          >
+            선택한 {checkedCount}개 일정 삭제
+          </Button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default React.memo(CalendarList)

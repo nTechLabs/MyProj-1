@@ -1,0 +1,676 @@
+/* Calendar 페이지 통합 스타일 */
+/* 모든 Calendar 컴포넌트 (Page, List, Item, Detail)에서 사용 */
+
+/* =============================================================================
+   Calendar Page 스타일
+============================================================================= */
+.calendar-page-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0;
+}
+
+.calendar-page-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 24px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-page-icon {
+  font-size: 32px;
+  color: #722ed1;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.calendar-page-title {
+  margin: 0 0 4px 0 !important;
+  color: #262626;
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.calendar-page-subtitle {
+  margin: 0;
+  color: #8c8c8c;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.calendar-tabs-container {
+  background: #fff;
+  flex: 1;
+}
+
+.calendar-tabs {
+  height: 100%;
+}
+
+.calendar-tabs .ant-tabs-content-holder {
+  padding: 0;
+  background: #f5f5f5;
+}
+
+.calendar-tabs .ant-tabs-tabpane {
+  padding: 16px;
+  height: calc(100vh - 160px);
+  overflow-y: auto;
+}
+
+.calendar-tab-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.calendar-tab-icon {
+  font-size: 16px;
+}
+
+/* =============================================================================
+   Calendar List 스타일
+============================================================================= */
+.calendar-list-container {
+  padding: 0;
+  background: #f5f5f5;
+  min-height: 100%;
+}
+
+.calendar-list-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+}
+
+.calendar-list-loading-text {
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+.calendar-list-error {
+  margin: 20px;
+  border-radius: 8px;
+}
+
+.calendar-view-card {
+  margin: 0 16px 16px 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: none;
+}
+
+.calendar-view-card .ant-card-body {
+  padding: 16px;
+}
+
+/* Monthly Calendar */
+.calendar-monthly {
+  border: none;
+}
+
+.calendar-monthly .ant-picker-calendar-header {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.calendar-date-cell {
+  min-height: 60px;
+  padding: 4px;
+  position: relative;
+}
+
+/* 일정 개수 뱃지 스타일 */
+.calendar-event-count-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 10;
+}
+
+.calendar-count-badge {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 일정 미리보기 컨테이너 */
+.calendar-events-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 20px;
+}
+
+/* 개별 일정 미리보기 */
+.calendar-event-preview {
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 9px;
+  line-height: 12px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: 1px;
+}
+
+.calendar-event-preview-icon {
+  font-size: 8px;
+  flex-shrink: 0;
+}
+
+.calendar-event-preview-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+/* 더 많은 일정 표시 */
+.calendar-more-events {
+  font-size: 9px;
+  color: #8c8c8c;
+  text-align: center;
+  margin-top: 1px;
+  padding: 1px 2px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.calendar-event-badge {
+  display: block !important;
+  margin-bottom: 2px;
+  font-size: 11px;
+  line-height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar-badge-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.calendar-badge-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+.calendar-more-events {
+  font-size: 10px;
+  color: #8c8c8c;
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* Weekly Calendar */
+.calendar-weekly-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendar-weekly {
+  border: none;
+}
+
+/* Daily Calendar */
+.calendar-daily-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendar-date-selector {
+  margin: 0 16px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.calendar-daily-picker.ant-picker-calendar {
+  border: none;
+}
+
+.calendar-daily-events {
+  margin: 0 16px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  flex: 1;
+}
+
+.calendar-daily-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* =============================================================================
+   Calendar Item 스타일
+============================================================================= */
+.calendar-item {
+  border-radius: 12px;
+  margin-bottom: 8px;
+  border: 1px solid #f0f0f0;
+  background: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.calendar-item:hover {
+  border-color: #722ed1;
+  box-shadow: 0 4px 12px rgba(114, 46, 209, 0.1);
+  transform: translateY(-1px);
+}
+
+.calendar-item.checked {
+  border-color: #722ed1;
+  background: #f9f0ff;
+  box-shadow: 0 2px 8px rgba(114, 46, 209, 0.15);
+}
+
+.calendar-item-checkbox {
+  margin-right: 12px;
+  transform: scale(1.1);
+}
+
+.calendar-item-avatar {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-item-title-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.calendar-item-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+  line-height: 1.4;
+}
+
+.calendar-item-tag {
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 2px 8px;
+  border: none;
+}
+
+.calendar-item-description {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.calendar-item-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #722ed1;
+  font-weight: 500;
+}
+
+.calendar-item-time-icon {
+  font-size: 12px;
+}
+
+.calendar-item-desc-text {
+  margin-top: 2px;
+}
+
+.calendar-item-location {
+  margin-top: 2px;
+}
+
+.calendar-item-location-text {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.calendar-item-priority {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.calendar-item-priority-badge {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* =============================================================================
+   Calendar Detail 스타일
+============================================================================= */
+.calendar-detail-container {
+  padding: 16px;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.calendar-detail-card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.calendar-detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 16px;
+}
+
+.calendar-detail-loading-text {
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+.calendar-detail-error {
+  margin: 20px;
+  border-radius: 8px;
+}
+
+.calendar-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 24px;
+}
+
+.calendar-detail-back-btn {
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  height: 36px;
+}
+
+.calendar-detail-title-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.calendar-detail-icon {
+  font-size: 24px;
+  color: #722ed1;
+}
+
+.calendar-detail-title {
+  margin: 0 !important;
+  color: #262626;
+  font-weight: 600;
+}
+
+.calendar-detail-type-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.calendar-detail-form {
+  margin-top: 0;
+}
+
+.calendar-detail-form .ant-form-item-label > label {
+  font-weight: 600;
+  color: #262626;
+}
+
+.calendar-detail-input,
+.calendar-detail-select,
+.calendar-detail-date-picker,
+.calendar-detail-time-picker {
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  height: 40px;
+}
+
+.calendar-detail-input:focus,
+.calendar-detail-select:focus,
+.calendar-detail-date-picker:focus,
+.calendar-detail-time-picker:focus {
+  border-color: #722ed1;
+  box-shadow: 0 0 0 2px rgba(114, 46, 209, 0.1);
+}
+
+.calendar-detail-textarea {
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.calendar-detail-textarea:focus {
+  border-color: #722ed1;
+  box-shadow: 0 0 0 2px rgba(114, 46, 209, 0.1);
+}
+
+.calendar-detail-form-actions {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+  text-align: center;
+}
+
+.calendar-detail-save-btn {
+  background: #722ed1;
+  border-color: #722ed1;
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 24px;
+  font-weight: 600;
+}
+
+.calendar-detail-save-btn:hover {
+  background: #531dab;
+  border-color: #531dab;
+}
+
+.calendar-detail-cancel-btn {
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 24px;
+  border: 1px solid #d9d9d9;
+}
+
+.calendar-detail-cancel-btn:hover {
+  border-color: #722ed1;
+  color: #722ed1;
+}
+
+/* =============================================================================
+   반응형 스타일
+============================================================================= */
+@media (max-width: 768px) {
+  .calendar-page-header {
+    padding: 20px 16px;
+  }
+  
+  .calendar-page-title {
+    font-size: 24px;
+  }
+  
+  .calendar-tabs .ant-tabs-tabpane {
+    padding: 12px;
+    height: calc(100vh - 140px);
+  }
+  
+  .calendar-view-card {
+    margin: 0 0 12px 0;
+    border-radius: 0;
+  }
+  
+  .calendar-date-selector,
+  .calendar-daily-events {
+    margin: 0;
+    border-radius: 0;
+  }
+  
+  .calendar-item-title-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .calendar-detail-container {
+    padding: 12px;
+  }
+  
+  .calendar-detail-card {
+    border-radius: 0;
+    margin: -12px;
+  }
+  
+  .calendar-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .calendar-detail-title-section {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-badge-title {
+    max-width: 60px;
+  }
+  
+  .calendar-item-title {
+    font-size: 14px;
+  }
+  
+  .calendar-detail-form .ant-col {
+    margin-bottom: 0;
+  }
+  
+  /* 모바일에서 캘린더 셀 최적화 */
+  .calendar-date-cell {
+    min-height: 50px;
+    padding: 2px;
+  }
+  
+  .calendar-event-count-badge {
+    top: 1px;
+    right: 1px;
+  }
+  
+  .calendar-events-preview {
+    margin-top: 15px;
+  }
+  
+  .calendar-event-preview {
+    font-size: 8px;
+    line-height: 10px;
+    padding: 1px 2px;
+  }
+  
+  .calendar-event-preview-icon {
+    font-size: 7px;
+  }
+  
+  .calendar-more-events {
+    font-size: 8px;
+  }
+}
+
+/* =============================================================================
+   다크 모드 지원
+============================================================================= */
+@media (prefers-color-scheme: dark) {
+  .calendar-page-container {
+    background: linear-gradient(135deg, #434343 0%, #000000 100%);
+  }
+  
+  .calendar-page-header {
+    background: rgba(20, 20, 20, 0.95);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .calendar-page-title {
+    color: #f0f0f0;
+  }
+  
+  .calendar-page-subtitle {
+    color: #bfbfbf;
+  }
+  
+  .calendar-list-container {
+    background: #141414;
+  }
+  
+  .calendar-view-card {
+    background: #1f1f1f;
+    border-color: #303030;
+  }
+  
+  .calendar-item {
+    background: #1f1f1f;
+    border-color: #303030;
+  }
+  
+  .calendar-item.checked {
+    background: #2a1f3f;
+  }
+  
+  .calendar-detail-container {
+    background: #141414;
+  }
+  
+  .calendar-detail-card {
+    background: #1f1f1f;
+    border-color: #303030;
+  }
+}
+
+/* =============================================================================
+   성능 최적화
+============================================================================= */
+.calendar-item,
+.calendar-view-card,
+.calendar-detail-card {
+  will-change: transform, box-shadow;
+}
+
+.calendar-item:hover {
+  will-change: auto;
+}
+
+/* 애니메이션 성능 최적화 */
+@media (prefers-reduced-motion: reduce) {
+  .calendar-item,
+  .calendar-view-card,
+  .calendar-detail-card {
+    transition: none;
+  }
+}

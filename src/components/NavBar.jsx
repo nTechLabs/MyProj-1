@@ -44,6 +44,8 @@ const NavBar = () => {
       title = 'Todos'
     } else if (path.includes('/photos')) {
       title = 'Photos'
+    } else if (path.includes('/calendar')) {
+      title = 'Calendar'
     } else if (path.includes('/counter')) {
       title = 'Counter'
     }
