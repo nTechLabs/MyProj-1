@@ -188,6 +188,16 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* 빨간색 뱃지 스타일 */
+.calendar-count-badge-red {
+  background-color: #ff4d4f !important;
+  font-size: 10px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  line-height: 18px !important;
+  border-radius: 9px !important;
+}
+
 /* 일정 미리보기 컨테이너 */
 .calendar-events-preview {
   display: flex;
@@ -209,6 +219,37 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-bottom: 1px;
+}
+
+/* 이벤트 타입별 색상 */
+.calendar-event-meeting {
+  background-color: rgba(24, 144, 255, 0.2);
+  border-left: 3px solid #1890ff;
+  color: #1890ff;
+}
+
+.calendar-event-task {
+  background-color: rgba(82, 196, 26, 0.2);
+  border-left: 3px solid #52c41a;
+  color: #52c41a;
+}
+
+.calendar-event-personal {
+  background-color: rgba(250, 140, 22, 0.2);
+  border-left: 3px solid #fa8c16;
+  color: #fa8c16;
+}
+
+.calendar-event-event {
+  background-color: rgba(114, 46, 209, 0.2);
+  border-left: 3px solid #722ed1;
+  color: #722ed1;
+}
+
+.calendar-event-reminder {
+  background-color: rgba(235, 47, 150, 0.2);
+  border-left: 3px solid #eb2f96;
+  color: #eb2f96;
 }
 
 .calendar-event-preview-icon {
@@ -372,6 +413,32 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Avatar 타입별 색상 */
+.calendar-avatar-meeting {
+  background-color: #1890ff !important;
+  color: #fff !important;
+}
+
+.calendar-avatar-task {
+  background-color: #52c41a !important;
+  color: #fff !important;
+}
+
+.calendar-avatar-personal {
+  background-color: #fa8c16 !important;
+  color: #fff !important;
+}
+
+.calendar-avatar-event {
+  background-color: #722ed1 !important;
+  color: #fff !important;
+}
+
+.calendar-avatar-reminder {
+  background-color: #eb2f96 !important;
+  color: #fff !important;
+}
+
 .calendar-item-title-container {
   display: flex;
   align-items: center;
@@ -393,6 +460,32 @@
   line-height: 16px;
   padding: 2px 8px;
   border: none;
+}
+
+/* Tag 타입별 색상 */
+.calendar-tag-meeting {
+  background-color: #1890ff !important;
+  color: #fff !important;
+}
+
+.calendar-tag-task {
+  background-color: #52c41a !important;
+  color: #fff !important;
+}
+
+.calendar-tag-personal {
+  background-color: #fa8c16 !important;
+  color: #fff !important;
+}
+
+.calendar-tag-event {
+  background-color: #722ed1 !important;
+  color: #fff !important;
+}
+
+.calendar-tag-reminder {
+  background-color: #eb2f96 !important;
+  color: #fff !important;
 }
 
 .calendar-item-description {
@@ -436,6 +529,19 @@
 .calendar-item-priority-badge {
   font-size: 11px;
   font-weight: 500;
+}
+
+/* 우선순위별 색상 */
+.calendar-priority-high .ant-badge-status-dot {
+  background-color: #ff4d4f !important;
+}
+
+.calendar-priority-medium .ant-badge-status-dot {
+  background-color: #faad14 !important;
+}
+
+.calendar-priority-low .ant-badge-status-dot {
+  background-color: #52c41a !important;
 }
 
 /* =============================================================================
@@ -795,4 +901,74 @@
 .calendar-2weekly .ant-picker-calendar table {
   max-height: calc(2 * 60px);
   overflow: hidden;
+}
+
+/* =============================================================================
+   CalendarDetail.jsx 스타일 분리
+============================================================================= */
+
+/* 타입 인디케이터 스타일 */
+.calendar-type-meeting {
+  background-color: #1890ff;
+  color: white;
+}
+
+.calendar-type-work {
+  background-color: #52c41a;
+  color: white;
+}
+
+.calendar-type-personal {
+  background-color: #fa8c16;
+  color: white;
+}
+
+.calendar-type-reminder {
+  background-color: #722ed1;
+  color: white;
+}
+
+.calendar-type-other {
+  background-color: #f5222d;
+  color: white;
+}
+
+/* Select 옵션 스타일 */
+.calendar-option-meeting,
+.calendar-option-work, 
+.calendar-option-personal,
+.calendar-option-reminder,
+.calendar-option-other {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.calendar-option-meeting { color: #1890ff; }
+.calendar-option-work { color: #52c41a; }
+.calendar-option-personal { color: #fa8c16; }
+.calendar-option-reminder { color: #722ed1; }
+.calendar-option-other { color: #f5222d; }
+
+/* 우선순위 옵션 스타일 */
+.calendar-priority-option-high { color: #f5222d; }
+.calendar-priority-option-medium { color: #fa8c16; }
+.calendar-priority-option-low { color: #52c41a; }
+
+/* 폼 필드 스타일 */
+.calendar-detail-select,
+.calendar-detail-date-picker,
+.calendar-detail-time-picker {
+  width: 100%;
+}
+
+/* =============================================================================
+   Calendar 메인 페이지 (index.jsx) 스타일
+============================================================================= */
+
+/* 캘린더 탭 스타일 */
+.calendar-tabs .ant-tabs-tab-bar {
+  background: #fff !important;
+  margin-bottom: 0 !important;
+  border-bottom: 1px solid #f0f0f0 !important;
 }

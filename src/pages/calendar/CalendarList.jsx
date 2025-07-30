@@ -90,15 +90,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
           <div className="calendar-event-count-badge">
             <Badge 
               count={dayEvents.length} 
-              style={{ 
-                backgroundColor: '#ff4d4f',
-                fontSize: '10px',
-                height: '18px',
-                minWidth: '18px',
-                lineHeight: '18px',
-                borderRadius: '9px'
-              }}
-              className="calendar-count-badge"
+              className="calendar-count-badge calendar-count-badge-red"
             />
           </div>
         )}
@@ -110,12 +102,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             return (
               <div
                 key={event.id}
-                className="calendar-event-preview"
-                style={{ 
-                  backgroundColor: config.color + '20',
-                  borderLeft: `3px solid ${config.color}`,
-                  color: config.color
-                }}
+                className={`calendar-event-preview calendar-event-${event.type}`}
+                data-color={config.color}
               >
                 <span className="calendar-event-preview-icon">
                   {config.icon}
@@ -151,15 +139,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
           <div className="calendar-event-count-badge">
             <Badge 
               count={dayEvents.length} 
-              style={{ 
-                backgroundColor: '#ff4d4f',
-                fontSize: '10px',
-                height: '18px',
-                minWidth: '18px',
-                lineHeight: '18px',
-                borderRadius: '9px'
-              }}
-              className="calendar-count-badge"
+              className="calendar-count-badge calendar-count-badge-red"
             />
           </div>
         )}
@@ -171,12 +151,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             return (
               <div
                 key={event.id}
-                className="calendar-event-preview"
-                style={{ 
-                  backgroundColor: config.color + '20',
-                  borderLeft: `3px solid ${config.color}`,
-                  color: config.color
-                }}
+                className={`calendar-event-preview calendar-event-${event.type}`}
+                data-color={config.color}
               >
                 <span className="calendar-event-preview-icon">
                   {config.icon}

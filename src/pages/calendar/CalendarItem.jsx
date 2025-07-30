@@ -76,11 +76,7 @@ const CalendarItem = ({ calendar }) => {
         avatar={
           <Avatar
             icon={config.icon}
-            style={{ 
-              backgroundColor: config.color,
-              color: '#fff'
-            }}
-            className="calendar-item-avatar"
+            className={`calendar-item-avatar calendar-avatar-${calendar.type}`}
           />
         }
         title={
@@ -89,8 +85,7 @@ const CalendarItem = ({ calendar }) => {
               {calendar.title}
             </Text>
             <Tag 
-              color={config.color} 
-              className="calendar-item-tag"
+              className={`calendar-item-tag calendar-tag-${calendar.type}`}
             >
               {config.label}
             </Tag>
@@ -124,9 +119,8 @@ const CalendarItem = ({ calendar }) => {
       {calendar.priority && (
         <div className="calendar-item-priority">
           <Badge
-            color={calendar.priority === 'high' ? '#ff4d4f' : calendar.priority === 'medium' ? '#faad14' : '#52c41a'}
+            className={`calendar-item-priority-badge calendar-priority-${calendar.priority}`}
             text={calendar.priority === 'high' ? '높음' : calendar.priority === 'medium' ? '보통' : '낮음'}
-            className="calendar-item-priority-badge"
           />
         </div>
       )}

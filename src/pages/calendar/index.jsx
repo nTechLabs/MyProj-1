@@ -80,11 +80,6 @@ const CalendarPage = () => {
             className="calendar-tabs"
             size="large"
             centered
-            tabBarStyle={{
-              background: '#fff',
-              marginBottom: 0,
-              borderBottom: '1px solid #f0f0f0'
-            }}
           />
         </div>
       </div>

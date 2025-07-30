@@ -174,9 +174,9 @@ const CalendarDetail = () => {
               {isNewCalendar ? '새 일정 추가' : '일정 수정'}
             </Title>
             {selectedTypeConfig && (
-              <div className="calendar-detail-type-indicator">
+              <div className={`calendar-detail-type-indicator calendar-type-${selectedType}`}>
                 {selectedTypeConfig.icon}
-                <Text style={{ color: selectedTypeConfig.color, marginLeft: 4 }}>
+                <Text className="calendar-type-label">
                   {selectedTypeConfig.label}
                 </Text>
               </div>
@@ -217,9 +217,9 @@ const CalendarDetail = () => {
                 <Select className="calendar-detail-select">
                   {taskTypeOptions.map(option => (
                     <Option key={option.value} value={option.value}>
-                      <Space>
+                      <Space className={`calendar-option-space calendar-option-${option.value}`}>
                         {option.icon}
-                        <span style={{ color: option.color }}>{option.label}</span>
+                        <span className="calendar-option-label">{option.label}</span>
                       </Space>
                     </Option>
                   ))}
@@ -237,7 +237,6 @@ const CalendarDetail = () => {
               >
                 <DatePicker 
                   className="calendar-detail-date-picker"
-                  style={{ width: '100%' }}
                   format="YYYY-MM-DD"
                   placeholder="날짜 선택"
                 />
@@ -252,7 +251,6 @@ const CalendarDetail = () => {
               >
                 <TimePicker 
                   className="calendar-detail-time-picker"
-                  style={{ width: '100%' }}
                   format="HH:mm"
                   placeholder="시간 선택"
                 />
@@ -282,7 +280,9 @@ const CalendarDetail = () => {
                 <Select className="calendar-detail-select">
                   {priorityOptions.map(option => (
                     <Option key={option.value} value={option.value}>
-                      <span style={{ color: option.color }}>{option.label}</span>
+                      <span className={`calendar-priority-option calendar-priority-option-${option.value}`}>
+                        {option.label}
+                      </span>
                     </Option>
                   ))}
                 </Select>
