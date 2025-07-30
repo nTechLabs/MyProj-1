@@ -147,11 +147,31 @@
   border-radius: 4px;
 }
 
-/* 2주간 캘린더의 오늘 날짜 스타일 */
-.calendar-2weekly .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner {
+/* 2주간 캘린더의 오늘 날짜 스타일 - 강화된 선택자 */
+.calendar-2weekly .ant-picker-calendar .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner,
+.calendar-2weekly .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner,
+.calendar-2weekly .ant-picker-cell-today .ant-picker-cell-inner {
   background-color: #722ed1 !important;
   color: white !important;
+  border-radius: 4px !important;
+  font-weight: bold !important;
+}
+
+/* 2주간 캘린더의 오늘 날짜 전체 셀 스타일 */
+.calendar-2weekly .ant-picker-cell-today {
+  position: relative;
+}
+
+.calendar-2weekly .ant-picker-cell-today::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(114, 46, 209, 0.1);
   border-radius: 4px;
+  pointer-events: none;
 }
 
 /* 월간 캘린더의 오늘 날짜 스타일 */
