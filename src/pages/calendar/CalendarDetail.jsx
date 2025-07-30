@@ -38,6 +38,10 @@ const CalendarDetail = () => {
     { value: 'reminder', label: '알림', icon: <ClockCircleOutlined />, color: '#eb2f96' }
   ]
 
+  // Form의 useWatch는 항상 최상위에서 호출
+  const selectedType = Form.useWatch('type', form)
+  const selectedTypeConfig = taskTypeOptions.find(option => option.value === selectedType)
+
   // 우선순위 옵션
   const priorityOptions = [
     { value: 'low', label: '낮음', color: '#52c41a' },
@@ -152,9 +156,6 @@ const CalendarDetail = () => {
       />
     )
   }
-
-  const selectedType = Form.useWatch('type', form)
-  const selectedTypeConfig = taskTypeOptions.find(option => option.value === selectedType)
 
   return (
     <div className="calendar-detail-container">

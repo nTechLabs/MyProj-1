@@ -266,16 +266,9 @@
   font-weight: 500;
 }
 
-/* 더 많은 일정 표시 */
+/* 더 많은 일정 표시 - 숨김 처리 */
 .calendar-more-events {
-  font-size: 9px;
-  color: #8c8c8c;
-  text-align: center;
-  margin-top: 1px;
-  padding: 1px 2px;
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 2px;
-  font-weight: 500;
+  display: none !important;
 }
 
 .calendar-event-badge {
@@ -368,94 +361,320 @@
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   flex: 1;
+  min-height: 700px;
+}
+
+.calendar-daily-events .ant-card-head {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px 12px 0 0;
+}
+
+.calendar-daily-events .ant-card-head-title {
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.calendar-daily-events .ant-card-body {
+  padding: 0;
 }
 
 .calendar-daily-list {
-  max-height: 400px;
+  max-height: 700px;
   overflow-y: auto;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.calendar-daily-list .ant-list-item {
+  background: #ffffff !important;
+  border-radius: 12px !important;
+  margin-bottom: 12px !important;
+  padding: 0 !important;
+  border: 1px solid #d9d9d9 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.2s ease !important;
+  min-height: 120px !important;
+  height: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  overflow: visible !important;
+}
+
+.calendar-daily-list .ant-list-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border-color: #722ed1 !important;
+  transform: translateY(-2px) !important;
+  background: #ffffff !important;
+}
+
+.calendar-daily-list .ant-list-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Ant Design List 기본 스타일 강제 오버라이드 */
+.calendar-daily-list .ant-list-item-meta {
+  display: none !important;
+}
+
+.calendar-daily-list .ant-list-item-meta-content {
+  display: none !important;
+}
+
+.calendar-daily-list .ant-list-item-action {
+  display: none !important;
+}
+
+.calendar-daily-list .ant-list-item-main {
+  display: block !important;
+  width: 100% !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* 일간 뷰 날짜 셀 스타일 */
+.calendar-daily-date-cell {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.calendar-daily-event-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 1000 !important;
+  pointer-events: none;
+}
+
+.calendar-daily-event-badge .ant-badge {
+  z-index: 1001 !important;
+}
+
+.calendar-daily-event-badge .ant-badge-count {
+  background-color: #ff4d4f !important;
+  font-size: 11px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  line-height: 20px !important;
+  border-radius: 10px !important;
+  font-weight: bold !important;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.5) !important;
+  border: 1px solid #fff !important;
+  z-index: 1002 !important;
+}
+
+.calendar-daily-event-badge .calendar-count-badge-red {
+  background-color: #ff4d4f !important;
+  color: #fff !important;
+  font-size: 11px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  line-height: 20px !important;
+  border-radius: 10px !important;
+  font-weight: bold !important;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.5) !important;
+  border: 2px solid #fff !important;
+  z-index: 1002 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* 일간 캘린더의 날짜 셀에서 badge가 확실히 보이도록 */
+.calendar-daily-picker .ant-picker-calendar-date-panel .ant-picker-cell {
+  position: relative;
+  z-index: 1;
+  overflow: visible !important;
+}
+
+.calendar-daily-picker .ant-picker-cell-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.calendar-daily-picker .calendar-daily-event-badge {
+  z-index: 1000 !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* 일간 뷰 전체 컨테이너에 overflow visible 적용 */
+.calendar-daily-picker {
+  overflow: visible !important;
+}
+
+.calendar-daily-picker .ant-picker-calendar {
+  overflow: visible !important;
+}
+
+.calendar-daily-picker .ant-picker-calendar-date-panel {
+  overflow: visible !important;
+}
+
+.calendar-daily-picker .ant-picker-body {
+  overflow: visible !important;
+}
+
+.calendar-daily-picker tbody {
+  overflow: visible !important;
+}
+
+.calendar-daily-picker td {
+  overflow: visible !important;
+}
+
+.calendar-daily-picker .ant-picker-cell {
+  overflow: visible !important;
 }
 
 /* =============================================================================
    Calendar Item 스타일
 ============================================================================= */
-.calendar-item {
-  border-radius: 12px;
-  margin-bottom: 8px;
-  border: 1px solid #f0f0f0;
-  background: #fff;
-  transition: all 0.2s ease;
-  cursor: pointer;
+.calendar-list-container .calendar-item,
+.calendar-daily-list .calendar-item {
+  border-radius: 12px !important;
+  margin-bottom: 12px !important;
+  border: 1px solid #d9d9d9 !important;
+  background: #ffffff !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  min-height: 120px !important;
+  overflow: visible !important;
 }
 
-.calendar-item:hover {
-  border-color: #722ed1;
-  box-shadow: 0 4px 12px rgba(114, 46, 209, 0.1);
-  transform: translateY(-1px);
+.calendar-list-container .calendar-item:hover,
+.calendar-daily-list .calendar-item:hover {
+  border-color: #722ed1 !important;
+  box-shadow: 0 4px 12px rgba(114, 46, 209, 0.15) !important;
+  transform: translateY(-2px) !important;
+  background: #ffffff !important;
 }
 
-.calendar-item.checked {
-  border-color: #722ed1;
-  background: #f9f0ff;
-  box-shadow: 0 2px 8px rgba(114, 46, 209, 0.15);
+.calendar-list-container .calendar-item.checked,
+.calendar-daily-list .calendar-item.checked {
+  border-color: #722ed1 !important;
+  background: #f9f0ff !important;
+  box-shadow: 0 2px 8px rgba(114, 46, 209, 0.2) !important;
 }
 
-.calendar-item-checkbox {
-  margin-right: 12px;
-  transform: scale(1.1);
+/* 캘린더 아이템 래퍼 */
+.calendar-list-container .calendar-item-wrapper,
+.calendar-daily-list .calendar-item-wrapper {
+  display: flex !important;
+  align-items: flex-start !important;
+  padding: 16px !important;
+  gap: 14px !important;
+  width: 100% !important;
+  min-height: 100px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.calendar-list-container .checkbox-container,
+.calendar-daily-list .checkbox-container {
+  flex-shrink: 0 !important;
+  padding-top: 2px !important;
+}
+
+.calendar-list-container .calendar-item-checkbox,
+.calendar-daily-list .calendar-item-checkbox {
+  margin: 0 !important;
+  transform: scale(1.2) !important;
+  cursor: pointer !important;
+}
+
+/* 아바타 컨테이너 */
+.calendar-item-avatar-container {
+  flex-shrink: 0 !important;
 }
 
 .calendar-item-avatar {
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  border: 2px solid #ffffff !important;
 }
 
 /* Avatar 타입별 색상 */
 .calendar-avatar-meeting {
   background-color: #1890ff !important;
-  color: #fff !important;
+  color: #ffffff !important;
 }
 
 .calendar-avatar-task {
   background-color: #52c41a !important;
-  color: #fff !important;
+  color: #ffffff !important;
 }
 
 .calendar-avatar-personal {
   background-color: #fa8c16 !important;
-  color: #fff !important;
+  color: #ffffff !important;
 }
 
 .calendar-avatar-event {
   background-color: #722ed1 !important;
-  color: #fff !important;
+  color: #ffffff !important;
 }
 
 .calendar-avatar-reminder {
   background-color: #eb2f96 !important;
-  color: #fff !important;
+  color: #ffffff !important;
 }
 
-.calendar-item-title-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+/* 메인 콘텐츠 영역 */
+.calendar-item-content {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+/* 헤더 영역 (제목, 태그, 우선순위) */
+.calendar-item-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  margin-bottom: 4px !important;
+}
+
+.calendar-item-title-section {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  flex: 1 !important;
+  min-width: 0 !important;
 }
 
 .calendar-item-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #262626;
-  line-height: 1.4;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #262626 !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  max-width: 100% !important;
 }
 
 .calendar-item-tag {
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 16px;
-  padding: 2px 8px;
-  border: none;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 18px !important;
+  padding: 2px 8px !important;
+  border: none !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
 }
 
 /* Tag 타입별 색상 */
@@ -484,47 +703,76 @@
   color: #fff !important;
 }
 
-.calendar-item-description {
-  margin-top: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
+/* 시간 정보 */
 .calendar-item-time {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #722ed1;
-  font-weight: 500;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 12px !important;
+  background: #f8f9ff !important;
+  border-radius: 8px !important;
+  border-left: 4px solid #722ed1 !important;
+  border: 1px solid #e6f0ff !important;
 }
 
 .calendar-item-time-icon {
-  font-size: 12px;
+  font-size: 14px !important;
+  color: #722ed1 !important;
 }
 
+.calendar-item-time-text {
+  color: #722ed1 !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+}
+
+/* 설명 텍스트 */
 .calendar-item-desc-text {
-  margin-top: 2px;
+  margin: 0 !important;
+  padding: 12px !important;
+  background: #fafafa !important;
+  border-radius: 8px !important;
+  border: 1px solid #f0f0f0 !important;
 }
 
+.calendar-item-description-content {
+  font-size: 14px !important;
+  color: #595959 !important;
+  line-height: 1.6 !important;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  display: block !important;
+  margin: 0 !important;
+  font-weight: 400 !important;
+}
+
+/* 위치 정보 */
 .calendar-item-location {
-  margin-top: 2px;
+  margin: 0 !important;
+  padding: 10px 12px !important;
+  background: #f6ffed !important;
+  border-radius: 8px !important;
+  border-left: 4px solid #52c41a !important;
+  border: 1px solid #e6f7e6 !important;
 }
 
 .calendar-item-location-text {
-  font-size: 12px;
-  color: #8c8c8c;
+  font-size: 14px !important;
+  color: #52c41a !important;
+  font-weight: 600 !important;
 }
 
+/* 우선순위 */
 .calendar-item-priority {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .calendar-item-priority-badge {
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 12px !important;
+  font-weight: 600 !important;
 }
 
 /* 우선순위별 색상 */
@@ -538,6 +786,75 @@
 
 .calendar-priority-low .ant-badge-status-dot {
   background-color: #52c41a !important;
+}
+
+/* =============================================================================
+   반응형 디자인 - 모바일 최적화
+============================================================================= */
+@media (max-width: 768px) {
+  .calendar-item-wrapper {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .calendar-item-avatar {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .calendar-item-title {
+    font-size: 14px;
+  }
+
+  .calendar-item-tag {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+
+  .calendar-item-time {
+    font-size: 12px;
+  }
+
+  .calendar-item-description-content {
+    font-size: 13px;
+  }
+
+  .calendar-item-location-text {
+    font-size: 12px;
+  }
+
+  .calendar-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .calendar-item-title-section {
+    width: 100%;
+  }
+
+  .calendar-item-priority {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-item-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .calendar-item-avatar-container {
+    align-self: flex-start;
+  }
+
+  .calendar-daily-list {
+    padding: 8px;
+  }
+
+  .calendar-daily-list .ant-list-item {
+    margin-bottom: 8px;
+  }
 }
 
 /* =============================================================================
@@ -785,7 +1102,7 @@
   }
   
   .calendar-more-events {
-    font-size: 8px;
+    display: none !important;
   }
 }
 

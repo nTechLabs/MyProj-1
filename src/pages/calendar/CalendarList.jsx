@@ -87,8 +87,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
 
     return (
       <div className="calendar-date-cell">
-        {/* 일정 개수 뱃지 (빨간색) - 5개 이상일 때만 표시 */}
-        {dayEvents.length >= 5 && (
+        {/* 일정 개수 뱃지 (빨간색) - 일정이 있을 때 항상 표시 */}
+        {dayEvents.length > 0 && (
           <div className="calendar-event-count-badge">
             <Badge 
               count={dayEvents.length} 
@@ -138,8 +138,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
 
     return (
       <div className="calendar-date-cell">
-        {/* 일정 개수 뱃지 (빨간색) - 5개 이상일 때만 표시 */}
-        {dayEvents.length >= 5 && (
+        {/* 일정 개수 뱃지 (빨간색) - 일정이 있을 때 항상 표시 */}
+        {dayEvents.length > 0 && (
           <div className="calendar-event-count-badge">
             <Badge 
               count={dayEvents.length} 
@@ -171,6 +171,57 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       </div>
     )
   }, [calendars, taskTypeConfig])
+
+  // 일간 뷰용 cellRender - 날짜별 일정 개수만 뱃지로 표시
+  const cellRenderDaily = useCallback((value, info) => {
+    if (info.type !== 'date') return info.originNode
+    
+    const dateStr = value.format('YYYY-MM-DD')
+    const dayEvents = calendars.filter(calendar => {
+      const eventDate = new Date(calendar.date).toISOString().split('T')[0]
+      return eventDate === dateStr
+    })
+
+    // 일정이 없으면 기본 셀 반환
+    if (dayEvents.length === 0) {
+      return info.originNode
+    }
+
+    return (
+      <div style={{ 
+        position: 'relative', 
+        width: '100%', 
+        height: '100%',
+        overflow: 'visible'
+      }}>
+        {info.originNode}
+        {/* 강제로 뱃지 표시 */}
+        <span 
+          style={{
+            position: 'absolute',
+            top: '-5px',
+            right: '-5px',
+            backgroundColor: '#ff4d4f',
+            color: '#ffffff',
+            borderRadius: '50%',
+            width: '18px',
+            height: '18px',
+            fontSize: '10px',
+            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            border: '1px solid #ffffff',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+            pointerEvents: 'none'
+          }}
+        >
+          {dayEvents.length}
+        </span>
+      </div>
+    )
+  }, [calendars])
 
   // 삭제 핸들러
   const handleDelete = useCallback(() => {
@@ -265,6 +316,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
                 mode="month"
                 fullscreen={false}
                 onSelect={setSelectedDate}
+                cellRender={cellRenderDaily}
                 className="calendar-daily-picker"
               />
             </Card>
@@ -276,13 +328,21 @@ const CalendarList = ({ viewType = 'monthly' }) => {
                   <Text className="empty-text">선택한 날짜에 일정이 없습니다.</Text>
                 </div>
               ) : (
-                <List
-                  dataSource={selectedDateEvents}
-                  renderItem={(calendar) => (
-                    <CalendarItem key={calendar.id} calendar={calendar} />
-                  )}
-                  className="calendar-daily-list"
-                />
+                <>
+                  <div style={{ marginBottom: '16px', padding: '8px', background: '#f0f0f0', borderRadius: '4px' }}>
+                    <Text strong>디버깅 정보: </Text>
+                    <Text>선택된 날짜: {selectedDate.format('YYYY-MM-DD')}, 일정 개수: {selectedDateEvents.length}</Text>
+                    <br />
+                    <Text type="secondary">일정 목록: {selectedDateEvents.map(e => e.title).join(', ')}</Text>
+                  </div>
+                  <List
+                    dataSource={selectedDateEvents}
+                    renderItem={(calendar) => (
+                      <CalendarItem key={calendar.id} calendar={calendar} />
+                    )}
+                    className="calendar-daily-list"
+                  />
+                </>
               )}
             </Card>
           </div>
