@@ -87,8 +87,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
 
     return (
       <div className="calendar-date-cell">
-        {/* 일정 개수 뱃지 (빨간색) - 4개 이상일 때만 표시 */}
-        {dayEvents.length >= 4 && (
+        {/* 일정 개수 뱃지 (빨간색) - 5개 이상일 때만 표시 */}
+        {dayEvents.length >= 5 && (
           <div className="calendar-event-count-badge">
             <Badge 
               count={dayEvents.length} 
@@ -97,9 +97,9 @@ const CalendarList = ({ viewType = 'monthly' }) => {
           </div>
         )}
         
-        {/* 일정 미리보기 (최대 2개) */}
+        {/* 일정 미리보기 (최대 4개) */}
         <div className="calendar-events-preview">
-          {dayEvents.slice(0, 2).map(event => {
+          {dayEvents.slice(0, 4).map(event => {
             const config = taskTypeConfig[event.type] || taskTypeConfig.task
             return (
               <div
@@ -138,8 +138,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
 
     return (
       <div className="calendar-date-cell">
-        {/* 일정 개수 뱃지 (빨간색) - 4개 이상일 때만 표시 */}
-        {dayEvents.length >= 4 && (
+        {/* 일정 개수 뱃지 (빨간색) - 5개 이상일 때만 표시 */}
+        {dayEvents.length >= 5 && (
           <div className="calendar-event-count-badge">
             <Badge 
               count={dayEvents.length} 
@@ -148,9 +148,9 @@ const CalendarList = ({ viewType = 'monthly' }) => {
           </div>
         )}
         
-        {/* 일정 미리보기 (최대 2개) */}
+        {/* 일정 미리보기 (최대 4개) */}
         <div className="calendar-events-preview">
-          {dayEvents.slice(0, 2).map(event => {
+          {dayEvents.slice(0, 4).map(event => {
             const config = taskTypeConfig[event.type] || taskTypeConfig.task
             return (
               <div

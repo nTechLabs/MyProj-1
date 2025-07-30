@@ -206,7 +206,7 @@
   display: flex;
   flex-direction: column;
   gap: 1px;
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 /* 개별 일정 미리보기 */
@@ -771,7 +771,7 @@
   }
   
   .calendar-events-preview {
-    margin-top: 15px;
+    margin-top: 10px;
   }
   
   .calendar-event-preview {
