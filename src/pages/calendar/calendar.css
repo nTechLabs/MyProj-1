@@ -150,8 +150,7 @@
 /* 2주간 캘린더의 오늘 날짜 스타일 - 월간과 동일한 색상 적용 */
 .calendar-2weekly .ant-picker-calendar .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner,
 .calendar-2weekly .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner,
-.calendar-2weekly .ant-picker-cell-today .ant-picker-cell-inner,
-.calendar-2weekly .ant-picker-calendar .ant-picker-cell-today .ant-picker-cell-inner {
+.calendar-2weekly .ant-picker-cell-today .ant-picker-cell-inner {
   background-color: #722ed1 !important;
   color: white !important;
   border-radius: 4px !important;
@@ -299,13 +298,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 80px;
-}
-
-.calendar-more-events {
-  font-size: 10px;
-  color: #8c8c8c;
-  text-align: center;
-  margin-top: 2px;
 }
 
 /* Weekly Calendar */
@@ -917,7 +909,7 @@
   color: white;
 }
 
-.calendar-type-work {
+.calendar-type-task {
   background-color: #52c41a;
   color: white;
 }
@@ -927,32 +919,42 @@
   color: white;
 }
 
-.calendar-type-reminder {
+.calendar-type-event {
   background-color: #722ed1;
   color: white;
 }
 
-.calendar-type-other {
-  background-color: #f5222d;
+.calendar-type-reminder {
+  background-color: #eb2f96;
   color: white;
 }
 
+.calendar-type-label {
+  font-weight: 500;
+  margin-left: 4px;
+}
+
 /* Select 옵션 스타일 */
+.calendar-option-space,
 .calendar-option-meeting,
-.calendar-option-work, 
+.calendar-option-task, 
 .calendar-option-personal,
-.calendar-option-reminder,
-.calendar-option-other {
+.calendar-option-event,
+.calendar-option-reminder {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
 .calendar-option-meeting { color: #1890ff; }
-.calendar-option-work { color: #52c41a; }
+.calendar-option-task { color: #52c41a; }
 .calendar-option-personal { color: #fa8c16; }
-.calendar-option-reminder { color: #722ed1; }
-.calendar-option-other { color: #f5222d; }
+.calendar-option-event { color: #722ed1; }
+.calendar-option-reminder { color: #eb2f96; }
+
+.calendar-option-label {
+  font-weight: 500;
+}
 
 /* 우선순위 옵션 스타일 */
 .calendar-priority-option-high { color: #f5222d; }
