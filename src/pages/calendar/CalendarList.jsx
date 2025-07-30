@@ -54,8 +54,10 @@ const CalendarList = ({ viewType = 'monthly' }) => {
     })
   }, [calendars, selectedDate])
 
-  // 2주간 뷰용 dateCellRender - 오늘을 포함한 2주만 표시
-  const dateCellRender2Weekly = useCallback((value) => {
+  // 2주간 뷰용 cellRender - 오늘을 포함한 2주만 표시
+  const cellRender2Weekly = useCallback((value, info) => {
+    if (info.type !== 'date') return info.originNode
+    
     const today = dayjs()
     const startOfMonth = today.startOf('month')
     const startOfFirstWeek = startOfMonth.startOf('week')
@@ -120,7 +122,9 @@ const CalendarList = ({ viewType = 'monthly' }) => {
   }, [calendars, taskTypeConfig])
 
   // 캘린더 셀 렌더링 (월간 뷰용)
-  const dateCellRender = useCallback((value) => {
+  const cellRender = useCallback((value, info) => {
+    if (info.type !== 'date') return info.originNode
+    
     const dateStr = value.format('YYYY-MM-DD')
     const dayEvents = calendars.filter(calendar => {
       const eventDate = new Date(calendar.date).toISOString().split('T')[0]
@@ -217,7 +221,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
         return (
           <Card className="calendar-view-card">
             <Calendar
-              dateCellRender={dateCellRender}
+              cellRender={cellRender}
               onSelect={setSelectedDate}
               className="calendar-monthly"
             />
@@ -230,7 +234,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             <Card className="calendar-view-card">
               <Calendar
                 mode="month"
-                dateCellRender={dateCellRender2Weekly}
+                cellRender={cellRender2Weekly}
                 onSelect={setSelectedDate}
                 className="calendar-2weekly"
                 value={dayjs()} // 항상 현재 달로 고정
@@ -245,7 +249,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             <Card className="calendar-view-card">
               <Calendar
                 mode="month"
-                dateCellRender={dateCellRender}
+                cellRender={cellRender}
                 onSelect={setSelectedDate}
                 className="calendar-weekly"
               />
