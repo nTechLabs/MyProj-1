@@ -54,6 +54,83 @@ const CalendarList = ({ viewType = 'monthly' }) => {
     })
   }, [calendars, selectedDate])
 
+  // 2주간 뷰용 dateCellRender - 오늘을 포함한 2주만 표시
+  const dateCellRender2Weekly = useCallback((value) => {
+    const today = dayjs()
+    const startOfMonth = today.startOf('month')
+    const startOfFirstWeek = startOfMonth.startOf('week')
+    
+    // 오늘이 속한 주 번호 계산
+    const todayWeekNumber = Math.floor(today.diff(startOfFirstWeek, 'week'))
+    const valueWeekNumber = Math.floor(value.diff(startOfFirstWeek, 'week'))
+    
+    // 오늘을 포함한 2주 범위 계산 (현재 주 + 다음 주)
+    const showWeek = valueWeekNumber >= todayWeekNumber && valueWeekNumber <= todayWeekNumber + 1
+    
+    // 2주 범위에 포함되지 않으면 빈 셀 반환
+    if (!showWeek) {
+      return <div className="calendar-date-cell hidden-week"></div>
+    }
+
+    const dateStr = value.format('YYYY-MM-DD')
+    const dayEvents = calendars.filter(calendar => {
+      const eventDate = new Date(calendar.date).toISOString().split('T')[0]
+      return eventDate === dateStr
+    })
+
+    // 일정이 없으면 빈 div 반환
+    if (dayEvents.length === 0) {
+      return <div className="calendar-date-cell"></div>
+    }
+
+    return (
+      <div className="calendar-date-cell">
+        {/* 일정 개수 뱃지 (빨간색) - 4개 이상일 때만 표시 */}
+        {dayEvents.length >= 4 && (
+          <div className="calendar-event-count-badge">
+            <Badge 
+              count={dayEvents.length} 
+              style={{ 
+                backgroundColor: '#ff4d4f',
+                fontSize: '10px',
+                height: '18px',
+                minWidth: '18px',
+                lineHeight: '18px',
+                borderRadius: '9px'
+              }}
+              className="calendar-count-badge"
+            />
+          </div>
+        )}
+        
+        {/* 일정 미리보기 (최대 2개) */}
+        <div className="calendar-events-preview">
+          {dayEvents.slice(0, 2).map(event => {
+            const config = taskTypeConfig[event.type] || taskTypeConfig.task
+            return (
+              <div
+                key={event.id}
+                className="calendar-event-preview"
+                style={{ 
+                  backgroundColor: config.color + '20',
+                  borderLeft: `3px solid ${config.color}`,
+                  color: config.color
+                }}
+              >
+                <span className="calendar-event-preview-icon">
+                  {config.icon}
+                </span>
+                <span className="calendar-event-preview-title">
+                  {event.title.length > 8 ? event.title.substring(0, 8) + '...' : event.title}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }, [calendars, taskTypeConfig])
+
   // 캘린더 셀 렌더링 (월간 뷰용)
   const dateCellRender = useCallback((value) => {
     const dateStr = value.format('YYYY-MM-DD')
@@ -177,9 +254,10 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             <Card className="calendar-view-card">
               <Calendar
                 mode="month"
-                dateCellRender={dateCellRender}
+                dateCellRender={dateCellRender2Weekly}
                 onSelect={setSelectedDate}
                 className="calendar-2weekly"
+                value={dayjs()} // 항상 현재 달로 고정
               />
             </Card>
           </div>
