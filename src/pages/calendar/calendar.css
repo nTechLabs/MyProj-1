@@ -1598,6 +1598,23 @@
   font-weight: 500;
 }
 
+/* 일간 뷰에서 주말 숨김 처리 */
+.calendar-daily-picker.hide-weekends .ant-picker-calendar-date thead th:first-child,
+.calendar-daily-picker.hide-weekends .ant-picker-calendar-date thead th:last-child,
+.calendar-daily-picker.hide-weekends .ant-picker-calendar-date tbody td:first-child,
+.calendar-daily-picker.hide-weekends .ant-picker-calendar-date tbody td:last-child {
+  display: none !important;
+}
+
+.calendar-daily-picker.hide-weekends .ant-picker-calendar table {
+  table-layout: fixed !important;
+}
+
+.calendar-daily-picker.hide-weekends .ant-picker-calendar-date thead th,
+.calendar-daily-picker.hide-weekends .ant-picker-calendar-date tbody td {
+  width: 20% !important;
+}
+
 /* 우선순위 옵션 스타일 */
 .calendar-priority-option-high { color: #f5222d; }
 .calendar-priority-option-medium { color: #fa8c16; }

@@ -19,6 +19,7 @@ const { Text } = Typography
 const CalendarList = ({ viewType = 'monthly' }) => {
   const navigate = useNavigate()
   const [selectedDate, setSelectedDate] = useState(dayjs('2025-08-01'))
+  const [showWeekends, setShowWeekends] = useState(false) // 주말 표시 상태
   
   // React Query 데이터 조회
   const { data: calendars = [], isLoading, error } = useCalendarsQuery()
@@ -175,6 +176,11 @@ const CalendarList = ({ viewType = 'monthly' }) => {
   const cellRenderDaily = useCallback((value, info) => {
     if (info.type !== 'date') return info.originNode
     
+    // 주말 숨김 처리 (일간 뷰에서만)
+    if (!showWeekends && (value.day() === 0 || value.day() === 6)) {
+      return <div style={{ display: 'none' }}></div>
+    }
+    
     const dateStr = value.format('YYYY-MM-DD')
     const dayEvents = calendars.filter(calendar => {
       const eventDate = new Date(calendar.date).toISOString().split('T')[0]
@@ -220,7 +226,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
         </span>
       </div>
     )
-  }, [calendars])
+  }, [calendars, showWeekends])
 
   // 삭제 핸들러
   const handleDelete = useCallback(() => {
@@ -351,15 +357,30 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       case 'daily':
         return (
           <div className="calendar-daily-container">
-            <Card className="calendar-date-selector">
-              <Calendar
-                mode="month"
-                fullscreen={false}
-                onSelect={setSelectedDate}
-                cellRender={cellRenderDaily}
-                className="calendar-daily-picker"
-              />
-            </Card>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+              <Card className="calendar-date-selector" style={{ flex: 1 }}>
+                <Calendar
+                  mode="month"
+                  fullscreen={false}
+                  onSelect={setSelectedDate}
+                  cellRender={cellRenderDaily}
+                  className={`calendar-daily-picker ${!showWeekends ? 'hide-weekends' : ''}`}
+                />
+              </Card>
+              
+              {/* 주말 표시 버튼 */}
+              <Button
+                type={showWeekends ? "primary" : "default"}
+                onClick={() => setShowWeekends(!showWeekends)}
+                style={{ 
+                  height: '40px', 
+                  minWidth: '100px',
+                  marginRight: '16px'
+                }}
+              >
+                {showWeekends ? '주말 숨김' : '주말 표시'}
+              </Button>
+            </div>
             
             <Card className="calendar-daily-events" title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}>
               {selectedDateEvents.length === 0 ? (
