@@ -483,24 +483,30 @@
 .calendar-5days-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0px;
   height: calc(100vh - 100px);
 }
 
 /* 5일간 뷰 전용 카드 높이 - 더 큰 높이 */
 .calendar-5days-container .calendar-view-card {
-  height: 1000px;
+  height: 600px;
+  margin: 0;
 }
 
 .calendar-5days-container .calendar-view-card .ant-card-body {
-  padding: 16px;
-  height: 1000px;
+  padding: 0;
+  height: 600px;
   overflow: hidden;
+}
+
+/* 5일간 뷰 전용 선택된 이벤트 카드 */
+.calendar-5days-container .calendar-selected-events {
+  margin: 0;
 }
 
 /* 5일간 뷰의 캘린더 테이블 높이 - 더 큰 높이 */
 .calendar-5days .ant-picker-calendar table {
-  height: 900px;
+  height: 500px;
   overflow: hidden;
   table-layout: fixed !important;
 }
@@ -510,9 +516,9 @@
 .calendar-5days .ant-picker-calendar-date tbody tr,
 .calendar-5days .ant-picker-calendar-date-panel tbody tr,
 .calendar-5days tbody tr {
-  height: 150px !important;
-  min-height: 150px !important;
-  max-height: 150px !important;
+  height: 80px !important;
+  min-height: 80px !important;
+  max-height: 80px !important;
 }
 
 /* 5일간 뷰의 날짜 셀 높이 - 더 큰 높이 */
@@ -520,9 +526,9 @@
 .calendar-5days .ant-picker-calendar-date tbody td,
 .calendar-5days .ant-picker-calendar-date-panel tbody td,
 .calendar-5days tbody td {
-  height: 150px !important;
-  min-height: 150px !important;
-  max-height: 150px !important;
+  height: 80px !important;
+  min-height: 80px !important;
+  max-height: 80px !important;
   vertical-align: top !important;
   overflow: hidden !important;
   padding: 0 !important;
