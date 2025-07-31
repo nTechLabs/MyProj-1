@@ -374,8 +374,24 @@
 
 /* Ant Design 2주간 캘린더 테이블 높이 제한 */
 .calendar-2weekly .ant-picker-calendar table {
-  max-height: calc(2 * 60px);
+  max-height: calc(2 * 120px);
+  height: 240px;
   overflow: hidden;
+  table-layout: fixed !important;
+}
+
+/* 2주간 뷰의 날짜 셀 높이 설정 */
+.calendar-2weekly .ant-picker-calendar tbody td,
+.calendar-2weekly .ant-picker-calendar-date tbody td,
+.calendar-2weekly .ant-picker-calendar-date-panel tbody td,
+.calendar-2weekly tbody td {
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
+  vertical-align: top !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 1px solid #f0f0f0 !important;
 }
 
 /* Daily Calendar */
@@ -394,6 +410,16 @@
   height: calc(100vh - 100px);
 }
 
+/* 2Weekly Calendar Container */
+.calendar-weekly-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: auto;
+  min-height: calc(100vh - 100px);
+  padding-bottom: 20px;
+}
+
 .calendar-view-card {
   margin: 0 16px;
   border-radius: 12px;
@@ -403,6 +429,25 @@
   height: 720px;
 }
 
+/* 2주간 뷰 전용 카드 높이 */
+.calendar-weekly-container .calendar-view-card {
+  height: 320px;
+  margin-bottom: 10px;
+}
+
+/* 2주간 뷰 전용 선택된 이벤트 카드 */
+.calendar-weekly-container .calendar-selected-events {
+  margin-top: 20px;
+  flex: none;
+  height: auto;
+  min-height: 200px;
+  max-height: calc(100vh - 470px);
+}
+
+.calendar-weekly-container .calendar-selected-events .ant-card-body {
+  max-height: calc(100vh - 520px);
+}
+
 .calendar-selected-events {
   margin: 0 16px;
   border-radius: 12px;
@@ -410,7 +455,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   flex: 1;
   min-height: 300px;
-  max-height: calc(100vh - 820px);
+  max-height: calc(100vh - 420px);
 }
 
 .calendar-selected-events .ant-card-head {
@@ -429,7 +474,7 @@
   flex: 1;
   overflow-y: auto;
   min-height: 250px;
-  max-height: calc(100vh - 820px);
+  max-height: calc(100vh - 420px);
 }
 
 .calendar-date-selector {

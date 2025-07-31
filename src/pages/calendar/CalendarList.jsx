@@ -54,20 +54,19 @@ const CalendarList = ({ viewType = 'monthly' }) => {
     })
   }, [calendars, selectedDate])
 
-  // 2주간 뷰용 cellRender - 오늘을 포함한 2주만 표시
+  // 2주간 뷰용 cellRender - 현재 월의 첫 2주만 표시
   const cellRender2Weekly = useCallback((value, info) => {
     if (info.type !== 'date') return info.originNode
     
-    const today = dayjs()
-    const startOfMonth = today.startOf('month')
+    const currentMonth = dayjs('2025-08-01') // 현재 선택된 달 기준
+    const startOfMonth = currentMonth.startOf('month')
     const startOfFirstWeek = startOfMonth.startOf('week')
     
-    // 오늘이 속한 주 번호 계산
-    const todayWeekNumber = Math.floor(today.diff(startOfFirstWeek, 'week'))
+    // 해당 날짜가 속한 주 번호 계산 (0부터 시작)
     const valueWeekNumber = Math.floor(value.diff(startOfFirstWeek, 'week'))
     
-    // 오늘을 포함한 2주 범위 계산 (현재 주 + 다음 주)
-    const showWeek = valueWeekNumber >= todayWeekNumber && valueWeekNumber <= todayWeekNumber + 1
+    // 첫 2주만 표시 (0주차, 1주차)
+    const showWeek = valueWeekNumber === 0 || valueWeekNumber === 1
     
     // 2주 범위에 포함되지 않으면 빈 셀 반환
     if (!showWeek) {
@@ -316,7 +315,6 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             <Card 
               className="calendar-selected-events" 
               title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}
-              style={{ marginTop: '20px' }}
             >
               {selectedDateEvents.length === 0 ? (
                 <div className="empty-container">
