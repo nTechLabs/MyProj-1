@@ -36,13 +36,13 @@ const CalendarList = ({ viewType = 'monthly' }) => {
   const deleteCalendarsMutation = useDeleteCalendarsMutation()
 
   // 태스크 타입별 설정 - 더 밝고 부드러운 톤으로 변경
-  const taskTypeConfig = {
+  const taskTypeConfig = useMemo(() => ({
     meeting: { color: '#5B9BD5', icon: <TeamOutlined />, label: '회의' },
     task: { color: '#70AD47', icon: <BookOutlined />, label: '업무' },
     personal: { color: '#FFC000', icon: <HeartOutlined />, label: '개인' },
     event: { color: '#7030A0', icon: <TrophyOutlined />, label: '이벤트' },
     reminder: { color: '#C5504B', icon: <ClockCircleOutlined />, label: '알림' }
-  }
+  }), [])
 
   // 선택된 날짜의 이벤트 필터링
   const selectedDateEvents = useMemo(() => {
@@ -237,9 +237,52 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       return <div style={{ display: 'none', width: 0, height: 0, padding: 0, margin: 0 }}></div>
     }
     
-    // 평일(월~금)은 원본 노드만 반환하여 중복 렌더링 방지
-    return info.originNode
-  }, [])
+    const dateStr = value.format('YYYY-MM-DD')
+    const dayEvents = calendars.filter(calendar => {
+      const eventDate = new Date(calendar.date).toISOString().split('T')[0]
+      return eventDate === dateStr
+    })
+
+    // 일정이 없으면 빈 div 반환
+    if (dayEvents.length === 0) {
+      return <div className="calendar-date-cell"></div>
+    }
+
+    return (
+      <div className="calendar-date-cell">
+        {/* 일정 개수 뱃지 (빨간색) - 일정이 5개 이상일 때만 표시 */}
+        {dayEvents.length >= 5 && (
+          <div className="calendar-event-count-badge">
+            <Badge 
+              count={dayEvents.length} 
+              className="calendar-count-badge calendar-count-badge-red"
+            />
+          </div>
+        )}
+        
+        {/* 일정 미리보기 (최대 4개) */}
+        <div className="calendar-events-preview">
+          {dayEvents.slice(0, 4).map(event => {
+            const config = taskTypeConfig[event.type] || taskTypeConfig.task
+            return (
+              <div
+                key={event.id}
+                className={`calendar-event-preview calendar-event-${event.type}`}
+                data-color={config.color}
+              >
+                <span className="calendar-event-preview-icon">
+                  {config.icon}
+                </span>
+                <span className="calendar-event-preview-title">
+                  {event.title.length > 8 ? event.title.substring(0, 8) + '...' : event.title}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }, [calendars, taskTypeConfig])
 
   // 삭제 핸들러
   const handleDelete = useCallback(() => {
