@@ -311,6 +311,24 @@ const CalendarList = ({ viewType = 'monthly' }) => {
                 value={dayjs()} // 항상 현재 달로 고정
               />
             </Card>
+            
+            {/* 선택된 날짜의 일정 표시 */}
+            <Card className="calendar-selected-events" title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}>
+              {selectedDateEvents.length === 0 ? (
+                <div className="empty-container">
+                  <CalendarOutlined className="empty-icon" style={{ color: '#999999' }} />
+                  <Text className="empty-text" style={{ color: '#666666' }}>선택한 날짜에 일정이 없습니다.</Text>
+                </div>
+              ) : (
+                <List
+                  dataSource={selectedDateEvents}
+                  renderItem={(calendar) => (
+                    <CalendarItem key={calendar.id} calendar={calendar} />
+                  )}
+                  className="calendar-2weekly-event-list"
+                />
+              )}
+            </Card>
           </div>
         )
       
@@ -383,7 +401,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       </div>
 
       {/* 전체 선택 및 통계 */}
-      {calendars.length > 0 && (viewType === 'daily' || selectedDateEvents.length > 0) && (
+      {calendars.length > 0 && (viewType === 'daily' || viewType === 'monthly' || viewType === '2weekly' || selectedDateEvents.length > 0) && (
         <div className="select-all-container">
           <div className="select-all-left">
             <Button
