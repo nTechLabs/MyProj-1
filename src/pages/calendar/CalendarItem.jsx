@@ -19,13 +19,13 @@ const CalendarItem = memo(({ calendar }) => {
   const isChecked = useCalendarIsChecked()
   const checked = isChecked(calendar.id)
 
-  // Task 타입별 설정 - 부드러운 톤으로 변경
+  // Task 타입별 설정 - 더 밝고 부드러운 톤으로 변경
   const taskTypeConfig = {
-    meeting: { color: '#4A90E2', icon: <TeamOutlined />, label: '회의', bgColor: '#EBF4FF' },
-    task: { color: '#7ED321', icon: <BookOutlined />, label: '업무', bgColor: '#F0FFF4' },
-    personal: { color: '#F5A623', icon: <HeartOutlined />, label: '개인', bgColor: '#FFF8E1' },
-    event: { color: '#9013FE', icon: <TrophyOutlined />, label: '이벤트', bgColor: '#F3E5F5' },
-    reminder: { color: '#E91E63', icon: <ClockCircleOutlined />, label: '알림', bgColor: '#FCE4EC' }
+    meeting: { color: '#5B9BD5', icon: <TeamOutlined />, label: '회의', bgColor: '#F0F7FF' },
+    task: { color: '#70AD47', icon: <BookOutlined />, label: '업무', bgColor: '#F0F8F0' },
+    personal: { color: '#FFC000', icon: <HeartOutlined />, label: '개인', bgColor: '#FFFBF0' },
+    event: { color: '#7030A0', icon: <TrophyOutlined />, label: '이벤트', bgColor: '#F5F0FF' },
+    reminder: { color: '#C5504B', icon: <ClockCircleOutlined />, label: '알림', bgColor: '#FFF0F0' }
   }
 
   const config = taskTypeConfig[calendar.type] || taskTypeConfig.task
@@ -86,7 +86,7 @@ const CalendarItem = memo(({ calendar }) => {
           <div className="calendar-item-header">
             <div className="calendar-item-title">
               <span className="calendar-item-name" style={{
-                color: '#1C1C1E',
+                color: '#2C2C2E',
                 fontSize: '16px',
                 fontWeight: '600',
                 letterSpacing: '-0.02em'
@@ -116,8 +116,8 @@ const CalendarItem = memo(({ calendar }) => {
           {/* 날짜 및 시간 */}
           <div className="calendar-item-datetime">
             <div className="calendar-item-contact">
-              <CalendarOutlined style={{ color: '#8E8E93', fontSize: '14px' }} />
-              <span style={{ color: '#3C3C43', fontWeight: '500', fontSize: '14px' }}>
+              <CalendarOutlined style={{ color: '#999999', fontSize: '14px' }} />
+              <span style={{ color: '#666666', fontWeight: '500', fontSize: '14px' }}>
                 {dateStr} {timeStr}
               </span>
             </div>
@@ -127,16 +127,16 @@ const CalendarItem = memo(({ calendar }) => {
           <div className="calendar-item-details">
             {calendar.location && (
               <div className="calendar-item-contact">
-                <EnvironmentOutlined style={{ color: '#8E8E93', fontSize: '13px' }} />
-                <span style={{ color: '#8E8E93', fontSize: '13px' }}>
+                <EnvironmentOutlined style={{ color: '#999999', fontSize: '13px' }} />
+                <span style={{ color: '#999999', fontSize: '13px' }}>
                   {calendar.location}
                 </span>
               </div>
             )}
             {calendar.description && (
               <div className="calendar-item-contact">
-                <ClockCircleOutlined style={{ color: '#8E8E93', fontSize: '13px' }} />
-                <span style={{ color: '#8E8E93', fontSize: '13px' }}>
+                <ClockCircleOutlined style={{ color: '#999999', fontSize: '13px' }} />
+                <span style={{ color: '#999999', fontSize: '13px' }}>
                   {calendar.description.length > 25 
                     ? `${calendar.description.substring(0, 25)}...` 
                     : calendar.description
@@ -161,7 +161,7 @@ const CalendarItem = memo(({ calendar }) => {
                   <span style={{ 
                     fontSize: '12px', 
                     fontWeight: '500',
-                    color: '#3C3C43'
+                    color: '#666666'
                   }}>
                     {calendar.priority === 'high' ? '높음' : 
                      calendar.priority === 'medium' ? '보통' : '낮음'}

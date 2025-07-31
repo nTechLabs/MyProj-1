@@ -34,13 +34,13 @@ const CalendarList = ({ viewType = 'monthly' }) => {
   // 삭제 뮤테이션
   const deleteCalendarsMutation = useDeleteCalendarsMutation()
 
-  // 태스크 타입별 설정
+  // 태스크 타입별 설정 - 더 밝고 부드러운 톤으로 변경
   const taskTypeConfig = {
-    meeting: { color: '#1890ff', icon: <TeamOutlined />, label: '회의' },
-    task: { color: '#52c41a', icon: <BookOutlined />, label: '업무' },
-    personal: { color: '#fa8c16', icon: <HeartOutlined />, label: '개인' },
-    event: { color: '#722ed1', icon: <TrophyOutlined />, label: '이벤트' },
-    reminder: { color: '#eb2f96', icon: <ClockCircleOutlined />, label: '알림' }
+    meeting: { color: '#5B9BD5', icon: <TeamOutlined />, label: '회의' },
+    task: { color: '#70AD47', icon: <BookOutlined />, label: '업무' },
+    personal: { color: '#FFC000', icon: <HeartOutlined />, label: '개인' },
+    event: { color: '#7030A0', icon: <TrophyOutlined />, label: '이벤트' },
+    reminder: { color: '#C5504B', icon: <ClockCircleOutlined />, label: '알림' }
   }
 
   // 선택된 날짜의 이벤트 필터링
@@ -87,8 +87,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
 
     return (
       <div className="calendar-date-cell">
-        {/* 일정 개수 뱃지 (빨간색) - 일정이 있을 때 항상 표시 */}
-        {dayEvents.length > 0 && (
+        {/* 일정 개수 뱃지 (빨간색) - 일정이 5개 이상일 때만 표시 */}
+        {dayEvents.length >= 5 && (
           <div className="calendar-event-count-badge">
             <Badge 
               count={dayEvents.length} 
@@ -138,8 +138,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
 
     return (
       <div className="calendar-date-cell">
-        {/* 일정 개수 뱃지 (빨간색) - 일정이 있을 때 항상 표시 */}
-        {dayEvents.length > 0 && (
+        {/* 일정 개수 뱃지 (빨간색) - 일정이 5개 이상일 때만 표시 */}
+        {dayEvents.length >= 5 && (
           <div className="calendar-event-count-badge">
             <Badge 
               count={dayEvents.length} 
@@ -172,7 +172,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
     )
   }, [calendars, taskTypeConfig])
 
-  // 일간 뷰용 cellRender - 날짜별 일정 개수만 뱃지로 표시
+  // 일간 뷰용 cellRender - 날짜별 일정 개수만 뱃지로 표시 (5개 이상일 때만)
   const cellRenderDaily = useCallback((value, info) => {
     if (info.type !== 'date') return info.originNode
     
@@ -182,8 +182,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       return eventDate === dateStr
     })
 
-    // 일정이 없으면 기본 셀 반환
-    if (dayEvents.length === 0) {
+    // 일정이 5개 미만이면 기본 셀 반환
+    if (dayEvents.length < 5) {
       return info.originNode
     }
 
@@ -195,7 +195,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
         overflow: 'visible'
       }}>
         {info.originNode}
-        {/* 강제로 뱃지 표시 */}
+        {/* 5개 이상일 때만 뱃지 표시 */}
         <span 
           style={{
             position: 'absolute',
@@ -247,7 +247,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
     return (
       <div className="calendar-list-loading">
         <Spin size="large" />
-        <Text className="calendar-list-loading-text">캘린더 데이터를 불러오는 중...</Text>
+        <Text className="calendar-list-loading-text" style={{ color: '#666666' }}>캘린더 데이터를 불러오는 중...</Text>
       </div>
     )
   }
@@ -283,8 +283,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             <Card className="calendar-selected-events" title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}>
               {selectedDateEvents.length === 0 ? (
                 <div className="empty-container">
-                  <CalendarOutlined className="empty-icon" />
-                  <Text className="empty-text">선택한 날짜에 일정이 없습니다.</Text>
+                  <CalendarOutlined className="empty-icon" style={{ color: '#999999' }} />
+                  <Text className="empty-text" style={{ color: '#666666' }}>선택한 날짜에 일정이 없습니다.</Text>
                 </div>
               ) : (
                 <List
@@ -344,16 +344,16 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             <Card className="calendar-daily-events" title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}>
               {selectedDateEvents.length === 0 ? (
                 <div className="empty-container">
-                  <CalendarOutlined className="empty-icon" />
-                  <Text className="empty-text">선택한 날짜에 일정이 없습니다.</Text>
+                  <CalendarOutlined className="empty-icon" style={{ color: '#999999' }} />
+                  <Text className="empty-text" style={{ color: '#666666' }}>선택한 날짜에 일정이 없습니다.</Text>
                 </div>
               ) : (
                 <>
-                  <div style={{ marginBottom: '16px', padding: '8px', background: '#f0f0f0', borderRadius: '4px' }}>
-                    <Text strong>디버깅 정보: </Text>
-                    <Text>선택된 날짜: {selectedDate.format('YYYY-MM-DD')}, 일정 개수: {selectedDateEvents.length}</Text>
+                  <div style={{ marginBottom: '16px', padding: '8px', background: '#f8f9fa', borderRadius: '4px' }}>
+                    <Text strong style={{ color: '#495057' }}>디버깅 정보: </Text>
+                    <Text style={{ color: '#666666' }}>선택된 날짜: {selectedDate.format('YYYY-MM-DD')}, 일정 개수: {selectedDateEvents.length}</Text>
                     <br />
-                    <Text type="secondary">일정 목록: {selectedDateEvents.map(e => e.title).join(', ')}</Text>
+                    <Text type="secondary" style={{ color: '#999999' }}>일정 목록: {selectedDateEvents.map(e => e.title).join(', ')}</Text>
                   </div>
                   <List
                     dataSource={selectedDateEvents}
@@ -378,7 +378,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       {/* 검색 및 필터 */}
       <div className="search-filter-container">
         <Space className="search-filter-space">
-          <Text strong>{viewType === 'monthly' ? '월간' : viewType === '2weekly' ? '2주간' : viewType === 'weekly' ? '주간' : '일간'} 캘린더</Text>
+          <Text strong style={{ color: '#495057' }}>{viewType === 'monthly' ? '월간' : viewType === '2weekly' ? '2주간' : viewType === 'weekly' ? '주간' : '일간'} 캘린더</Text>
         </Space>
       </div>
 
@@ -395,7 +395,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             </Button>
           </div>
           <div className="select-stats">
-            <Text type="secondary">
+            <Text type="secondary" style={{ color: '#999999' }}>
               {checkedCount > 0 ? `${checkedCount}개 선택됨` : `총 ${viewType === 'daily' ? selectedDateEvents.length : calendars.length}개`}
             </Text>
           </div>
@@ -408,8 +408,8 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       {/* 빈 상태 (전체가 비어있을 때) */}
       {calendars.length === 0 && (
         <div className="empty-container">
-          <CalendarOutlined className="empty-icon" />
-          <Text className="empty-text">등록된 일정이 없습니다.</Text>
+          <CalendarOutlined className="empty-icon" style={{ color: '#999999' }} />
+          <Text className="empty-text" style={{ color: '#666666' }}>등록된 일정이 없습니다.</Text>
         </div>
       )}
 
