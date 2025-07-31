@@ -56,7 +56,7 @@
 
 .calendar-tabs .ant-tabs-tabpane {
   padding: 16px;
-  height: calc(100vh - 160px);
+  height: calc(100vh - 120px);
   overflow-y: auto;
 }
 
@@ -298,6 +298,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: calc(100vh - 180px);
 }
 
 .calendar-weekly {
@@ -342,6 +343,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: calc(100vh - 180px);
 }
 
 /* Monthly Calendar */
@@ -349,6 +351,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: calc(100vh - 180px);
 }
 
 .calendar-view-card {
@@ -363,7 +366,9 @@
   border-radius: 12px;
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  max-height: 400px;
+  flex: 1;
+  min-height: 700px;
+  max-height: none;
 }
 
 .calendar-selected-events .ant-card-head {
@@ -379,8 +384,10 @@
 
 .calendar-selected-events .ant-card-body {
   padding: 16px;
-  max-height: 320px;
+  flex: 1;
   overflow-y: auto;
+  min-height: 600px;
+  max-height: calc(100vh - 300px);
 }
 
 .calendar-date-selector {
