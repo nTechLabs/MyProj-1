@@ -148,9 +148,9 @@ const CalendarList = ({ viewType = 'monthly' }) => {
           </div>
         )}
         
-        {/* 일정 미리보기 (최대 3개) */}
+        {/* 일정 미리보기 (최대 4개) */}
         <div className="calendar-events-preview">
-          {dayEvents.slice(0, 3).map(event => {
+          {dayEvents.slice(0, 4).map(event => {
             const config = taskTypeConfig[event.type] || taskTypeConfig.task
             return (
               <div
@@ -204,9 +204,9 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             backgroundColor: '#ff4d4f',
             color: '#ffffff',
             borderRadius: '50%',
-            width: '18px',
-            height: '18px',
-            fontSize: '10px',
+            width: '16px',
+            height: '16px',
+            fontSize: '9px',
             fontWeight: 'bold',
             display: 'flex',
             alignItems: 'center',
@@ -313,7 +313,11 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             </Card>
             
             {/* 선택된 날짜의 일정 표시 */}
-            <Card className="calendar-selected-events" title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}>
+            <Card 
+              className="calendar-selected-events" 
+              title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}
+              style={{ marginTop: '20px' }}
+            >
               {selectedDateEvents.length === 0 ? (
                 <div className="empty-container">
                   <CalendarOutlined className="empty-icon" style={{ color: '#999999' }} />

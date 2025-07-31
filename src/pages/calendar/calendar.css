@@ -108,7 +108,7 @@
 
 .calendar-view-card .ant-card-body {
   padding: 16px;
-  height: 700px;
+  height: 800px;
   overflow: hidden;
 }
 
@@ -130,9 +130,9 @@
 .calendar-monthly .ant-picker-calendar-date tbody tr,
 .calendar-monthly .ant-picker-calendar-date-panel tbody tr,
 .calendar-monthly tbody tr {
-  height: 130px !important;
-  min-height: 130px !important;
-  max-height: 130px !important;
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
 }
 
 /* 모든 날짜 셀의 높이를 동일하게 설정 */
@@ -140,18 +140,21 @@
 .calendar-monthly .ant-picker-calendar-date tbody td,
 .calendar-monthly .ant-picker-calendar-date-panel tbody td,
 .calendar-monthly tbody td {
-  height: 130px !important;
-  min-height: 130px !important;
-  max-height: 130px !important;
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
   vertical-align: top !important;
   overflow: hidden !important;
+  padding: 0 !important;
+  border: 1px solid #f0f0f0 !important;
 }
 
 /* Ant Design 캘린더 테이블 높이 제한 */
 .calendar-monthly .ant-picker-calendar table {
-  max-height: calc(5 * 130px);
-  height: 650px;
+  max-height: calc(5 * 120px);
+  height: 600px;
   overflow: hidden;
+  table-layout: fixed !important;
 }
 
 .calendar-monthly .ant-picker-calendar-header {
@@ -160,9 +163,9 @@
 }
 
 .calendar-date-cell {
-  min-height: 130px;
-  height: 130px;
-  padding: 4px;
+  min-height: 120px;
+  height: 120px;
+  padding: 2px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -224,37 +227,38 @@
 /* 빨간색 뱃지 스타일 */
 .calendar-count-badge-red {
   background-color: #ff4d4f !important;
-  font-size: 10px !important;
-  height: 18px !important;
-  min-width: 18px !important;
-  line-height: 18px !important;
-  border-radius: 9px !important;
+  font-size: 9px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  line-height: 16px !important;
+  border-radius: 8px !important;
 }
 
 /* 일정 미리보기 컨테이너 */
 .calendar-events-preview {
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  margin-top: 16px;
+  gap: 0px;
+  margin-top: 20px;
   overflow: hidden !important;
-  max-height: 80px;
+  max-height: 90px;
   flex: 1;
+  padding-bottom: 0px;
 }
 
 /* 개별 일정 미리보기 */
 .calendar-event-preview {
   padding: 2px 4px;
   border-radius: 2px;
-  font-size: 10px;
-  line-height: 14px;
+  font-size: 9px;
+  line-height: 12px;
   display: flex;
   align-items: center;
   gap: 2px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-bottom: 1px;
+  margin-bottom: 0px;
   flex-shrink: 0;
   min-height: 16px;
   max-height: 16px;
@@ -396,7 +400,7 @@
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   flex-shrink: 0;
-  height: 750px;
+  height: 720px;
 }
 
 .calendar-selected-events {
@@ -406,7 +410,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   flex: 1;
   min-height: 300px;
-  max-height: calc(100vh - 800px);
+  max-height: calc(100vh - 820px);
 }
 
 .calendar-selected-events .ant-card-head {
@@ -425,7 +429,7 @@
   flex: 1;
   overflow-y: auto;
   min-height: 250px;
-  max-height: calc(100vh - 850px);
+  max-height: calc(100vh - 820px);
 }
 
 .calendar-date-selector {
