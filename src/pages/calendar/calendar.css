@@ -147,14 +147,14 @@
   border-radius: 4px;
 }
 
-/* 2주간 캘린더의 오늘 날짜 스타일 - 월간과 동일한 색상 적용 */
+/* 2주간 캘린더의 오늘 날짜 스타일 - 다른 탭과 동일한 색상으로 통일 */
 .calendar-2weekly .ant-picker-calendar .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner,
 .calendar-2weekly .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner,
 .calendar-2weekly .ant-picker-cell-today .ant-picker-cell-inner {
   background-color: #722ed1 !important;
   color: white !important;
   border-radius: 4px !important;
-  font-weight: bold !important;
+  font-weight: normal !important;
 }
 
 /* 월간 캘린더의 오늘 날짜 스타일 */
