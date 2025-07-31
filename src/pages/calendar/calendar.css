@@ -444,6 +444,17 @@
   height: calc(100vh - 100px);
 }
 
+/* 주간 뷰 전용 카드 높이 - 월간 뷰와 동일 */
+.calendar-weekly-container .calendar-view-card {
+  height: 800px;
+}
+
+.calendar-weekly-container .calendar-view-card .ant-card-body {
+  padding: 16px;
+  height: 800px;
+  overflow: hidden;
+}
+
 .calendar-view-card {
   margin: 0 16px;
   border-radius: 12px;
@@ -488,56 +499,56 @@
   max-height: calc(100vh - 520px);
 }
 
-/* 5일간 뷰 컨테이너 */
+/* 5일간 뷰 컨테이너 - 월간/주간 뷰와 동일한 간격 */
 .calendar-5days-container {
   display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 16px;
   height: calc(100vh - 100px);
 }
 
-/* 5일간 뷰 전용 카드 높이 - 더 큰 높이 */
+/* 5일간 뷰 전용 카드 높이 - 월간/주간 뷰와 동일 */
 .calendar-5days-container .calendar-view-card {
-  height: 600px;
+  height: 800px;
   margin: 0;
 }
 
 .calendar-5days-container .calendar-view-card .ant-card-body {
-  padding: 0;
-  height: 600px;
+  padding: 16px;
+  height: 800px;
   overflow: hidden;
 }
 
-/* 5일간 뷰 전용 선택된 이벤트 카드 */
+/* 5일간 뷰 전용 선택된 이벤트 카드 - 월간/주간 뷰와 동일한 여백 */
 .calendar-5days-container .calendar-selected-events {
-  margin: 0;
+  margin: 0 16px;
 }
 
-/* 5일간 뷰의 캘린더 테이블 높이 - 더 큰 높이 */
+/* 5일간 뷰의 캘린더 테이블 높이 - 월간/주간 뷰와 동일 */
 .calendar-5days .ant-picker-calendar table {
-  height: 500px;
+  height: 600px;
   overflow: hidden;
   table-layout: fixed !important;
 }
 
-/* 5일간 뷰의 주 높이 - 더 큰 높이 */
+/* 5일간 뷰의 주 높이 - 월간/주간 뷰와 동일 */
 .calendar-5days .ant-picker-calendar tbody tr,
 .calendar-5days .ant-picker-calendar-date tbody tr,
 .calendar-5days .ant-picker-calendar-date-panel tbody tr,
 .calendar-5days tbody tr {
-  height: 80px !important;
-  min-height: 80px !important;
-  max-height: 80px !important;
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
 }
 
-/* 5일간 뷰의 날짜 셀 높이 - 더 큰 높이 */
+/* 5일간 뷰의 날짜 셀 높이 - 월간/주간 뷰와 동일 */
 .calendar-5days .ant-picker-calendar tbody td,
 .calendar-5days .ant-picker-calendar-date tbody td,
 .calendar-5days .ant-picker-calendar-date-panel tbody td,
 .calendar-5days tbody td {
-  height: 80px !important;
-  min-height: 80px !important;
-  max-height: 80px !important;
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
   vertical-align: top !important;
   overflow: hidden !important;
   padding: 0 !important;
@@ -1733,15 +1744,17 @@
   table-layout: fixed !important;
 }
 
-/* 5일 뷰에서 왼쪽 작은 날짜들 완전히 숨김 */
+/* 5일 뷰에서 날짜는 표시하되 적절한 크기로 조정 */
 .calendar-5days.hide-weekends .ant-picker-calendar-date-value {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  width: auto !important;
+  height: auto !important;
+  color: #262626 !important;
+  font-weight: 500 !important;
 }
 
 /* 모든 가능한 선택자로 일요일 (첫 번째 열) 숨김 */
