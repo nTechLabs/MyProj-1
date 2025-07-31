@@ -344,6 +344,45 @@
   gap: 16px;
 }
 
+/* Monthly Calendar */
+.calendar-monthly-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendar-view-card {
+  margin: 0 16px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.calendar-selected-events {
+  margin: 0 16px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  max-height: 400px;
+}
+
+.calendar-selected-events .ant-card-head {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px 12px 0 0;
+}
+
+.calendar-selected-events .ant-card-head-title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.calendar-selected-events .ant-card-body {
+  padding: 16px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
 .calendar-date-selector {
   margin: 0 16px;
   border-radius: 12px;
@@ -431,6 +470,91 @@
   width: 100% !important;
   opacity: 1 !important;
   visibility: visible !important;
+}
+
+/* 월간 뷰 이벤트 리스트 */
+.calendar-monthly-event-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.calendar-monthly-event-list .ant-list-item {
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  margin-bottom: 8px !important;
+  padding: 0 !important;
+  border: 1px solid #e8e8e8 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.2s ease !important;
+  min-height: 80px !important;
+  height: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  overflow: visible !important;
+}
+
+.calendar-monthly-event-list .ant-list-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  border-color: #722ed1 !important;
+  transform: translateY(-1px) !important;
+  background: #ffffff !important;
+}
+
+.calendar-monthly-event-list .ant-list-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* 월간 뷰에서도 List.Item.Meta 비활성화 */
+.calendar-monthly-event-list .ant-list-item-meta {
+  display: none !important;
+}
+
+.calendar-monthly-event-list .ant-list-item-meta-content {
+  display: none !important;
+}
+
+.calendar-monthly-event-list .ant-list-item-action {
+  display: none !important;
+}
+
+.calendar-monthly-event-list .ant-list-item-main {
+  display: block !important;
+  width: 100% !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* 월간 뷰에서 더 컴팩트한 아이템 스타일 */
+.calendar-monthly-event-list .calendar-item {
+  min-height: 80px !important;
+}
+
+.calendar-monthly-event-list .calendar-item-wrapper {
+  padding: 12px !important;
+  min-height: 60px !important;
+  gap: 10px !important;
+}
+
+.calendar-monthly-event-list .calendar-item-content {
+  gap: 8px !important;
+}
+
+.calendar-monthly-event-list .calendar-item-time {
+  padding: 6px 10px !important;
+}
+
+.calendar-monthly-event-list .calendar-item-desc-text {
+  padding: 8px 10px !important;
+}
+
+.calendar-monthly-event-list .calendar-item-location {
+  padding: 6px 10px !important;
+}
+
+.calendar-monthly-event-list .calendar-item-avatar {
+  width: 40px !important;
+  height: 40px !important;
 }
 
 /* 일간 뷰 날짜 셀 스타일 */
@@ -535,7 +659,8 @@
    Calendar Item 스타일
 ============================================================================= */
 .calendar-list-container .calendar-item,
-.calendar-daily-list .calendar-item {
+.calendar-daily-list .calendar-item,
+.calendar-monthly-event-list .calendar-item {
   border-radius: 12px !important;
   margin-bottom: 12px !important;
   border: 1px solid #d9d9d9 !important;
@@ -550,7 +675,8 @@
 }
 
 .calendar-list-container .calendar-item:hover,
-.calendar-daily-list .calendar-item:hover {
+.calendar-daily-list .calendar-item:hover,
+.calendar-monthly-event-list .calendar-item:hover {
   border-color: #722ed1 !important;
   box-shadow: 0 4px 12px rgba(114, 46, 209, 0.15) !important;
   transform: translateY(-2px) !important;
@@ -558,7 +684,8 @@
 }
 
 .calendar-list-container .calendar-item.checked,
-.calendar-daily-list .calendar-item.checked {
+.calendar-daily-list .calendar-item.checked,
+.calendar-monthly-event-list .calendar-item.checked {
   border-color: #722ed1 !important;
   background: #f9f0ff !important;
   box-shadow: 0 2px 8px rgba(114, 46, 209, 0.2) !important;
@@ -566,7 +693,8 @@
 
 /* 캘린더 아이템 래퍼 */
 .calendar-list-container .calendar-item-wrapper,
-.calendar-daily-list .calendar-item-wrapper {
+.calendar-daily-list .calendar-item-wrapper,
+.calendar-monthly-event-list .calendar-item-wrapper {
   display: flex !important;
   align-items: flex-start !important;
   padding: 16px !important;
@@ -578,13 +706,15 @@
 }
 
 .calendar-list-container .checkbox-container,
-.calendar-daily-list .checkbox-container {
+.calendar-daily-list .checkbox-container,
+.calendar-monthly-event-list .checkbox-container {
   flex-shrink: 0 !important;
   padding-top: 2px !important;
 }
 
 .calendar-list-container .calendar-item-checkbox,
-.calendar-daily-list .calendar-item-checkbox {
+.calendar-daily-list .calendar-item-checkbox,
+.calendar-monthly-event-list .calendar-item-checkbox {
   margin: 0 !important;
   transform: scale(1.2) !important;
   cursor: pointer !important;

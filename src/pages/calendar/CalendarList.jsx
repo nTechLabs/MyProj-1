@@ -18,7 +18,7 @@ const { Text } = Typography
  */
 const CalendarList = ({ viewType = 'monthly' }) => {
   const navigate = useNavigate()
-  const [selectedDate, setSelectedDate] = useState(dayjs())
+  const [selectedDate, setSelectedDate] = useState(dayjs('2025-08-01'))
   
   // React Query 데이터 조회
   const { data: calendars = [], isLoading, error } = useCalendarsQuery()
@@ -270,13 +270,33 @@ const CalendarList = ({ viewType = 'monthly' }) => {
     switch (viewType) {
       case 'monthly':
         return (
-          <Card className="calendar-view-card">
-            <Calendar
-              cellRender={cellRender}
-              onSelect={setSelectedDate}
-              className="calendar-monthly"
-            />
-          </Card>
+          <div className="calendar-monthly-container">
+            <Card className="calendar-view-card">
+              <Calendar
+                cellRender={cellRender}
+                onSelect={setSelectedDate}
+                className="calendar-monthly"
+              />
+            </Card>
+            
+            {/* 선택된 날짜의 일정 표시 */}
+            <Card className="calendar-selected-events" title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}>
+              {selectedDateEvents.length === 0 ? (
+                <div className="empty-container">
+                  <CalendarOutlined className="empty-icon" />
+                  <Text className="empty-text">선택한 날짜에 일정이 없습니다.</Text>
+                </div>
+              ) : (
+                <List
+                  dataSource={selectedDateEvents}
+                  renderItem={(calendar) => (
+                    <CalendarItem key={calendar.id} calendar={calendar} />
+                  )}
+                  className="calendar-monthly-event-list"
+                />
+              )}
+            </Card>
+          </div>
         )
       
       case '2weekly':
