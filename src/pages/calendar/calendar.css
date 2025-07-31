@@ -108,6 +108,8 @@
 
 .calendar-view-card .ant-card-body {
   padding: 16px;
+  height: 700px;
+  overflow: hidden;
 }
 
 /* Monthly Calendar */
@@ -128,9 +130,9 @@
 .calendar-monthly .ant-picker-calendar-date tbody tr,
 .calendar-monthly .ant-picker-calendar-date-panel tbody tr,
 .calendar-monthly tbody tr {
-  height: 120px !important;
-  min-height: 120px !important;
-  max-height: 120px !important;
+  height: 110px !important;
+  min-height: 110px !important;
+  max-height: 110px !important;
 }
 
 /* 모든 날짜 셀의 높이를 동일하게 설정 */
@@ -138,15 +140,16 @@
 .calendar-monthly .ant-picker-calendar-date tbody td,
 .calendar-monthly .ant-picker-calendar-date-panel tbody td,
 .calendar-monthly tbody td {
-  height: 120px !important;
-  min-height: 120px !important;
-  max-height: 120px !important;
+  height: 110px !important;
+  min-height: 110px !important;
+  max-height: 110px !important;
   vertical-align: top !important;
 }
 
 /* Ant Design 캘린더 테이블 높이 제한 */
 .calendar-monthly .ant-picker-calendar table {
-  max-height: calc(5 * 120px);
+  max-height: calc(5 * 110px);
+  height: 650px;
   overflow: hidden;
 }
 
@@ -156,8 +159,8 @@
 }
 
 .calendar-date-cell {
-  min-height: 120px;
-  height: 120px;
+  min-height: 110px;
+  height: 110px;
   padding: 4px;
   position: relative;
   display: flex;
@@ -384,6 +387,8 @@
   border-radius: 12px;
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
+  height: 750px;
 }
 
 .calendar-selected-events {
@@ -392,8 +397,8 @@
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   flex: 1;
-  min-height: 1000px;
-  max-height: none;
+  min-height: 300px;
+  max-height: calc(100vh - 800px);
 }
 
 .calendar-selected-events .ant-card-head {
@@ -411,8 +416,8 @@
   padding: 16px;
   flex: 1;
   overflow-y: auto;
-  min-height: 900px;
-  max-height: calc(100vh - 120px);
+  min-height: 250px;
+  max-height: calc(100vh - 850px);
 }
 
 .calendar-date-selector {
