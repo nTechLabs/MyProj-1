@@ -148,9 +148,9 @@ const CalendarList = ({ viewType = 'monthly' }) => {
           </div>
         )}
         
-        {/* 일정 미리보기 (최대 4개) */}
+        {/* 일정 미리보기 (최대 3개) */}
         <div className="calendar-events-preview">
-          {dayEvents.slice(0, 4).map(event => {
+          {dayEvents.slice(0, 3).map(event => {
             const config = taskTypeConfig[event.type] || taskTypeConfig.task
             return (
               <div

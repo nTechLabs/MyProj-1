@@ -130,9 +130,9 @@
 .calendar-monthly .ant-picker-calendar-date tbody tr,
 .calendar-monthly .ant-picker-calendar-date-panel tbody tr,
 .calendar-monthly tbody tr {
-  height: 110px !important;
-  min-height: 110px !important;
-  max-height: 110px !important;
+  height: 130px !important;
+  min-height: 130px !important;
+  max-height: 130px !important;
 }
 
 /* 모든 날짜 셀의 높이를 동일하게 설정 */
@@ -140,15 +140,16 @@
 .calendar-monthly .ant-picker-calendar-date tbody td,
 .calendar-monthly .ant-picker-calendar-date-panel tbody td,
 .calendar-monthly tbody td {
-  height: 110px !important;
-  min-height: 110px !important;
-  max-height: 110px !important;
+  height: 130px !important;
+  min-height: 130px !important;
+  max-height: 130px !important;
   vertical-align: top !important;
+  overflow: hidden !important;
 }
 
 /* Ant Design 캘린더 테이블 높이 제한 */
 .calendar-monthly .ant-picker-calendar table {
-  max-height: calc(5 * 110px);
+  max-height: calc(5 * 130px);
   height: 650px;
   overflow: hidden;
 }
@@ -159,13 +160,14 @@
 }
 
 .calendar-date-cell {
-  min-height: 110px;
-  height: 110px;
+  min-height: 130px;
+  height: 130px;
   padding: 4px;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  overflow: hidden !important;
 }
 
 /* 오늘 날짜 스타일 - 기본 Ant Design 스타일 유지 */
@@ -235,14 +237,17 @@
   flex-direction: column;
   gap: 1px;
   margin-top: 16px;
+  overflow: hidden !important;
+  max-height: 80px;
+  flex: 1;
 }
 
 /* 개별 일정 미리보기 */
 .calendar-event-preview {
-  padding: 1px 4px;
+  padding: 2px 4px;
   border-radius: 2px;
-  font-size: 9px;
-  line-height: 12px;
+  font-size: 10px;
+  line-height: 14px;
   display: flex;
   align-items: center;
   gap: 2px;
@@ -250,6 +255,9 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-bottom: 1px;
+  flex-shrink: 0;
+  min-height: 16px;
+  max-height: 16px;
 }
 
 /* 이벤트 타입별 색상 */
