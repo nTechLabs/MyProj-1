@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { List, Badge, Typography, Tag, Avatar } from 'antd'
 import { CalendarOutlined, ClockCircleOutlined, TeamOutlined, BookOutlined, HeartOutlined, TrophyOutlined, EnvironmentOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { useCalendarToggleCheck, useCalendarIsChecked } from '../../store/useCalendarStore'
+import { useCalendarToggleCheck, useCalendarCheckedIds } from '../../store/useCalendarStore'
 import './calendar.css'
 
 const { Text } = Typography
@@ -16,8 +16,10 @@ const { Text } = Typography
 const CalendarItem = memo(({ calendar }) => {
   const navigate = useNavigate()
   const toggleCheck = useCalendarToggleCheck()
-  const isChecked = useCalendarIsChecked()
-  const checked = isChecked(calendar.id)
+  const checkedIds = useCalendarCheckedIds()
+  const checked = checkedIds.has(calendar.id)
+  
+  console.log('🔍 CalendarItem render - id:', calendar.id, 'checked:', checked, 'title:', calendar.title, 'checkedIds size:', checkedIds.size)
 
   // Task 타입별 설정 - 더 밝고 부드러운 톤으로 변경
   const taskTypeConfig = {
@@ -33,13 +35,20 @@ const CalendarItem = memo(({ calendar }) => {
   // 항목 클릭 핸들러 (상세 페이지로 이동) - 메모이제이션
   const handleItemClick = useCallback((e) => {
     // 체크박스 영역을 클릭한 경우 이동하지 않음
-    if (e.target.closest('.checkbox-area')) {
+    if (e.target.closest('.checkbox-area') || e.target.type === 'checkbox') {
       console.log('🚫 Item click blocked - checkbox area clicked')
       return
     }
     console.log('🔗 Item clicked, navigating to calendar detail:', calendar.id)
     navigate(`/calendar/calendar/${calendar.id}`)
   }, [calendar.id, navigate])
+
+  // 체크박스 클릭 핸들러 - 메모이제이션
+  const handleCheckboxClick = useCallback((e) => {
+    e.stopPropagation()
+    console.log('🎯 Checkbox clicked for calendar:', calendar.id, 'current checked:', checked)
+    toggleCheck(calendar.id)
+  }, [calendar.id, toggleCheck, checked])
 
   // 날짜 및 시간 포맷팅
   const formatDateTime = (dateTime) => {
@@ -174,19 +183,11 @@ const CalendarItem = memo(({ calendar }) => {
           {/* 체크박스 */}
           <div 
             className="checkbox-area calendar-item-checkbox"
-            onClick={(e) => {
-              e.stopPropagation()
-              console.log('🎯 Checkbox area clicked for calendar:', calendar.id, '(handled by onChange)')
-            }}
           >
             <input
               type="checkbox"
               checked={checked}
-              onChange={(e) => {
-                console.log('🔲 Native checkbox onChange for calendar:', calendar.id, 'checked:', e.target.checked)
-                e.stopPropagation()
-                toggleCheck(calendar.id)
-              }}
+              onChange={handleCheckboxClick}
               style={{
                 width: '18px',
                 height: '18px',

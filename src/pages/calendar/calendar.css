@@ -900,15 +900,30 @@
 
 /* 체크박스 영역 */
 .checkbox-area {
-  padding: 4px !important;
+  padding: 8px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  position: relative !important;
+  z-index: 10 !important;
+  border-radius: 4px !important;
+}
+
+.checkbox-area:hover {
+  background-color: rgba(114, 46, 209, 0.1) !important;
 }
 
 .checkbox-area input[type="checkbox"] {
   cursor: pointer !important;
   transition: all 0.2s ease !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 11 !important;
 }
 
 .checkbox-area input[type="checkbox"]:hover {
