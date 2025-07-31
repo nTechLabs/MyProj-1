@@ -237,52 +237,9 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       return <div style={{ display: 'none', width: 0, height: 0, padding: 0, margin: 0 }}></div>
     }
     
-    const dateStr = value.format('YYYY-MM-DD')
-    const dayEvents = calendars.filter(calendar => {
-      const eventDate = new Date(calendar.date).toISOString().split('T')[0]
-      return eventDate === dateStr
-    })
-
-    // 일정이 5개 미만이면 기본 셀 반환
-    if (dayEvents.length < 5) {
-      return info.originNode
-    }
-
-    return (
-      <div style={{ 
-        position: 'relative', 
-        width: '100%', 
-        height: '100%',
-        overflow: 'visible'
-      }}>
-        {info.originNode}
-        {/* 5개 이상일 때만 뱃지 표시 */}
-        <span 
-          style={{
-            position: 'absolute',
-            top: '-5px',
-            right: '-5px',
-            backgroundColor: '#ff4d4f',
-            color: '#ffffff',
-            borderRadius: '50%',
-            width: '16px',
-            height: '16px',
-            fontSize: '9px',
-            fontWeight: 'bold',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-            border: '1px solid #ffffff',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
-            pointerEvents: 'none'
-          }}
-        >
-          {dayEvents.length}
-        </span>
-      </div>
-    )
-  }, [calendars])
+    // 평일(월~금)은 원본 노드만 반환하여 중복 렌더링 방지
+    return info.originNode
+  }, [])
 
   // 삭제 핸들러
   const handleDelete = useCallback(() => {

@@ -1637,6 +1637,17 @@
   table-layout: fixed !important;
 }
 
+/* 5일 뷰에서 왼쪽 작은 날짜들 완전히 숨김 */
+.calendar-5days.hide-weekends .ant-picker-calendar-date-value {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 /* 모든 가능한 선택자로 일요일 (첫 번째 열) 숨김 */
 .calendar-5days.hide-weekends .ant-picker-calendar thead th:nth-child(1),
 .calendar-5days.hide-weekends .ant-picker-calendar tbody td:nth-child(1),
@@ -1645,7 +1656,9 @@
 .calendar-5days.hide-weekends .ant-picker-calendar-full table thead th:nth-child(1),
 .calendar-5days.hide-weekends .ant-picker-calendar-full table tbody td:nth-child(1),
 .calendar-5days.hide-weekends table thead tr th:nth-child(1),
-.calendar-5days.hide-weekends table tbody tr td:nth-child(1) {
+.calendar-5days.hide-weekends table tbody tr td:nth-child(1),
+.calendar-5days.hide-weekends tr th:nth-child(1),
+.calendar-5days.hide-weekends tr td:nth-child(1) {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
@@ -1656,7 +1669,11 @@
   opacity: 0 !important;
   max-width: 0 !important;
   min-width: 0 !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
   overflow: hidden !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
 }
 
 /* 모든 가능한 선택자로 토요일 (마지막 열, 7번째) 숨김 */
@@ -1667,7 +1684,9 @@
 .calendar-5days.hide-weekends .ant-picker-calendar-full table thead th:nth-child(7),
 .calendar-5days.hide-weekends .ant-picker-calendar-full table tbody td:nth-child(7),
 .calendar-5days.hide-weekends table thead tr th:nth-child(7),
-.calendar-5days.hide-weekends table tbody tr td:nth-child(7) {
+.calendar-5days.hide-weekends table tbody tr td:nth-child(7),
+.calendar-5days.hide-weekends tr th:nth-child(7),
+.calendar-5days.hide-weekends tr td:nth-child(7) {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
@@ -1678,7 +1697,11 @@
   opacity: 0 !important;
   max-width: 0 !important;
   min-width: 0 !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
   overflow: hidden !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
 }
 
 /* first-child와 last-child 선택자도 추가 */
