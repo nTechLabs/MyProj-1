@@ -345,6 +345,14 @@
   border: none;
 }
 
+/* 주의 개수를 5개로 제한 (6번째 주 숨김) - 월간 뷰와 동일 */
+.calendar-weekly .ant-picker-calendar tbody tr:nth-child(6),
+.calendar-weekly .ant-picker-calendar-date tbody tr:nth-child(6),
+.calendar-weekly .ant-picker-calendar-date-panel tbody tr:nth-child(6),
+.calendar-weekly tbody tr:nth-child(6) {
+  display: none !important;
+}
+
 /* 모든 주의 높이를 동일하게 설정 - 월간 뷰와 동일 */
 .calendar-weekly .ant-picker-calendar tbody tr,
 .calendar-weekly .ant-picker-calendar-date tbody tr,
@@ -371,7 +379,8 @@
 
 /* Ant Design 캘린더 테이블 높이 - 월간 뷰와 동일 */
 .calendar-weekly .ant-picker-calendar table {
-  height: 720px;
+  max-height: calc(5 * 120px);
+  height: 600px;
   overflow: hidden;
   table-layout: fixed !important;
 }
