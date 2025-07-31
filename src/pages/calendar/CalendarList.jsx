@@ -285,7 +285,25 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             </Card>
             
             {/* 선택된 날짜의 일정 표시 */}
-            <Card className="calendar-selected-events" title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}>
+            <Card 
+              className="calendar-selected-events" 
+              title={
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>{selectedDate.format('YYYY년 MM월 DD일')} 일정</span>
+                  <span style={{ 
+                    fontSize: '14px', 
+                    fontWeight: '500', 
+                    color: '#666666',
+                    backgroundColor: '#f5f5f5',
+                    padding: '4px 12px',
+                    borderRadius: '16px',
+                    border: '1px solid #e8e8e8'
+                  }}>
+                    {selectedDateEvents.filter(event => checkedIds.has(event.id)).length}/{selectedDateEvents.length}
+                  </span>
+                </div>
+              }
+            >
               {selectedDateEvents.length === 0 ? (
                 <div className="empty-container">
                   <CalendarOutlined className="empty-icon" style={{ color: '#999999' }} />
@@ -320,7 +338,22 @@ const CalendarList = ({ viewType = 'monthly' }) => {
             {/* 선택된 날짜의 일정 표시 */}
             <Card 
               className="calendar-selected-events" 
-              title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}
+              title={
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>{selectedDate.format('YYYY년 MM월 DD일')} 일정</span>
+                  <span style={{ 
+                    fontSize: '14px', 
+                    fontWeight: '500', 
+                    color: '#666666',
+                    backgroundColor: '#f5f5f5',
+                    padding: '4px 12px',
+                    borderRadius: '16px',
+                    border: '1px solid #e8e8e8'
+                  }}>
+                    {selectedDateEvents.filter(event => checkedIds.has(event.id)).length}/{selectedDateEvents.length}
+                  </span>
+                </div>
+              }
             >
               {selectedDateEvents.length === 0 ? (
                 <div className="empty-container">
@@ -382,7 +415,25 @@ const CalendarList = ({ viewType = 'monthly' }) => {
               </Button>
             </div>
             
-            <Card className="calendar-daily-events" title={`${selectedDate.format('YYYY년 MM월 DD일')} 일정`}>
+            <Card 
+              className="calendar-daily-events" 
+              title={
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>{selectedDate.format('YYYY년 MM월 DD일')} 일정</span>
+                  <span style={{ 
+                    fontSize: '14px', 
+                    fontWeight: '500', 
+                    color: '#666666',
+                    backgroundColor: '#f5f5f5',
+                    padding: '4px 12px',
+                    borderRadius: '16px',
+                    border: '1px solid #e8e8e8'
+                  }}>
+                    {selectedDateEvents.filter(event => checkedIds.has(event.id)).length}/{selectedDateEvents.length}
+                  </span>
+                </div>
+              }
+            >
               {selectedDateEvents.length === 0 ? (
                 <div className="empty-container">
                   <CalendarOutlined className="empty-icon" style={{ color: '#999999' }} />
