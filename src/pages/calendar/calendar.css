@@ -1630,6 +1630,160 @@
   width: 20% !important;
 }
 
+/* 5일 뷰에서 주말 숨김 처리 - 완전한 숨김 */
+.calendar-5days.hide-weekends table,
+.calendar-5days.hide-weekends .ant-picker-calendar table,
+.calendar-5days.hide-weekends .ant-picker-calendar-date table {
+  table-layout: fixed !important;
+}
+
+/* 모든 가능한 선택자로 일요일 (첫 번째 열) 숨김 */
+.calendar-5days.hide-weekends .ant-picker-calendar thead th:nth-child(1),
+.calendar-5days.hide-weekends .ant-picker-calendar tbody td:nth-child(1),
+.calendar-5days.hide-weekends .ant-picker-calendar-date thead th:nth-child(1),
+.calendar-5days.hide-weekends .ant-picker-calendar-date tbody td:nth-child(1),
+.calendar-5days.hide-weekends .ant-picker-calendar-full table thead th:nth-child(1),
+.calendar-5days.hide-weekends .ant-picker-calendar-full table tbody td:nth-child(1),
+.calendar-5days.hide-weekends table thead tr th:nth-child(1),
+.calendar-5days.hide-weekends table tbody tr td:nth-child(1) {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  max-width: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 모든 가능한 선택자로 토요일 (마지막 열, 7번째) 숨김 */
+.calendar-5days.hide-weekends .ant-picker-calendar thead th:nth-child(7),
+.calendar-5days.hide-weekends .ant-picker-calendar tbody td:nth-child(7),
+.calendar-5days.hide-weekends .ant-picker-calendar-date thead th:nth-child(7),
+.calendar-5days.hide-weekends .ant-picker-calendar-date tbody td:nth-child(7),
+.calendar-5days.hide-weekends .ant-picker-calendar-full table thead th:nth-child(7),
+.calendar-5days.hide-weekends .ant-picker-calendar-full table tbody td:nth-child(7),
+.calendar-5days.hide-weekends table thead tr th:nth-child(7),
+.calendar-5days.hide-weekends table tbody tr td:nth-child(7) {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  max-width: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* first-child와 last-child 선택자도 추가 */
+.calendar-5days.hide-weekends .ant-picker-calendar thead th:first-child,
+.calendar-5days.hide-weekends .ant-picker-calendar tbody td:first-child,
+.calendar-5days.hide-weekends .ant-picker-calendar-date thead th:first-child,
+.calendar-5days.hide-weekends .ant-picker-calendar-date tbody td:first-child,
+.calendar-5days.hide-weekends .ant-picker-calendar thead th:last-child,
+.calendar-5days.hide-weekends .ant-picker-calendar tbody td:last-child,
+.calendar-5days.hide-weekends .ant-picker-calendar-date thead th:last-child,
+.calendar-5days.hide-weekends .ant-picker-calendar-date tbody td:last-child {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* 추가 안전 장치 - 모든 캘린더 컨테이너에 적용 */
+.calendar-5days.hide-weekends * th:first-child,
+.calendar-5days.hide-weekends * td:first-child,
+.calendar-5days.hide-weekends * th:last-child,
+.calendar-5days.hide-weekends * td:last-child {
+  display: none !important;
+}
+
+/* 5일 뷰 전용 강제 숨김 */
+.calendar-5days.hide-weekends [class*="ant-picker"] th:nth-child(1),
+.calendar-5days.hide-weekends [class*="ant-picker"] td:nth-child(1),
+.calendar-5days.hide-weekends [class*="ant-picker"] th:nth-child(7),
+.calendar-5days.hide-weekends [class*="ant-picker"] td:nth-child(7) {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* 최후의 수단 - 모든 테이블 셀에 대해 첫 번째와 마지막 숨김 */
+.calendar-5days.hide-weekends table tr > *:first-child {
+  display: none !important;
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  visibility: hidden !important;
+}
+
+.calendar-5days.hide-weekends table tr > *:last-child {
+  display: none !important;
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  visibility: hidden !important;
+}
+
+/* 강제로 5개 열만 표시 */
+.calendar-5days.hide-weekends table {
+  width: 100% !important;
+}
+
+.calendar-5days.hide-weekends table tr > *:nth-child(2),
+.calendar-5days.hide-weekends table tr > *:nth-child(3),
+.calendar-5days.hide-weekends table tr > *:nth-child(4),
+.calendar-5days.hide-weekends table tr > *:nth-child(5),
+.calendar-5days.hide-weekends table tr > *:nth-child(6) {
+  display: table-cell !important;
+  width: 20% !important;
+  visibility: visible !important;
+}
+
+/* 월~금 (2~6번째 열) 너비 조정 */
+.calendar-5days.hide-weekends .ant-picker-calendar thead th:nth-child(2),
+.calendar-5days.hide-weekends .ant-picker-calendar thead th:nth-child(3),
+.calendar-5days.hide-weekends .ant-picker-calendar thead th:nth-child(4),
+.calendar-5days.hide-weekends .ant-picker-calendar thead th:nth-child(5),
+.calendar-5days.hide-weekends .ant-picker-calendar thead th:nth-child(6),
+.calendar-5days.hide-weekends .ant-picker-calendar tbody td:nth-child(2),
+.calendar-5days.hide-weekends .ant-picker-calendar tbody td:nth-child(3),
+.calendar-5days.hide-weekends .ant-picker-calendar tbody td:nth-child(4),
+.calendar-5days.hide-weekends .ant-picker-calendar tbody td:nth-child(5),
+.calendar-5days.hide-weekends .ant-picker-calendar tbody td:nth-child(6),
+.calendar-5days.hide-weekends .ant-picker-calendar-date thead th:nth-child(2),
+.calendar-5days.hide-weekends .ant-picker-calendar-date thead th:nth-child(3),
+.calendar-5days.hide-weekends .ant-picker-calendar-date thead th:nth-child(4),
+.calendar-5days.hide-weekends .ant-picker-calendar-date thead th:nth-child(5),
+.calendar-5days.hide-weekends .ant-picker-calendar-date thead th:nth-child(6),
+.calendar-5days.hide-weekends .ant-picker-calendar-date tbody td:nth-child(2),
+.calendar-5days.hide-weekends .ant-picker-calendar-date tbody td:nth-child(3),
+.calendar-5days.hide-weekends .ant-picker-calendar-date tbody td:nth-child(4),
+.calendar-5days.hide-weekends .ant-picker-calendar-date tbody td:nth-child(5),
+.calendar-5days.hide-weekends .ant-picker-calendar-date tbody td:nth-child(6) {
+  width: 20% !important;
+}
+
+/* 더 강력한 숨김 처리 - 모든 가능한 선택자 */
+.calendar-5days.hide-weekends [role="columnheader"]:first-child,
+.calendar-5days.hide-weekends [role="columnheader"]:last-child,
+.calendar-5days.hide-weekends [role="gridcell"]:first-child,
+.calendar-5days.hide-weekends [role="gridcell"]:last-child {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 /* 우선순위 옵션 스타일 */
 .calendar-priority-option-high { color: #f5222d; }
 .calendar-priority-option-medium { color: #fa8c16; }

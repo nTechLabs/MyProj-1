@@ -13,7 +13,7 @@ const { Text } = Typography
 
 /**
  * 캘린더 리스트 컴포넌트
- * 4가지 뷰 타입을 지원: monthly, 2weekly, weekly, daily
+ * 5가지 뷰 타입을 지원: monthly, 2weekly, weekly, 5days, daily
  * Task 타입별 색상과 아이콘으로 구별
  */
 const CalendarList = ({ viewType = 'monthly' }) => {
@@ -228,6 +228,62 @@ const CalendarList = ({ viewType = 'monthly' }) => {
     )
   }, [calendars, showWeekends])
 
+  // 5일 뷰용 cellRender - 월~금만 표시 (주말 완전 숨김)
+  const cellRender5Days = useCallback((value, info) => {
+    if (info.type !== 'date') return info.originNode
+    
+    // 주말(토, 일) 완전 숨김 처리 - 빈 div 반환
+    if (value.day() === 0 || value.day() === 6) {
+      return <div style={{ display: 'none', width: 0, height: 0, padding: 0, margin: 0 }}></div>
+    }
+    
+    const dateStr = value.format('YYYY-MM-DD')
+    const dayEvents = calendars.filter(calendar => {
+      const eventDate = new Date(calendar.date).toISOString().split('T')[0]
+      return eventDate === dateStr
+    })
+
+    // 일정이 5개 미만이면 기본 셀 반환
+    if (dayEvents.length < 5) {
+      return info.originNode
+    }
+
+    return (
+      <div style={{ 
+        position: 'relative', 
+        width: '100%', 
+        height: '100%',
+        overflow: 'visible'
+      }}>
+        {info.originNode}
+        {/* 5개 이상일 때만 뱃지 표시 */}
+        <span 
+          style={{
+            position: 'absolute',
+            top: '-5px',
+            right: '-5px',
+            backgroundColor: '#ff4d4f',
+            color: '#ffffff',
+            borderRadius: '50%',
+            width: '16px',
+            height: '16px',
+            fontSize: '9px',
+            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            border: '1px solid #ffffff',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+            pointerEvents: 'none'
+          }}
+        >
+          {dayEvents.length}
+        </span>
+      </div>
+    )
+  }, [calendars])
+
   // 삭제 핸들러
   const handleDelete = useCallback(() => {
     if (checkedIds.size === 0) return
@@ -387,6 +443,56 @@ const CalendarList = ({ viewType = 'monthly' }) => {
           </div>
         )
       
+      case '5days':
+        return (
+          <div className="calendar-5days-container">
+            <Card className="calendar-view-card">
+              <Calendar
+                mode="month"
+                cellRender={cellRender5Days}
+                onSelect={setSelectedDate}
+                className="calendar-5days hide-weekends"
+              />
+            </Card>
+            
+            {/* 선택된 날짜의 일정 표시 */}
+            <Card 
+              className="calendar-selected-events" 
+              title={
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>{selectedDate.format('YYYY년 MM월 DD일')} 일정 (5일 뷰)</span>
+                  <span style={{ 
+                    fontSize: '14px', 
+                    fontWeight: '500', 
+                    color: '#666666',
+                    backgroundColor: '#f5f5f5',
+                    padding: '4px 12px',
+                    borderRadius: '16px',
+                    border: '1px solid #e8e8e8'
+                  }}>
+                    {selectedDateEvents.filter(event => checkedIds.has(event.id)).length}/{selectedDateEvents.length}
+                  </span>
+                </div>
+              }
+            >
+              {selectedDateEvents.length === 0 ? (
+                <div className="empty-container">
+                  <CalendarOutlined className="empty-icon" style={{ color: '#999999' }} />
+                  <Text className="empty-text" style={{ color: '#666666' }}>선택한 날짜에 일정이 없습니다.</Text>
+                </div>
+              ) : (
+                <List
+                  dataSource={selectedDateEvents}
+                  renderItem={(calendar) => (
+                    <CalendarItem key={calendar.id} calendar={calendar} />
+                  )}
+                  className="calendar-5days-event-list"
+                />
+              )}
+            </Card>
+          </div>
+        )
+      
       case 'daily':
         return (
           <div className="calendar-daily-container">
@@ -470,12 +576,17 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       {/* 검색 및 필터 */}
       <div className="search-filter-container">
         <Space className="search-filter-space">
-          <Text strong style={{ color: '#495057' }}>{viewType === 'monthly' ? '월간' : viewType === '2weekly' ? '2주간' : viewType === 'weekly' ? '주간' : '일간'} 캘린더</Text>
+          <Text strong style={{ color: '#495057' }}>
+            {viewType === 'monthly' ? '월간' : 
+             viewType === '2weekly' ? '2주간' : 
+             viewType === 'weekly' ? '주간' : 
+             viewType === '5days' ? '5일간' : '일간'} 캘린더
+          </Text>
         </Space>
       </div>
 
       {/* 전체 선택 및 통계 */}
-      {calendars.length > 0 && (viewType === 'daily' || viewType === 'monthly' || viewType === '2weekly' || selectedDateEvents.length > 0) && (
+      {calendars.length > 0 && (viewType === 'daily' || viewType === 'monthly' || viewType === '2weekly' || viewType === '5days' || selectedDateEvents.length > 0) && (
         <div className="select-all-container">
           <div className="select-all-left">
             <Button
@@ -488,7 +599,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
           </div>
           <div className="select-stats">
             <Text type="secondary" style={{ color: '#999999' }}>
-              {checkedCount > 0 ? `${checkedCount}개 선택됨` : `총 ${viewType === 'daily' ? selectedDateEvents.length : calendars.length}개`}
+              {checkedCount > 0 ? `${checkedCount}개 선택됨` : `총 ${(viewType === 'daily' || viewType === '5days') ? selectedDateEvents.length : calendars.length}개`}
             </Text>
           </div>
         </div>

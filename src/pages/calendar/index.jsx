@@ -8,7 +8,7 @@ import './calendar.css'
 /**
  * Calendar 메인 페이지 컴포넌트
  * React Query + Zustand + Ant Design Mobile을 사용한 캘린더 관리 시스템
- * Monthly, 2Weekly, Weekly, Daily 4개의 탭으로 구성
+ * Monthly, 2Weekly, Weekly, 5Days, Daily 5개의 탭으로 구성
  */
 const CalendarPage = () => {
   const [activeTab, setActiveTab] = useState('monthly')
@@ -43,6 +43,16 @@ const CalendarPage = () => {
         </span>
       ),
       children: <CalendarList viewType="weekly" />
+    },
+    {
+      key: '5days',
+      label: (
+        <span className="calendar-tab-label">
+          <CalendarOutlined className="calendar-tab-icon" />
+          5일간
+        </span>
+      ),
+      children: <CalendarList viewType="5days" />
     },
     {
       key: 'daily',
