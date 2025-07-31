@@ -246,22 +246,22 @@
   padding-bottom: 0px;
 }
 
-/* 개별 일정 미리보기 */
+/* 개별 일정 미리보기 - 5일간 뷰에서 5개 일정을 위해 더 컴팩트하게 */
 .calendar-event-preview {
-  padding: 2px 4px;
+  padding: 1px 3px;
   border-radius: 2px;
-  font-size: 9px;
-  line-height: 12px;
+  font-size: 8px;
+  line-height: 10px;
   display: flex;
   align-items: center;
   gap: 2px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-bottom: 0px;
+  margin-bottom: 1px;
   flex-shrink: 0;
-  min-height: 16px;
-  max-height: 16px;
+  min-height: 12px;
+  max-height: 12px;
 }
 
 /* 이벤트 타입별 색상 */
@@ -531,27 +531,27 @@
   table-layout: fixed !important;
 }
 
-/* 5일간 뷰의 주 높이 - 월간/주간 뷰와 동일 */
+/* 5일간 뷰의 주 높이 - 컴팩트하게 조정 */
 .calendar-5days .ant-picker-calendar tbody tr,
 .calendar-5days .ant-picker-calendar-date tbody tr,
 .calendar-5days .ant-picker-calendar-date-panel tbody tr,
 .calendar-5days tbody tr {
-  height: 120px !important;
-  min-height: 120px !important;
-  max-height: 120px !important;
+  height: 100px !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
 }
 
-/* 5일간 뷰의 날짜 셀 높이 - 월간/주간 뷰와 동일 */
+/* 5일간 뷰의 날짜 셀 높이 - 컴팩트하게 조정 */
 .calendar-5days .ant-picker-calendar tbody td,
 .calendar-5days .ant-picker-calendar-date tbody td,
 .calendar-5days .ant-picker-calendar-date-panel tbody td,
 .calendar-5days tbody td {
-  height: 120px !important;
-  min-height: 120px !important;
-  max-height: 120px !important;
+  height: 100px !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
   vertical-align: top !important;
   overflow: hidden !important;
-  padding: 0 !important;
+  padding: 2px !important;
   border: 1px solid #f0f0f0 !important;
 }
 
@@ -582,6 +582,33 @@
   overflow-y: auto;
   min-height: 250px;
   max-height: calc(100vh - 420px);
+}
+
+/* 5일간 뷰 전용 - 더 컴팩트한 이벤트 미리보기 */
+.calendar-5days .calendar-event-preview {
+  padding: 1px 2px;
+  font-size: 7px;
+  line-height: 9px;
+  min-height: 10px;
+  max-height: 10px;
+  margin-bottom: 0.5px;
+}
+
+.calendar-5days .calendar-event-preview-icon {
+  font-size: 6px;
+}
+
+.calendar-5days .calendar-events-preview {
+  gap: 0px;
+  max-height: 75px;
+  padding-top: 2px;
+  margin-top: 15px;
+}
+
+.calendar-5days .calendar-date-cell {
+  height: 100% !important;
+  position: relative;
+  padding: 2px !important;
 }
 
 .calendar-date-selector {
