@@ -656,68 +656,169 @@
 }
 
 /* =============================================================================
-   Calendar Item 스타일
+   Calendar Item 스타일 - 개선된 레이아웃 (부드러운 색감)
 ============================================================================= */
 .calendar-list-container .calendar-item,
 .calendar-daily-list .calendar-item,
 .calendar-monthly-event-list .calendar-item {
-  border-radius: 12px !important;
+  border-radius: 16px !important;
   margin-bottom: 12px !important;
-  border: 1px solid #d9d9d9 !important;
-  background: #ffffff !important;
-  transition: all 0.2s ease !important;
+  border: 1px solid #E5E5EA !important;
+  background: #FFFFFF !important;
+  transition: all 0.3s ease !important;
   cursor: pointer !important;
   padding: 0 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  min-height: 120px !important;
-  overflow: visible !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
 .calendar-list-container .calendar-item:hover,
 .calendar-daily-list .calendar-item:hover,
 .calendar-monthly-event-list .calendar-item:hover {
-  border-color: #722ed1 !important;
-  box-shadow: 0 4px 12px rgba(114, 46, 209, 0.15) !important;
-  transform: translateY(-2px) !important;
-  background: #ffffff !important;
+  border-color: #007AFF !important;
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.12) !important;
+  transform: translateY(-1px) !important;
 }
 
 .calendar-list-container .calendar-item.checked,
 .calendar-daily-list .calendar-item.checked,
 .calendar-monthly-event-list .calendar-item.checked {
-  border-color: #722ed1 !important;
-  background: #f9f0ff !important;
-  box-shadow: 0 2px 8px rgba(114, 46, 209, 0.2) !important;
+  border-color: #007AFF !important;
+  background: linear-gradient(135deg, #F0F8FF 0%, #FFFFFF 100%) !important;
+  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.15) !important;
 }
 
-/* 캘린더 아이템 래퍼 */
-.calendar-list-container .calendar-item-wrapper,
-.calendar-daily-list .calendar-item-wrapper,
-.calendar-monthly-event-list .calendar-item-wrapper {
+/* 캘린더 아이템 컨테이너 */
+.calendar-item-container {
+  display: flex !important;
+  align-items: center !important;
+  padding: 20px !important;
+  gap: 16px !important;
+  width: 100% !important;
+  min-height: 80px !important;
+}
+
+/* 아바타 영역 */
+.calendar-item-avatar {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 메인 콘텐츠 영역 */
+.calendar-item-content {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+/* 헤더 (제목과 태그) */
+.calendar-item-header {
   display: flex !important;
   align-items: flex-start !important;
-  padding: 16px !important;
-  gap: 14px !important;
-  width: 100% !important;
-  min-height: 100px !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+  gap: 8px !important;
 }
 
-.calendar-list-container .checkbox-container,
-.calendar-daily-list .checkbox-container,
-.calendar-monthly-event-list .checkbox-container {
-  flex-shrink: 0 !important;
-  padding-top: 2px !important;
+.calendar-item-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
 }
 
-.calendar-list-container .calendar-item-checkbox,
-.calendar-daily-list .calendar-item-checkbox,
-.calendar-monthly-event-list .calendar-item-checkbox {
+.calendar-item-name {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #262626 !important;
+  line-height: 1.4 !important;
   margin: 0 !important;
-  transform: scale(1.2) !important;
+}
+
+/* 날짜 시간 영역 */
+.calendar-item-datetime {
+  margin-bottom: 4px !important;
+}
+
+.calendar-item-datetime .calendar-item-contact {
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+/* 세부 정보 영역 */
+.calendar-item-details {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.calendar-item-details .calendar-item-contact {
+  font-size: 13px !important;
+  opacity: 0.8 !important;
+}
+
+/* 제목 스타일 */
+.calendar-item-name {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #1C1C1E !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* 연락처 스타일 */
+.calendar-item-contact {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  line-height: 1.5 !important;
+}
+
+.calendar-item-contact span {
+  flex: 1 !important;
+  min-width: 0 !important;
+  word-wrap: break-word !important;
+  color: #3C3C43 !important;
+}
+
+/* 세부 정보 텍스트 색상 */
+.calendar-item-details .calendar-item-contact span {
+  color: #8E8E93 !important;
+}
+
+/* 우측 영역 */
+.calendar-item-right {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 12px !important;
+  flex-shrink: 0 !important;
+}
+
+/* 우선순위 */
+.calendar-item-priority {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 체크박스 영역 */
+.checkbox-area {
+  padding: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.checkbox-area input[type="checkbox"] {
   cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.checkbox-area input[type="checkbox"]:hover {
+  transform: scale(1.1) !important;
 }
 
 /* 아바타 컨테이너 */
