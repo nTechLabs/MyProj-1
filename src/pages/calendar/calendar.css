@@ -338,25 +338,42 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: calc(100vh - 140px);
+  height: calc(100vh - 100px);
 }
 
 .calendar-weekly {
   border: none;
 }
 
-/* 주의 개수를 5개로 제한 (6번째 주 숨김) */
-.calendar-weekly .ant-picker-calendar tbody tr:nth-child(6),
-.calendar-weekly .ant-picker-calendar-date tbody tr:nth-child(6),
-.calendar-weekly .ant-picker-calendar-date-panel tbody tr:nth-child(6),
-.calendar-weekly tbody tr:nth-child(6) {
-  display: none !important;
+/* 모든 주의 높이를 동일하게 설정 - 월간 뷰와 동일 */
+.calendar-weekly .ant-picker-calendar tbody tr,
+.calendar-weekly .ant-picker-calendar-date tbody tr,
+.calendar-weekly .ant-picker-calendar-date-panel tbody tr,
+.calendar-weekly tbody tr {
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
 }
 
-/* Ant Design 캘린더 테이블 높이 제한 */
+/* 모든 날짜 셀의 높이를 동일하게 설정 - 월간 뷰와 동일 */
+.calendar-weekly .ant-picker-calendar tbody td,
+.calendar-weekly .ant-picker-calendar-date tbody td,
+.calendar-weekly .ant-picker-calendar-date-panel tbody td,
+.calendar-weekly tbody td {
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
+  vertical-align: top !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 1px solid #f0f0f0 !important;
+}
+
+/* Ant Design 캘린더 테이블 높이 - 월간 뷰와 동일 */
 .calendar-weekly .ant-picker-calendar table {
-  max-height: calc(5 * 60px);
+  height: 720px;
   overflow: hidden;
+  table-layout: fixed !important;
 }
 
 /* 2Weekly Calendar - 2개 주만 표시 */
@@ -414,10 +431,8 @@
 .calendar-weekly-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  height: auto;
-  min-height: calc(100vh - 100px);
-  padding-bottom: 20px;
+  gap: 16px;
+  height: calc(100vh - 100px);
 }
 
 .calendar-view-card {
@@ -426,17 +441,33 @@
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   flex-shrink: 0;
-  height: 720px;
+  height: 800px;
+}
+
+.calendar-view-card .ant-card-body {
+  padding: 16px;
+  height: 800px;
+  overflow: hidden;
+}
+
+/* 2주간 뷰 컨테이너 (별도 클래스 사용) */
+.calendar-2weekly-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: auto;
+  min-height: calc(100vh - 100px);
+  padding-bottom: 20px;
 }
 
 /* 2주간 뷰 전용 카드 높이 */
-.calendar-weekly-container .calendar-view-card {
+.calendar-2weekly-container .calendar-view-card {
   height: 320px;
   margin-bottom: 10px;
 }
 
 /* 2주간 뷰 전용 선택된 이벤트 카드 */
-.calendar-weekly-container .calendar-selected-events {
+.calendar-2weekly-container .calendar-selected-events {
   margin-top: 20px;
   flex: none;
   height: auto;
@@ -444,8 +475,58 @@
   max-height: calc(100vh - 470px);
 }
 
-.calendar-weekly-container .calendar-selected-events .ant-card-body {
+.calendar-2weekly-container .calendar-selected-events .ant-card-body {
   max-height: calc(100vh - 520px);
+}
+
+/* 5일간 뷰 컨테이너 */
+.calendar-5days-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: calc(100vh - 100px);
+}
+
+/* 5일간 뷰 전용 카드 높이 - 더 큰 높이 */
+.calendar-5days-container .calendar-view-card {
+  height: 1000px;
+}
+
+.calendar-5days-container .calendar-view-card .ant-card-body {
+  padding: 16px;
+  height: 1000px;
+  overflow: hidden;
+}
+
+/* 5일간 뷰의 캘린더 테이블 높이 - 더 큰 높이 */
+.calendar-5days .ant-picker-calendar table {
+  height: 900px;
+  overflow: hidden;
+  table-layout: fixed !important;
+}
+
+/* 5일간 뷰의 주 높이 - 더 큰 높이 */
+.calendar-5days .ant-picker-calendar tbody tr,
+.calendar-5days .ant-picker-calendar-date tbody tr,
+.calendar-5days .ant-picker-calendar-date-panel tbody tr,
+.calendar-5days tbody tr {
+  height: 150px !important;
+  min-height: 150px !important;
+  max-height: 150px !important;
+}
+
+/* 5일간 뷰의 날짜 셀 높이 - 더 큰 높이 */
+.calendar-5days .ant-picker-calendar tbody td,
+.calendar-5days .ant-picker-calendar-date tbody td,
+.calendar-5days .ant-picker-calendar-date-panel tbody td,
+.calendar-5days tbody td {
+  height: 150px !important;
+  min-height: 150px !important;
+  max-height: 150px !important;
+  vertical-align: top !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 1px solid #f0f0f0 !important;
 }
 
 .calendar-selected-events {

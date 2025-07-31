@@ -337,7 +337,7 @@ const CalendarList = ({ viewType = 'monthly' }) => {
       
       case '2weekly':
         return (
-          <div className="calendar-weekly-container">
+          <div className="calendar-2weekly-container">
             <Card className="calendar-view-card">
               <Calendar
                 mode="month"
@@ -391,11 +391,46 @@ const CalendarList = ({ viewType = 'monthly' }) => {
           <div className="calendar-weekly-container">
             <Card className="calendar-view-card">
               <Calendar
-                mode="month"
                 cellRender={cellRender}
                 onSelect={setSelectedDate}
                 className="calendar-weekly"
               />
+            </Card>
+            
+            {/* 선택된 날짜의 일정 표시 */}
+            <Card 
+              className="calendar-selected-events" 
+              title={
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>{selectedDate.format('YYYY년 MM월 DD일')} 일정</span>
+                  <span style={{ 
+                    fontSize: '14px', 
+                    fontWeight: '500', 
+                    color: '#666666',
+                    backgroundColor: '#f5f5f5',
+                    padding: '4px 12px',
+                    borderRadius: '16px',
+                    border: '1px solid #e8e8e8'
+                  }}>
+                    {selectedDateEvents.filter(event => checkedIds.has(event.id)).length}/{selectedDateEvents.length}
+                  </span>
+                </div>
+              }
+            >
+              {selectedDateEvents.length === 0 ? (
+                <div className="empty-container">
+                  <CalendarOutlined className="empty-icon" style={{ color: '#999999' }} />
+                  <Text className="empty-text" style={{ color: '#666666' }}>선택한 날짜에 일정이 없습니다.</Text>
+                </div>
+              ) : (
+                <List
+                  dataSource={selectedDateEvents}
+                  renderItem={(calendar) => (
+                    <CalendarItem key={calendar.id} calendar={calendar} />
+                  )}
+                  className="calendar-weekly-event-list"
+                />
+              )}
             </Card>
           </div>
         )
