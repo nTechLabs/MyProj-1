@@ -142,8 +142,9 @@
 
 /* 오늘 날짜 스타일 - 모든 캘린더 뷰에 적용 */
 .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner {
-  background-color: #722ed1 !important;
-  color: white !important;
+  background-color: white !important;
+  color: #1890ff !important;
+  border: 1px solid #1890ff !important;
   border-radius: 4px;
 }
 
@@ -151,23 +152,26 @@
 .calendar-2weekly .ant-picker-calendar .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner,
 .calendar-2weekly .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner,
 .calendar-2weekly .ant-picker-cell-today .ant-picker-cell-inner {
-  background-color: #722ed1 !important;
-  color: white !important;
+  background-color: white !important;
+  color: #1890ff !important;
+  border: 1px solid #1890ff !important;
   border-radius: 4px !important;
   font-weight: normal !important;
 }
 
 /* 월간 캘린더의 오늘 날짜 스타일 */
 .calendar-monthly .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner {
-  background-color: #722ed1 !important;
-  color: white !important;
+  background-color: white !important;
+  color: #1890ff !important;
+  border: 1px solid #1890ff !important;
   border-radius: 4px;
 }
 
 /* 주간 캘린더의 오늘 날짜 스타일 */
 .calendar-weekly .ant-picker-calendar-date-panel .ant-picker-cell-today .ant-picker-cell-inner {
-  background-color: #722ed1 !important;
-  color: white !important;
+  background-color: white !important;
+  color: #1890ff !important;
+  border: 1px solid #1890ff !important;
   border-radius: 4px;
 }
 
