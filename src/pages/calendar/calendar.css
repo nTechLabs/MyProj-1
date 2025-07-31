@@ -55,8 +55,8 @@
 }
 
 .calendar-tabs .ant-tabs-tabpane {
-  padding: 16px;
-  height: calc(100vh - 120px);
+  padding: 8px;
+  height: calc(100vh - 100px);
   overflow-y: auto;
 }
 
@@ -123,9 +123,30 @@
   display: none !important;
 }
 
+/* 모든 주의 높이를 동일하게 설정 */
+.calendar-monthly .ant-picker-calendar tbody tr,
+.calendar-monthly .ant-picker-calendar-date tbody tr,
+.calendar-monthly .ant-picker-calendar-date-panel tbody tr,
+.calendar-monthly tbody tr {
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
+}
+
+/* 모든 날짜 셀의 높이를 동일하게 설정 */
+.calendar-monthly .ant-picker-calendar tbody td,
+.calendar-monthly .ant-picker-calendar-date tbody td,
+.calendar-monthly .ant-picker-calendar-date-panel tbody td,
+.calendar-monthly tbody td {
+  height: 120px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
+  vertical-align: top !important;
+}
+
 /* Ant Design 캘린더 테이블 높이 제한 */
 .calendar-monthly .ant-picker-calendar table {
-  max-height: calc(5 * 60px);
+  max-height: calc(5 * 120px);
   overflow: hidden;
 }
 
@@ -135,9 +156,13 @@
 }
 
 .calendar-date-cell {
-  min-height: 60px;
+  min-height: 120px;
+  height: 120px;
   padding: 4px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 /* 오늘 날짜 스타일 - 기본 Ant Design 스타일 유지 */
@@ -298,7 +323,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 140px);
 }
 
 .calendar-weekly {
@@ -343,7 +368,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 140px);
 }
 
 /* Monthly Calendar */
@@ -351,7 +376,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 100px);
 }
 
 .calendar-view-card {
@@ -367,7 +392,7 @@
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   flex: 1;
-  min-height: 700px;
+  min-height: 1000px;
   max-height: none;
 }
 
@@ -386,8 +411,8 @@
   padding: 16px;
   flex: 1;
   overflow-y: auto;
-  min-height: 600px;
-  max-height: calc(100vh - 300px);
+  min-height: 900px;
+  max-height: calc(100vh - 120px);
 }
 
 .calendar-date-selector {
